@@ -154,20 +154,3 @@ def recursive_convert_to_unicode(replace_to_utf):
         return replace_to_utf
     except TypeError:
         return replace_to_utf
-
-
-
-
-test_path = '/Users/mgalitzki/Desktop/attachmentwithindicators.msg'
-test_type = 'cdfv2 microsoft outlook message'
-test_name = 'attachmentwithindicators.msg'
-
-
-# test_path = '/Users/mgalitzki/dev/demisto/content/Packs/CommonScripts/Scripts/ParseEmailFiles/test_data/eml_contains_base64_eml.eml'
-# test_type = "RFC 822 mail text, with CRLF line terminators"
-# test_name = 'eml_contains_base64_eml.eml'
-
-aa = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
-aa.email_parser()
-
-print(aa.parsed_email)
