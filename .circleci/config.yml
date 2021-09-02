@@ -37,11 +37,6 @@ jobs:
         - *create_requirement_files
         - *restore_tox_37_cache
         - run:
-            # install npm modules so readme tests run with mdx verification
-            name: npm install
-            command: |
-              npm ci
-        - run:
             name: Setup Tox
             command: |
               pip install tox
@@ -60,11 +55,6 @@ jobs:
         - *create_requirement_files
         - restore_cache:
             key: tox-38-cache-{{ checksum "Pipfile" }}-{{ checksum "Pipfile.lock" }}
-        - run:
-            # install npm modules so readme tests run with mdx verification
-            name: npm install
-            command: |
-              npm ci
         - run:
             name: Setup Tox
             command: |
@@ -93,11 +83,6 @@ jobs:
       - checkout
       - *create_requirement_files
       - *restore_tox_37_cache
-      - run:
-          # install npm modules so readme tests run with mdx verification
-          name: npm install
-          command: |
-            npm ci
       - run:
           name: Setup Tox
           command: |
