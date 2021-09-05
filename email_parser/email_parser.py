@@ -1,6 +1,6 @@
 from email_parser.constants import MAX_DEPTH_CONST
-from email_parser.handle_msg import handle_msg
 from email_parser.handle_eml import handle_eml
+from email_parser.handle_msg import handle_msg
 import traceback
 from base64 import b64decode
 
@@ -31,7 +31,8 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
 
     if max_depth < 1:
         raise Exception('Minimum max_depth is 1, the script will parse just the top email')
-
+    if 'MIME entity text, ISO-8859 text' in file_type:
+        file_type = 'application/pkcs7-mime'
     try:
         file_type_lower = file_type.lower()
         if 'composite document file v2 document' in file_type_lower \
@@ -89,6 +90,7 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
                 raise Exception("Exception while trying to decode email from within base64: {}\n\nTrace:\n{}"
                                 .format(str(e), traceback.format_exc()))
         else:
+
             raise Exception("Unknown file format: [{}] for file: [{}]".format(file_type, file_name))
         output = recursive_convert_to_unicode(output)
         email = output  # output may be a single email

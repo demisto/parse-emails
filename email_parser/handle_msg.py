@@ -24,7 +24,6 @@ import os
 import re
 from datetime import datetime, timedelta
 from email_parser.constants import PROPS_ID_MAP, REGEX_EMAIL, MAX_DEPTH_CONST
-from email_parser.handle_eml import handle_eml
 from email_parser.common import convert_to_unicode
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line

@@ -13,6 +13,7 @@ import os
 import re
 from email_parser.constants import REGEX_EMAIL, MAX_DEPTH_CONST
 # from common import convert_to_unicode
+from email_parser.handle_msg import handle_msg
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = set(['utf-8', 'iso8859-1'])
