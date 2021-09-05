@@ -583,7 +583,7 @@ def test_eml_contains_htm_attachment_empty_file_max_depth(mocker):
     assert isinstance(results.parsed_email, dict)
 
 
-def test_double_dots_removed(mocker):
+def test_double_dots_removed():
     """
     Fixes: https://github.com/demisto/etc/issues/27229
     Given:

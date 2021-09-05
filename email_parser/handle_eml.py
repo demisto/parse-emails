@@ -193,7 +193,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 # This line replaces a new line that starts with `..` to a newline that starts with `.`
                 # This is because SMTP duplicate dots for lines that start with `.` and get_payload() doesn't format
                 # this correctly
-                part._payload = part._payload.replace('=\r\n..', '=\r\n.')
+                part.set_payload(part._payload.replace('=\r\n..', '=\r\n.'))
                 html = decode_content(part)
 
             elif part.get_content_type() == 'text/plain':
