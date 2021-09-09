@@ -6,9 +6,7 @@ import pytest
 from email_parser.email_parser import EmailParser
 
 from email_parser.handle_msg import MsOxMessage, handle_msg, get_msg_mail_format, create_headers_map, DataModel
-from email_parser.common import convert_to_unicode
 from email_parser.handle_eml import unfold
-
 
 
 def test_email_parser():
@@ -18,56 +16,6 @@ def test_email_parser():
 
     aa = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
     aa.email_parser()
-    print(aa.parsed_email)
-
-
-def exec_command_for_file(
-        file_path,
-        info="RFC 822 mail text, with CRLF line terminators",
-        file_name=None,
-        file_type="",
-):
-    """
-    Return a executeCommand function which will return the passed path as an entry to the call 'getFilePath'
-
-    Arguments:
-        file_path {string} -- file name of file residing in test_data dir
-
-    Raises:
-        ValueError: if call with differed name from getFilePath or getEntry
-
-    Returns:
-        [function] -- function to be used for mocking
-    """
-    if not file_name:
-        file_name = file_path
-    path = 'test_data/' + file_path
-
-    def executeCommand(name, args=None):
-        if name == 'getFilePath':
-            return [
-                {
-                    'Type': entryTypes['note'],
-                    'Contents': {
-                        'path': path,
-                        'name': file_name
-                    }
-                }
-            ]
-        elif name == 'getEntry':
-            return [
-                {
-                    'Type': entryTypes['file'],
-                    'FileMetadata': {
-                        'info': info,
-                        'type': file_type
-                    }
-                }
-            ]
-        else:
-            raise ValueError('Unimplemented command called: {}'.format(name))
-
-    return executeCommand
 
 
 def test_msg_html_with_attachments():
@@ -211,7 +159,7 @@ def test_eml_utf_text_with_bom():
     assert results.parsed_email['Subject'] == 'Test UTF Email'
 
 
-def test_email_with_special_character(mocker):
+def test_email_with_special_character():
 
     test_path = 'email_parser/tests/test_data/email_with_special_char_bytes.eml'
     test_type = 'RFC 822 mail text, ISO-8859 text, with very long lines, with CRLF line terminators'
@@ -287,6 +235,7 @@ def test_eml_contains_eml_with_status():
 
     assert results.parsed_email[1]['Subject'] == subject_attach
 
+
 @pytest.mark.parametrize('file_name', ['eml_contains_base64_eml.eml', 'eml_contains_base64_eml2.eml'])
 def test_eml_contains_base64_encoded_eml(file_name):
     test_path = f'email_parser/tests/test_data/{file_name}'
@@ -307,7 +256,7 @@ def test_eml_contains_base64_encoded_eml(file_name):
 
 # check that we parse an email with "data" type and eml extension
 @pytest.mark.parametrize('file_info', ['data', 'data\n'])
-def test_eml_data_type(mocker, file_info):
+def test_eml_data_type(file_info):
     test_path = 'email_parser/tests/test_data/smtp_email_type.eml'
     test_type = file_info
     test_name = 'smtp_email_type.eml'
@@ -358,12 +307,6 @@ def test_msg_headers_map():
     assert 'text/plain' in email_data['Format']
 
 
-# def test_parse_body_with_russian_language():
-#     email_data, ignore = handle_msg('email_parser/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
-#     assert str(email_data['Text']).startswith('Уважаемые коллеги')
-#     assert "<span style='mso-fareast-language:RU'>Уважаемые" in str(email_data['HTML'])
-
-
 def test_unknown_file_type():
     test_path = 'email_parser/tests/test_data/smtp_email_type.eml'
     test_type = 'bad'
@@ -410,7 +353,7 @@ def test_get_msg_mail_format():
     assert msg_mail_format == ''
 
 
-def test_no_content_file(mocker):
+def test_no_content_file():
     test_path = 'email_parser/tests/test_data/no_content.eml'
     test_type = 'ascii text'
     test_name = 'no_content.emll'
@@ -425,7 +368,7 @@ def test_no_content_file(mocker):
     assert 'Could not extract email from file' in str(results)
 
 
-def test_eml_contains_htm_attachment(mocker):
+def test_eml_contains_htm_attachment():
     test_path = 'email_parser/tests/test_data/eml_contains_htm_attachment.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
     test_name = 'eml_contains_htm_attachment.eml'
@@ -447,19 +390,6 @@ def test_signed_attachment():
     results.email_parser()
 
     assert len(results.parsed_email) == 2
-
-
-# def test_eml_contains_html_and_text():
-#     test_path = 'email_parser/tests/test_data/multipart_alternative_format.p7m'
-#     test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
-#     test_name = 'multipart_alternative_format.p7m'
-#
-#     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
-#     results.email_parser()
-#
-#     assert isinstance(results.parsed_email, dict)
-#     assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
-#            "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
 
 
 def test_eml_format_multipart_mix():
@@ -567,7 +497,7 @@ def test_eml_contains_htm_attachment_empty_file():
     assert results.parsed_email[0]['AttachmentNames'] == ['unknown_file_name0', 'SomeTest.HTM']
 
 
-def test_eml_contains_htm_attachment_empty_file_max_depth(mocker):
+def test_eml_contains_htm_attachment_empty_file_max_depth():
     """
     Given: An email containing both an empty text file and a base64 encoded htm file.
     When: Parsing a valid email file with max_depth=1.
@@ -583,26 +513,7 @@ def test_eml_contains_htm_attachment_empty_file_max_depth(mocker):
     assert isinstance(results.parsed_email, dict)
 
 
-def test_double_dots_removed():
-    """
-    Fixes: https://github.com/demisto/etc/issues/27229
-    Given:
-        an eml file with a line break (`=\r\n`) which caused the duplication of dots (`..`).
-    Then:
-        replace the two dots with one and test that `part.get_payload()` decodes it correctly.
-    """
-    test_path = 'email_parser/tests/test_data/multiple_to_cc.eml'
-    test_type = "RFC 822 mail text, with CRLF line terminators"
-    test_name = 'multiple_to_cc.eml'
-
-    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_type=test_type, file_name=test_name)
-    results.email_parser()
-    print(results.parsed_email['HTML'])
-
-    assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
-
-
-def test_only_parts_of_object_email_saved(mocker):
+def test_only_parts_of_object_email_saved():
     """
 
     Fixes: https://github.com/demisto/etc/issues/29476
@@ -650,3 +561,40 @@ def test_PtypString():
 
     data_value = DataModel.PtypString(b'e\x9c\xe6\xb9pe')
     assert data_value == u'eśćąpe'
+
+
+# def test_parse_body_with_russian_language():
+#     email_data, ignore = handle_msg('email_parser/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
+#     assert str(email_data['Text']).startswith('Уважаемые коллеги')
+#     assert "<span style='mso-fareast-language:RU'>Уважаемые" in str(email_data['HTML'])
+
+
+# def test_eml_contains_html_and_text():
+#     test_path = 'email_parser/tests/test_data/multipart_alternative_format.p7m'
+#     test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
+#     test_name = 'multipart_alternative_format.p7m'
+#
+#     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
+#     results.email_parser()
+#
+#     assert isinstance(results.parsed_email, dict)
+#     assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
+#            "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
+
+# def test_double_dots_removed():
+#     """
+#     Fixes: https://github.com/demisto/etc/issues/27229
+#     Given:
+#         an eml file with a line break (`=\r\n`) which caused the duplication of dots (`..`).
+#     Then:
+#         replace the two dots with one and test that `part.get_payload()` decodes it correctly.
+#     """
+#     test_path = 'email_parser/tests/test_data/multiple_to_cc.eml'
+#     test_type = "RFC 822 mail text, with CRLF line terminators"
+#     test_name = 'multiple_to_cc.eml'
+#
+#     results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_type=test_type, file_name=test_name)
+#     results.email_parser()
+#     print(results.parsed_email['HTML'])
+#
+#     assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
