@@ -563,23 +563,24 @@ def test_PtypString():
     assert data_value == u'eśćąpe'
 
 
-# def test_parse_body_with_russian_language():
-#     email_data, ignore = handle_msg('email_parser/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
-#     assert str(email_data['Text']).startswith('Уважаемые коллеги')
-#     assert "<span style='mso-fareast-language:RU'>Уважаемые" in str(email_data['HTML'])
+def test_parse_body_with_russian_language():
+    email_data, ignore = handle_msg('email_parser/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
+    assert str(email_data['Text']).startswith('Уважаемые коллеги')
+    assert 'Уважаемые' in email_data['HTML']
 
 
-# def test_eml_contains_html_and_text():
-#     test_path = 'email_parser/tests/test_data/multipart_alternative_format.p7m'
-#     test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
-#     test_name = 'multipart_alternative_format.p7m'
-#
-#     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
-#     results.email_parser()
-#
-#     assert isinstance(results.parsed_email, dict)
-#     assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
-#            "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
+def test_eml_contains_html_and_text():
+    test_path = 'email_parser/tests/test_data/multipart_alternative_format.p7m'
+    test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
+    test_name = 'multipart_alternative_format.p7m'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
+    results.email_parser()
+
+    assert isinstance(results.parsed_email, dict)
+    assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
+           "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
+
 
 # def test_double_dots_removed():
 #     """
@@ -598,3 +599,15 @@ def test_PtypString():
 #     print(results.parsed_email['HTML'])
 #
 #     assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
+
+
+# def test_rtf_msg():
+#     test_path = 'email_parser/tests/test_data/msg_with_rtf_compressed.msg'
+#     test_type = 'CDFV2 Microsoft Outlook Message'
+#     test_name = 'msg_with_rtf_compressed.msg'
+#
+#     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
+#     results.email_parser()
+#
+#     assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results[0]['EntryContext']['Email']['HTML']
+#     assert 'src="data:image/png;base64, '

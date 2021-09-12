@@ -485,7 +485,7 @@ class Message(object):
         self._set_properties()
         self._set_attachments()
         self._set_recipients()
-        # self._embed_images_to_html_body()
+        self._embed_images_to_html_body()
 
     def _embed_images_to_html_body(self):
         # embed images into html body
