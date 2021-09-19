@@ -834,25 +834,25 @@ class Message(object):
                 compressed_rtf_body = property_values['RtfCompressed']
                 rtf_body = compressed_rtf.decompress(compressed_rtf_body)
 
-                path = 'test.rtf'
-                with open('test.rtf', mode='w') as f:
-                    f.write(str(rtf_body, 'utf-8', 'ignore'))
-
-                run_cmd = ['soffice', '--headless', '--norestore', '--convert-to', 'html', path]
-
-                # env = os.environ.copy()
-                # env['HOME'] = '/tmp/convertfile'
-                # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
-                # demisto.debug("completed running: {}. With result: {}".format(run_cmd, res))
+                # path = 'test.rtf'
+                # with open('test.rtf', mode='w') as f:
+                #     f.write(str(rtf_body, 'utf-8', 'ignore'))
                 #
-                from RTFDE.deencapsulate import DeEncapsulator
-
-                rtf_obj = DeEncapsulator(rtf_body)
-                rtf_obj.deencapsulate()
-                if rtf_obj.content_type == 'html':
-                    with open('test_rtfde.html', 'w') as f:
-                        f.write(rtf_obj.html)
-                        self.html = rtf_obj.html
+                # run_cmd = ['soffice', '--headless', '--norestore', '--convert-to', 'html', path]
+                #
+                # # env = os.environ.copy()
+                # # env['HOME'] = '/tmp/convertfile'
+                # # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
+                # # demisto.debug("completed running: {}. With result: {}".format(run_cmd, res))
+                # #
+                # from RTFDE.deencapsulate import DeEncapsulator
+                #
+                # rtf_obj = DeEncapsulator(rtf_body)
+                # rtf_obj.deencapsulate()
+                # if rtf_obj.content_type == 'html':
+                #     with open('test_rtfde.html', 'w') as f:
+                #         f.write(rtf_obj.html)
+                #         self.html = rtf_obj.html
 
     def _set_recipients(self):
         recipients = self.recipients
