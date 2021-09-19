@@ -9,6 +9,7 @@ datetime = "*"
 chardet = "*"
 
 [dev-packages]
+pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-datadir-ng = "*"
