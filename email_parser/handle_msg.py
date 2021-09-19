@@ -1,10 +1,15 @@
 from __future__ import print_function
+
+import base64
 # -*- coding: utf-8 -*-
 import codecs
 import email
 import email.utils
+import os
 import quopri
+import re
 import tempfile
+from datetime import datetime, timedelta
 # coding=utf-8
 from email import encoders
 from email.header import Header
@@ -18,13 +23,8 @@ from struct import unpack
 import chardet
 from olefile import OleFileIO, isOleFile
 
-
-import base64
-import os
-import re
-from datetime import datetime, timedelta
-from email_parser.constants import PROPS_ID_MAP, REGEX_EMAIL, MAX_DEPTH_CONST
 from email_parser.common import convert_to_unicode
+from email_parser.constants import MAX_DEPTH_CONST, PROPS_ID_MAP, REGEX_EMAIL
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 
@@ -834,25 +834,25 @@ class Message(object):
                 compressed_rtf_body = property_values['RtfCompressed']
                 rtf_body = compressed_rtf.decompress(compressed_rtf_body)
 
-                # path = 'test.rtf'
-                # with open('test.rtf', mode='w') as f:
-                #     f.write(str(rtf_body, 'utf-8', 'ignore'))
+                path = 'test.rtf'
+                with open('test.rtf', mode='w') as f:
+                    f.write(str(rtf_body, 'utf-8', 'ignore'))
+
+                run_cmd = ['soffice', '--headless', '--norestore', '--convert-to', 'html', path]
+
+                # env = os.environ.copy()
+                # env['HOME'] = '/tmp/convertfile'
+                # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
+                # demisto.debug("completed running: {}. With result: {}".format(run_cmd, res))
                 #
-                # run_cmd = ['soffice', '--headless', '--norestore', '--convert-to', 'html', path]
-                #
-                # # env = os.environ.copy()
-                # # env['HOME'] = '/tmp/convertfile'
-                # # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
-                # # demisto.debug("completed running: {}. With result: {}".format(run_cmd, res))
-                # #
-                # from RTFDE.deencapsulate import DeEncapsulator
-                #
-                # rtf_obj = DeEncapsulator(rtf_body)
-                # rtf_obj.deencapsulate()
-                # if rtf_obj.content_type == 'html':
-                #     with open('test_rtfde.html', 'w') as f:
-                #         f.write(rtf_obj.html)
-                #         self.html = rtf_obj.html
+                from RTFDE.deencapsulate import DeEncapsulator
+
+                rtf_obj = DeEncapsulator(rtf_body)
+                rtf_obj.deencapsulate()
+                if rtf_obj.content_type == 'html':
+                    with open('test_rtfde.html', 'w') as f:
+                        f.write(rtf_obj.html)
+                        self.html = rtf_obj.html
 
     def _set_recipients(self):
         recipients = self.recipients
@@ -1080,7 +1080,7 @@ class Recipient(object):
         self.RecipientType = recipients_properties.get("RecipientType")
 
     def __repr__(self):
-        return '%s (%s)' % (self.DisplayName, self.EmailAddress)
+        return '{} ({})'.format(self.DisplayName, self.EmailAddress)
 
 
 class Attachment(object):
@@ -1110,7 +1110,7 @@ class Attachment(object):
         self.AttachExtension = attachment_properties.get("AttachExtension")
 
     def __repr__(self):
-        return '%s (%s / %s)' % (self.Filename, self.AttachmentSize, len(self.data or []))
+        return '{} ({} / {})'.format(self.Filename, self.AttachmentSize, len(self.data or []))
 
 
 def format_size(num, suffix='B'):
@@ -1118,9 +1118,9 @@ def format_size(num, suffix='B'):
         return "unknown"
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
         if abs(num) < 1024.0:
-            return "%3.1f%s%s" % (num, unit, suffix)
+            return "{:3.1f}{}{}".format(num, unit, suffix)
         num /= 1024.0
-    return "%.1f%s%s" % (num, 'Yi', suffix)
+    return "{:.1f}{}{}".format(num, 'Yi', suffix)
 
 
 def flatten_list(string_list):

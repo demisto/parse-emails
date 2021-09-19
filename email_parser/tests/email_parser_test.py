@@ -4,9 +4,10 @@ from __future__ import print_function
 import pytest
 
 from email_parser.email_parser import EmailParser
-
-from email_parser.handle_msg import MsOxMessage, handle_msg, get_msg_mail_format, create_headers_map, DataModel
 from email_parser.handle_eml import unfold
+from email_parser.handle_msg import (DataModel, MsOxMessage,
+                                     create_headers_map, get_msg_mail_format,
+                                     handle_msg)
 
 
 def test_email_parser():
