@@ -569,17 +569,17 @@ def test_parse_body_with_russian_language():
     assert 'Уважаемые' in email_data['HTML']
 
 
-def test_eml_contains_html_and_text():
-    test_path = 'email_parser/tests/test_data/multipart_alternative_format.p7m'
-    test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
-    test_name = 'multipart_alternative_format.p7m'
-
-    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
-    results.email_parser()
-
-    assert isinstance(results.parsed_email, dict)
-    assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
-           "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
+# def test_eml_contains_html_and_text():
+#     test_path = 'email_parser/tests/test_data/multipart_alternative_format.p7m'
+#     test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
+#     test_name = 'multipart_alternative_format.p7m'
+#
+#     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
+#     results.email_parser()
+#
+#     assert isinstance(results.parsed_email, dict)
+#     assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
+#            "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
 
 
 # def test_double_dots_removed():
