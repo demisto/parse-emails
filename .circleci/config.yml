@@ -108,21 +108,26 @@ jobs:
             command: |
               ./email_parser/utils/deploy.sh
 
+  run tests:
+      docker:
+        - image: circleci/python:3.8.3-buster
+      steps:
+        - run:
+            name: run linting and metrics
+            when: always
+            command: |
+              flake8 ./
 workflows:
   version: 2.1
   build_and_release:
     jobs:
-      - # run tests!
-      - run:
-          name: run linting and metrics
-          command: |
-            . venv/bin/activate
-            flake8 ./ tests --output-file test-reports
       - tox3-7-unit-tests:
           <<: *tag_filter
       - tox3-8-unit-tests:
           <<: *tag_filter
       - prepare-tox3-7:
+          <<: *tag_filter
+      - run tests:
           <<: *tag_filter
       - deploy:
           <<: *tag_filter
