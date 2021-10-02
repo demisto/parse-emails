@@ -1,4 +1,4 @@
-exclude: email_parser/tests/test_data/.*|.circleci/config.yml
+exclude: email_parser/tests/test_data/.*|.circleci/config.yml|email_parser/__init__.py
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.4.0
