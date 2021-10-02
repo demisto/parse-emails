@@ -7,6 +7,7 @@ import os
 import quopri
 import re
 import tempfile
+import logging
 from base64 import b64decode
 from email import message_from_string
 from email.parser import HeaderParser
@@ -116,8 +117,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
                     elif isinstance(part.get_payload(), str):
                         file_content = part.get_payload(decode=True)
-                    # else:
-                    #     demisto.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
+                    else:
+                        logging.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
 
                     # if file_content:
                     #     # save the eml to war room as file entry

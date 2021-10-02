@@ -19,7 +19,7 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from struct import unpack
-
+import logging
 import chardet
 from olefile import OleFileIO, isOleFile
 
@@ -163,7 +163,7 @@ def get_msg_mail_format(msg_dict):
     try:
         return msg_dict.get('Headers', 'Content-type:').split('Content-type:')[1].split(';')[0]
     except Exception as e:
-        # demisto.debug('Got exception while trying to get msg mail format - {}'.format(str(e)))
+        logging.debug('Got exception while trying to get msg mail format - {}'.format(str(e)))
         return ''
 
 
@@ -358,8 +358,8 @@ class DataModel(object):
                 enc = res['encoding'] or 'ascii'  # in rare cases chardet fails to detect and return None as encoding
                 if enc != 'ascii':
                     if enc.lower() == 'windows-1252' and res['confidence'] < 0.9:
-                        # demisto.debug('encoding detection confidence below threshold {}, '
-                        #               'switching encoding to "windows-1250"'.format(res))
+                        logging.debug('encoding detection confidence below threshold {}, '
+                                      'switching encoding to "windows-1250"'.format(res))
                         enc = 'windows-1250'
 
                     temp = data_value
@@ -736,7 +736,7 @@ class Message(object):
         property_name = property_details.get("name")
         property_type = property_details.get("data_type")
         if not property_type:
-            # demisto.info('could not parse property type, skipping property "{}"'.format(property_details))
+            logging.debug('could not parse property type, skipping property "{}"'.format(property_details))
             return None
 
         try:
@@ -744,8 +744,8 @@ class Message(object):
         except IOError:
             raw_content = ''
         if not raw_content:
-            # demisto.debug('Could not read raw content from stream "{}", '
-            #               'skipping property "{}"'.format(stream_name, property_details))
+            logging.debug('Could not read raw content from stream "{}", '
+                          'skipping property "{}"'.format(stream_name, property_details))
             return None
 
         property_value = self._data_model.get_value(raw_content, data_type=property_type)
@@ -843,8 +843,8 @@ class Message(object):
                 # env = os.environ.copy()
                 # env['HOME'] = '/tmp/convertfile'
                 # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
-                # demisto.debug("completed running: {}. With result: {}".format(run_cmd, res))
-                #
+                # logging.debug("completed running: {}. With result: {}".format(run_cmd, res))
+
                 from RTFDE.deencapsulate import DeEncapsulator
 
                 rtf_obj = DeEncapsulator(rtf_body)

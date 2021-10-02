@@ -1,6 +1,6 @@
 import traceback
 from base64 import b64decode
-
+import logging
 from email_parser.handle_eml import handle_eml
 from email_parser.handle_msg import handle_msg
 
@@ -82,7 +82,7 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
                                 raise Exception("No email_data found")
                             output = create_email_output(email_data, attached_emails)
                         except Exception as e:
-                            # demisto.debug("ParseEmailFiles failed with {}".format(str(e)))
+                            logging.debug("ParseEmailFiles failed with {}".format(str(e)))
                             raise Exception("Could not extract email from file. Possible reasons for this error are:\n"
                                             "- Base64 decode did not include rfc 822 strings.\n"
                                             "- Email contained no Content-Type and no data.")
