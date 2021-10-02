@@ -3,11 +3,11 @@ from __future__ import print_function
 import base64
 import email
 import email.utils
+import logging
 import os
 import quopri
 import re
 import tempfile
-import logging
 from base64 import b64decode
 from email import message_from_string
 from email.parser import HeaderParser

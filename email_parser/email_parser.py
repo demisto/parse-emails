@@ -1,6 +1,7 @@
+import logging
 import traceback
 from base64 import b64decode
-import logging
+
 from email_parser.handle_eml import handle_eml
 from email_parser.handle_msg import handle_msg
 

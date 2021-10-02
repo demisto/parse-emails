@@ -5,6 +5,7 @@ import base64
 import codecs
 import email
 import email.utils
+import logging
 import os
 import quopri
 import re
@@ -19,7 +20,7 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from struct import unpack
-import logging
+
 import chardet
 from olefile import OleFileIO, isOleFile
 
