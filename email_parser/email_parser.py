@@ -1,14 +1,16 @@
-from email_parser.constants import MAX_DEPTH_CONST
-from email_parser.handle_msg import handle_msg
-from email_parser.handle_eml import handle_eml
+import logging
 import traceback
 from base64 import b64decode
+
+from email_parser.handle_eml import handle_eml
+from email_parser.handle_msg import handle_msg
 
 
 class EmailParser(object):
     """
     The core class for the EmailParser.
     """
+
     def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None):
         self._file_path = file_path
         self._file_type = file_type
@@ -19,7 +21,7 @@ class EmailParser(object):
 
     def email_parser(self):
         self.parsed_email = parse_email_files(file_path=self._file_path, max_depth=self._max_depth,
-                            parse_only_headers=self._parse_only_headers, file_type=self._file_type, file_name=self._file_name)
+                                              parse_only_headers=self._parse_only_headers, file_type=self._file_type, file_name=self._file_name)
 
 
 def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None):
@@ -31,7 +33,8 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
 
     if max_depth < 1:
         raise Exception('Minimum max_depth is 1, the script will parse just the top email')
-
+    if 'MIME entity text, ISO-8859 text' in file_type:
+        file_type = 'application/pkcs7-mime'
     try:
         file_type_lower = file_type.lower()
         if 'composite document file v2 document' in file_type_lower \
@@ -50,8 +53,8 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
                 email_data, attached_emails = handle_eml(file_path, False, file_name, parse_only_headers, max_depth)
             output = create_email_output(email_data, attached_emails)
 
-        elif ('ascii text' in file_type_lower or 'unicode text' in file_type_lower
-              or ('data' == file_type_lower.strip() and file_name and file_name.lower().strip().endswith('.eml'))):
+        elif ('ascii text' in file_type_lower or 'unicode text' in file_type_lower or
+              ('data' == file_type_lower.strip() and file_name and file_name.lower().strip().endswith('.eml'))):
             try:
                 # Try to open the email as-is
                 with open(file_path, 'r', encoding='utf-8') as f:
@@ -80,20 +83,21 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
                                 raise Exception("No email_data found")
                             output = create_email_output(email_data, attached_emails)
                         except Exception as e:
-                            # demisto.debug("ParseEmailFiles failed with {}".format(str(e)))
+                            logging.debug("ParseEmailFiles failed with {}".format(str(e)))
                             raise Exception("Could not extract email from file. Possible reasons for this error are:\n"
-                                         "- Base64 decode did not include rfc 822 strings.\n"
-                                         "- Email contained no Content-Type and no data.")
+                                            "- Base64 decode did not include rfc 822 strings.\n"
+                                            "- Email contained no Content-Type and no data.")
 
             except Exception as e:
                 raise Exception("Exception while trying to decode email from within base64: {}\n\nTrace:\n{}"
                                 .format(str(e), traceback.format_exc()))
         else:
+
             raise Exception("Unknown file format: [{}] for file: [{}]".format(file_type, file_name))
         output = recursive_convert_to_unicode(output)
-        email = output  # output may be a single email
-        if isinstance(output, list) and len(output) > 0:
-            email = output[0]
+        # email = output  # output may be a single email
+        # if isinstance(output, list) and len(output) > 0:
+        #     email = output[0]
         return output
 
         # before the change from demisto

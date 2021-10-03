@@ -1,21 +1,24 @@
 from __future__ import print_function
+
+import base64
 import email
 import email.utils
+import logging
+import os
 import quopri
+import re
 import tempfile
 from base64 import b64decode
 from email import message_from_string
-from email.header import decode_header
 from email.parser import HeaderParser
 from email.utils import getaddresses
-import base64
-import os
-import re
-from email_parser.constants import REGEX_EMAIL, MAX_DEPTH_CONST
+
+from email_parser.constants import MAX_DEPTH_CONST, REGEX_EMAIL
 # from common import convert_to_unicode
+from email_parser.handle_msg import handle_msg
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
-ENCODINGS_TYPES = set(['utf-8', 'iso8859-1'])
+ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 
 
 def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, max_depth=3, bom=False):
@@ -89,8 +92,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 attachment_file_name = get_attachment_filename(part)
 
                 if "message/rfc822" in part.get("Content-Type", "") \
-                        or ("application/octet-stream" in part.get("Content-Type", "")
-                            and attachment_file_name.endswith(".eml")):
+                        or ("application/octet-stream" in part.get("Content-Type", "") and
+                            attachment_file_name.endswith(".eml")):
 
                     # .eml files
                     file_content = ""  # type: str
@@ -114,8 +117,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
                     elif isinstance(part.get_payload(), str):
                         file_content = part.get_payload(decode=True)
-                    # else:
-                    #     demisto.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
+                    else:
+                        logging.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
 
                     # if file_content:
                     #     # save the eml to war room as file entry
@@ -192,7 +195,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 # This line replaces a new line that starts with `..` to a newline that starts with `.`
                 # This is because SMTP duplicate dots for lines that start with `.` and get_payload() doesn't format
                 # this correctly
-                part._payload = part._payload.replace('=\r\n..', '=\r\n.')
+                part.set_payload(part.get_payload().replace('=\r\n..', '=\r\n.'))
                 html = decode_content(part)
 
             elif part.get_content_type() == 'text/plain':
@@ -202,8 +205,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         # 1. it is 'multipart/signed' so it is probably a wrapper and we can ignore the outer "email"
         # 2. if it is 'multipart/signed' but has 'to' address so it is actually a real mail.
         if 'multipart/signed' not in eml.get_content_type() \
-                or ('multipart/signed' in eml.get_content_type()
-                    and (extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject'))):
+                or ('multipart/signed' in eml.get_content_type() and
+                    (extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject'))):
             email_data = {
                 'To': extract_address_eml(eml, 'to'),
                 'CC': extract_address_eml(eml, 'cc'),

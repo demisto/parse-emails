@@ -1,10 +1,16 @@
 from __future__ import print_function
+
+import base64
 # -*- coding: utf-8 -*-
 import codecs
 import email
 import email.utils
+import logging
+import os
 import quopri
+import re
 import tempfile
+from datetime import datetime, timedelta
 # coding=utf-8
 from email import encoders
 from email.header import Header
@@ -15,17 +21,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from struct import unpack
 
-import chardet
+import chardet  # type: ignore
 from olefile import OleFileIO, isOleFile
 
-
-import base64
-import os
-import re
-from datetime import datetime, timedelta
-from email_parser.constants import PROPS_ID_MAP, REGEX_EMAIL, MAX_DEPTH_CONST
-from email_parser.handle_eml import handle_eml
 from email_parser.common import convert_to_unicode
+from email_parser.constants import MAX_DEPTH_CONST, PROPS_ID_MAP, REGEX_EMAIL
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 
@@ -164,7 +164,7 @@ def get_msg_mail_format(msg_dict):
     try:
         return msg_dict.get('Headers', 'Content-type:').split('Content-type:')[1].split(';')[0]
     except Exception as e:
-        # demisto.debug('Got exception while trying to get msg mail format - {}'.format(str(e)))
+        logging.debug('Got exception while trying to get msg mail format - {}'.format(str(e)))
         return ''
 
 
@@ -359,8 +359,8 @@ class DataModel(object):
                 enc = res['encoding'] or 'ascii'  # in rare cases chardet fails to detect and return None as encoding
                 if enc != 'ascii':
                     if enc.lower() == 'windows-1252' and res['confidence'] < 0.9:
-                        # demisto.debug('encoding detection confidence below threshold {}, '
-                        #               'switching encoding to "windows-1250"'.format(res))
+                        logging.debug('encoding detection confidence below threshold {}, '
+                                      'switching encoding to "windows-1250"'.format(res))
                         enc = 'windows-1250'
 
                     temp = data_value
@@ -486,7 +486,7 @@ class Message(object):
         self._set_properties()
         self._set_attachments()
         self._set_recipients()
-        # self._embed_images_to_html_body()
+        self._embed_images_to_html_body()
 
     def _embed_images_to_html_body(self):
         # embed images into html body
@@ -737,7 +737,7 @@ class Message(object):
         property_name = property_details.get("name")
         property_type = property_details.get("data_type")
         if not property_type:
-            # demisto.info('could not parse property type, skipping property "{}"'.format(property_details))
+            logging.debug('could not parse property type, skipping property "{}"'.format(property_details))
             return None
 
         try:
@@ -745,8 +745,8 @@ class Message(object):
         except IOError:
             raw_content = ''
         if not raw_content:
-            # demisto.debug('Could not read raw content from stream "{}", '
-            #               'skipping property "{}"'.format(stream_name, property_details))
+            logging.debug('Could not read raw content from stream "{}", '
+                          'skipping property "{}"'.format(stream_name, property_details))
             return None
 
         property_value = self._data_model.get_value(raw_content, data_type=property_type)
@@ -833,27 +833,28 @@ class Message(object):
                 compressed_rtf = None
             if compressed_rtf:
                 compressed_rtf_body = property_values['RtfCompressed']
-                rtf_body = compressed_rtf.decompress(compressed_rtf_body)
-
-                path = 'test.rtf'
-                with open('test.rtf', mode='w') as f:
-                    f.write(str(rtf_body, 'utf-8', 'ignore'))
-
-                run_cmd = ['soffice', '--headless', '--norestore', '--convert-to', 'html', path]
-
-                # env = os.environ.copy()
-                # env['HOME'] = '/tmp/convertfile'
-                # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
-                # demisto.debug("completed running: {}. With result: {}".format(run_cmd, res))
-                #
-                from RTFDE.deencapsulate import DeEncapsulator
-
-                rtf_obj = DeEncapsulator(rtf_body)
-                rtf_obj.deencapsulate()
-                if rtf_obj.content_type == 'html':
-                    with open('test_rtfde.html', 'w') as f:
-                        f.write(rtf_obj.html)
-                        self.html = rtf_obj.html
+                self.body = compressed_rtf.decompress(compressed_rtf_body)
+            #     rtf_body = compressed_rtf.decompress(compressed_rtf_body)
+            #
+            #     path = 'test.rtf'
+            #     with open('test.rtf', mode='w') as f:
+            #         f.write(str(rtf_body, 'utf-8', 'ignore'))
+            #
+            #     # run_cmd = ['soffice', '--headless', '--norestore', '--convert-to', 'html', path]
+            #
+            #     # env = os.environ.copy()
+            #     # env['HOME'] = '/tmp/convertfile'
+            #     # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
+            #     # logging.debug("completed running: {}. With result: {}".format(run_cmd, res))
+            #
+            #     from RTFDE.deencapsulate import DeEncapsulator
+            #
+            #     rtf_obj = DeEncapsulator(rtf_body)
+            #     rtf_obj.deencapsulate()
+            #     if rtf_obj.content_type == 'html':
+            #         with open('test_rtfde.html', 'w') as f:
+            #             f.write(rtf_obj.html)
+            #             self.html = rtf_obj.html
 
     def _set_recipients(self):
         recipients = self.recipients
@@ -1081,7 +1082,7 @@ class Recipient(object):
         self.RecipientType = recipients_properties.get("RecipientType")
 
     def __repr__(self):
-        return '%s (%s)' % (self.DisplayName, self.EmailAddress)
+        return '{} ({})'.format(self.DisplayName, self.EmailAddress)
 
 
 class Attachment(object):
@@ -1111,7 +1112,7 @@ class Attachment(object):
         self.AttachExtension = attachment_properties.get("AttachExtension")
 
     def __repr__(self):
-        return '%s (%s / %s)' % (self.Filename, self.AttachmentSize, len(self.data or []))
+        return '{} ({} / {})'.format(self.Filename, self.AttachmentSize, len(self.data or []))
 
 
 def format_size(num, suffix='B'):
@@ -1119,9 +1120,9 @@ def format_size(num, suffix='B'):
         return "unknown"
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
         if abs(num) < 1024.0:
-            return "%3.1f%s%s" % (num, unit, suffix)
+            return "{:3.1f}{}{}".format(num, unit, suffix)
         num /= 1024.0
-    return "%.1f%s%s" % (num, 'Yi', suffix)
+    return "{:.1f}{}{}".format(num, 'Yi', suffix)
 
 
 def flatten_list(string_list):

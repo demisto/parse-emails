@@ -9,6 +9,10 @@ references:
         tags:
           only: /^v\d+\.\d+\.\d+$/
 
+    reqs_tox: &reqs_tox
+      requires:
+        - prepare-tox3-7
+
     create_requirement_files: &create_requirement_files
       run:
         name: Create requirement files
@@ -96,7 +100,20 @@ jobs:
           root: ~/project
           paths:
             - .tox
-
+  precommit-checks:
+      docker:
+        - image: circleci/python:3.8.3-buster-node
+      steps:
+        - checkout
+        - attach_workspace:
+            at: ~/project
+        - run:
+            name: Pre-commit
+            command: |
+              . .tox/py37/bin/activate
+              pre-commit --version
+              pre-commit run -a
+              deactivate
   deploy:
       docker:
         - image: circleci/python:3.8.3-buster
@@ -107,6 +124,16 @@ jobs:
             when: always
             command: |
               ./email_parser/utils/deploy.sh
+
+  run tests:
+      docker:
+        - image: circleci/python:3.8.3-buster
+      steps:
+        - run:
+            name: run linting and metrics
+            when: always
+            command: |
+              flake8 ./
 workflows:
   version: 2.1
   build_and_release:
@@ -117,6 +144,9 @@ workflows:
           <<: *tag_filter
       - prepare-tox3-7:
           <<: *tag_filter
+      - precommit-checks:
+          <<: *tag_filter
+          <<: *reqs_tox
       - deploy:
           <<: *tag_filter
           requires:
