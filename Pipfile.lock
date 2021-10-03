@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "551bec96e6a3f873155b04e7fb010e1616a3d82f9506f89c727bdb36d678f1aa"
+            "sha256": "9da28bb53c992b1b995194f22d68abdc8e34f343ebc30aa59fa36216544fd4c0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -41,10 +41,17 @@
         },
         "pytz": {
             "hashes": [
-                "sha256:83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da",
-                "sha256:eb10ce3e7736052ed3623d49975ce333bcd712c7bb19a58b9e2089d4057d0798"
+                "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c",
+                "sha256:acad2d8b20a1af07d4e4c9d2e9285c5ed9104354062f275f3fcd88dcef4f1326"
             ],
-            "version": "==2021.1"
+            "version": "==2021.3"
+        },
+        "stubs": {
+            "hashes": [
+                "sha256:f328a0f99880b0684db69288dcb104fa93d942df298ddd1659edaa7521415da8"
+            ],
+            "index": "pypi",
+            "version": "==1.0.0"
         },
         "zope.interface": {
             "hashes": [
@@ -189,17 +196,18 @@
         },
         "distlib": {
             "hashes": [
-                "sha256:106fef6dc37dd8c0e2c0a60d3fca3e77460a48907f335fa28420463a6f799736",
-                "sha256:23e223426b28491b1ced97dc3bbe183027419dfc7982b4fa2f05d5f3ff10711c"
+                "sha256:c8b54e8454e5bf6237cc84c20e8264c3e991e824ef27e8f1e81049867d861e31",
+                "sha256:d982d0751ff6eaaab5e2ec8e691d949ee80eddf01a62eaa96ddb11531fe16b05"
             ],
-            "version": "==0.3.2"
+            "version": "==0.3.3"
         },
         "filelock": {
             "hashes": [
-                "sha256:18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59",
-                "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"
+                "sha256:8c7eab13dc442dc249e95158bcc12dec724465919bdc9831fdbf0660f03d1785",
+                "sha256:bbc6a0382fe8ec4744ecdf6683a2e07f65eb10ff1aff53fc02a202565446cde0"
             ],
-            "version": "==3.0.12"
+            "markers": "python_version >= '3.6'",
+            "version": "==3.3.0"
         },
         "flake8": {
             "hashes": [
@@ -211,11 +219,11 @@
         },
         "identify": {
             "hashes": [
-                "sha256:113a76a6ba614d2a3dd408b3504446bcfac0370da5995aa6a17fd7c6dffde02d",
-                "sha256:32f465f3c48083f345ad29a9df8419a4ce0674bf4a8c3245191d65c83634bdbf"
+                "sha256:d1e82c83d063571bb88087676f81261a4eae913c492dafde184067c584bc7c05",
+                "sha256:fd08c97f23ceee72784081f1ce5125c8f53a02d3f2716dde79a6ab8f1039fea5"
             ],
             "markers": "python_full_version >= '3.6.1'",
-            "version": "==2.2.14"
+            "version": "==2.3.0"
         },
         "iniconfig": {
             "hashes": [
@@ -256,11 +264,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:15b056538719b1c94bdaccb29e5f81879c7f7f0f4a153f46086d155dffcd4f0f",
-                "sha256:8003ac87717ae2c7ee1ea5a84a1a61e87f3fbd16eb5aadba194ea30a9019f648"
+                "sha256:367a5e80b3d04d2428ffa76d33f124cf11e8fff2acdaa9b43d545f5c7d661ef2",
+                "sha256:8868bbe3c3c80d42f20156f22e7131d2fb321f5bc86a2a345375c6481a67021d"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2.3.0"
+            "version": "==2.4.0"
         },
         "pluggy": {
             "hashes": [
@@ -419,11 +427,11 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:4da4ac43888e97de9cf4fdd870f48ed864bbfd133d2c46cbdec941fed4a25aef",
-                "sha256:a4b987ec31c3c9996cf1bc865332f967fe4a0512c41b39652d6224f696e69da5"
+                "sha256:10062e34c204b5e4ec5f62e6ef2473f8ba76513a9a617e873f1f8fb4a519d300",
+                "sha256:bcc17f0b3a29670dd777d6f0755a4c04f28815395bca279cdcb213b97199a6b8"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
-            "version": "==20.8.0"
+            "version": "==20.8.1"
         }
     }
 }

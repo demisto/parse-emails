@@ -21,7 +21,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from struct import unpack
 
-import chardet
+import chardet  # type: ignore
 from olefile import OleFileIO, isOleFile
 
 from email_parser.common import convert_to_unicode
