@@ -60,11 +60,6 @@ jobs:
         - restore_cache:
             key: tox-38-cache-{{ checksum "Pipfile" }}-{{ checksum "Pipfile.lock" }}
         - run:
-            # install npm modules so readme tests run with mdx verification
-            name: npm install
-            command: |
-              npm ci
-        - run:
             name: Setup Tox
             command: |
               pip install tox
@@ -73,6 +68,7 @@ jobs:
             no_output_timeout: 15m
             command: |
               tox -e py38 -v -- --cov=email-parser --cov-report=html
+              pytest --cov=email-parser tests/
         - store_artifacts:
             path: coverage_html_report
         - run:
