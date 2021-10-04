@@ -68,7 +68,6 @@ jobs:
             no_output_timeout: 15m
             command: |
               tox -e py38 -v -- --cov=email-parser --cov-report=html
-              pytest --cov=email-parser tests/
         - store_artifacts:
             path: coverage_html_report
         - run:
