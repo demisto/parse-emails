@@ -3,7 +3,6 @@ import quopri
 import re
 from email.header import decode_header
 
-
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 
