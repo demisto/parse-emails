@@ -19,6 +19,8 @@ pytest-subprocess = "*"
 tox-pyenv = "*"
 pipfile-requirements = "*"
 flake8 = "*"
+coverage = "*"
+
 
 [requires]
 python_version = "3.8.5"
