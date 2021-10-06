@@ -7,7 +7,6 @@ name = "pypi"
 olefile = "*"
 datetime = "*"
 chardet = "*"
-stubs = "*"
 
 [dev-packages]
 pre-commit = "*"
@@ -19,7 +18,7 @@ pytest-subprocess = "*"
 tox-pyenv = "*"
 pipfile-requirements = "*"
 flake8 = "*"
-coverage = "*"
+coveralls = "*"
 
 
 [requires]
