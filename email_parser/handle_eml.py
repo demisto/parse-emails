@@ -293,7 +293,7 @@ def get_email_address(eml, entry):
                 eml.replace_header('from', ' '.join(eml["from"].splitlines()))
                 res = get_email_address(eml, entry)
                 eml.replace_header('from', original_value)  # replace again to the original header (keep on BC)
-            return res
+        return res
     return ''
 
 
