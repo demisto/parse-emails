@@ -1,5 +1,5 @@
 # email-parser
-Parses an email message file and extracts the data from it. 
+Parses an email message file and extracts the data from it.
 
 The key features are:
 * Supports `.eml` and `.msg` files.
