@@ -7,7 +7,7 @@ import configparser
 
 from setuptools import find_packages, setup  # noqa: H301
 
-NAME = "email-parser"
+NAME = "parse-emails"
 # To install the library, run the following
 #
 # python setup.py install
