@@ -95,19 +95,8 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
 
             raise Exception("Unknown file format: [{}] for file: [{}]".format(file_type, file_name))
         output = recursive_convert_to_unicode(output)
-        # email = output  # output may be a single email
-        # if isinstance(output, list) and len(output) > 0:
-        #     email = output[0]
-        return output
 
-        # before the change from demisto
-        # return_outputs(
-        #     readable_output=data_to_md(email, file_name, print_only_headers=parse_only_headers),
-        #     outputs={
-        #         'Email': output
-        #     },
-        #     raw_response=output
-        # )
+        return output
 
     except Exception as ex:
         raise Exception(str(ex) + "\n\nTrace:\n" + traceback.format_exc())

@@ -100,8 +100,6 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
     # add eml attached emails
 
     attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1)
-    # for attached_email in attached_emails_msg:
-    #     return_outputs(readable_output=data_to_md(attached_email, None, file_name), outputs=None)
 
     return email_data, attached_emails_emls + attached_emails_msg
 
@@ -220,7 +218,6 @@ def save_attachments(attachments, root_email_file_name, max_depth):
         if attachment.data is not None:
             display_name = attachment.DisplayName if attachment.DisplayName else attachment.AttachFilename
             display_name = display_name if display_name else ''
-            # demisto.results(fileResult(display_name, attachment.data))
             name_lower = display_name.lower()
             if max_depth > 0 and (name_lower.endswith(".eml") or name_lower.endswith('.p7m')):
                 tf = tempfile.NamedTemporaryFile(delete=False)
@@ -232,9 +229,6 @@ def save_attachments(attachments, root_email_file_name, max_depth):
                     inner_eml, attached_inner_emails = handle_eml(tf.name, file_name=root_email_file_name,
                                                                   max_depth=max_depth)
                     if inner_eml:
-                        # return_outputs(
-                        #     readable_output=data_to_md(inner_eml, attachment.DisplayName, root_email_file_name),
-                        #     outputs=None)
                         attached_emls.append(inner_eml)
                     if attached_inner_emails:
                         attached_emls.extend(attached_inner_emails)
@@ -242,38 +236,6 @@ def save_attachments(attachments, root_email_file_name, max_depth):
                     os.remove(tf.name)
 
     return attached_emls
-
-
-# def data_to_md(email_data, email_file_name=None, parent_email_file=None, print_only_headers=False):
-#     if email_data is None:
-#         return 'No data extracted from email'
-#     email_data = recursive_convert_to_unicode(email_data)
-#     email_file_name = recursive_convert_to_unicode(email_file_name)
-#     parent_email_file = recursive_convert_to_unicode(parent_email_file)
-#
-#     md = "### Results:\n"
-#     if email_file_name:
-#         md = "### {}\n".format(email_file_name)
-#
-#     if print_only_headers:
-#         return tableToMarkdown("Email Headers: " + email_file_name, email_data.get('HeadersMap'))
-#
-#     if parent_email_file:
-#         md += "### Containing email: {}\n".format(parent_email_file)
-#
-#     md += "* {0}:\t{1}\n".format('From', email_data.get('From') or "")
-#     md += "* {0}:\t{1}\n".format('To', email_data.get('To') or "")
-#     md += "* {0}:\t{1}\n".format('CC', email_data.get('CC') or "")
-#     md += "* {0}:\t{1}\n".format('Subject', email_data.get('Subject') or "")
-#     if email_data.get('Text'):
-#         text = email_data['Text'].replace('<', '[').replace('>', ']')
-#         md += "* {0}:\t{1}\n".format('Body/Text', text or "")
-#     if email_data.get('HTML'):
-#         md += "* {0}:\t{1}\n".format('Body/HTML', email_data['HTML'] or "")
-#
-#     md += "* {0}:\t{1}\n".format('Attachments', email_data.get('Attachments') or "")
-#     md += "\n\n" + tableToMarkdown('HeadersMap', email_data.get('HeadersMap'))
-#     return md
 
 
 class DataModel(object):

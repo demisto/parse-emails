@@ -120,10 +120,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     else:
                         logging.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
 
-                    # if file_content:
-                    #     # save the eml to war room as file entry
-                    #     demisto.results(fileResult(attachment_file_name, file_content))
-
                     if file_content and max_depth - 1 > 0:
                         f = tempfile.NamedTemporaryFile(delete=False)
                         try:
@@ -136,11 +132,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                                                           max_depth=max_depth - 1)
                             attached_emails.append(inner_eml)
                             attached_emails.extend(inner_attached_emails)
-                            # if we are outter email is a singed attachment it is a wrapper and we don't return the output of
-                            # this inner email as it will be returned as part of the main result
-                            # if 'multipart/signed' not in eml.get_content_type() and inner_eml:
-                            #     return_outputs(readable_output=data_to_md(inner_eml, attachment_file_name, file_name),
-                            #                    outputs=None)
+
                         finally:
                             os.remove(f.name)
                     attachment_names.append(attachment_file_name)
@@ -161,15 +153,11 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             attached_emails.append(msg_info)
                             if attachment_file_name is None:
                                 attachment_file_name = "unknown_file_name{}".format(i)
-                            # demisto.results(fileResult(attachment_file_name, msg_info))
                             attachment_names.append(attachment_file_name)
                             i += 1
 
                     else:
                         file_content = part.get_payload(decode=True)
-                        # fileResult will return an error if file_content is None.
-                        # if file_content and not attachment_file_name.endswith('.p7s'):
-                        #     demisto.results(fileResult(attachment_file_name, file_content))
 
                         if attachment_file_name.endswith(".msg") and max_depth - 1 > 0:
                             f = tempfile.NamedTemporaryFile(delete=False)
@@ -181,15 +169,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 attached_emails.append(inner_msg)
                                 attached_emails.extend(inner_attached_emails)
 
-                                # will output the inner email to the UI
-                                # return_outputs(
-                                #     readable_output=data_to_md(inner_msg, attachment_file_name, file_name),
-                                #     outputs=None)
                             finally:
                                 os.remove(f.name)
 
                         attachment_names.append(attachment_file_name)
-                # demisto.setContext('AttachmentName', attachment_file_name)
 
             elif part.get_content_type() == 'text/html':
                 # This line replaces a new line that starts with `..` to a newline that starts with `.`
