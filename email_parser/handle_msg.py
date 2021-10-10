@@ -100,8 +100,6 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
     # add eml attached emails
 
     attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1)
-    # for attached_email in attached_emails_msg:
-    #     return_outputs(readable_output=data_to_md(attached_email, None, file_name), outputs=None)
 
     return email_data, attached_emails_emls + attached_emails_msg
 

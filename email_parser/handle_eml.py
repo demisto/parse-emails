@@ -169,10 +169,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 attached_emails.append(inner_msg)
                                 attached_emails.extend(inner_attached_emails)
 
-                                # will output the inner email to the UI
-                                # return_outputs(
-                                #     readable_output=data_to_md(inner_msg, attachment_file_name, file_name),
-                                #     outputs=None)
                             finally:
                                 os.remove(f.name)
 
