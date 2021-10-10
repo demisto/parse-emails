@@ -123,7 +123,7 @@ jobs:
             name: Deploy
             when: always
             command: |
-              ./email_parser/utils/deploy.sh
+              ./deploy.sh
 
   run tests:
       docker:
