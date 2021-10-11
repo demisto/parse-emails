@@ -303,7 +303,7 @@ def extract_address_eml(eml, entry):
     In addition, this function handles an edge case of '\r\n' in eml['from'] (as explained below).
     Args:
         eml : Email object.
-        entry (str) : entry to look for in the email. i.e ('To', 'CC', 'From').
+        entry (str) : entry to look for in the email. i.e ('To', 'CC', 'From')
     Returns:
         res (str) : string of all required email addresses.
     """
