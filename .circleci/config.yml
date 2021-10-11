@@ -75,7 +75,7 @@ jobs:
             command: |
               if [ -n "$COVERALLS_REPO_TOKEN" ]; then
                 pip install coveralls
-                coveralls
+                coveralls -v
               else
                 echo "Skipping coveralls"
               fi
