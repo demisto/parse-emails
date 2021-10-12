@@ -1,5 +1,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/demisto/email-parser/badge.svg?branch=master)](https://coveralls.io/github/demisto/email-parser?branch=master)
 [![CLA assistant](https://cla-assistant.io/readme/badge/demisto/email-parser)](https://cla-assistant.io/demisto/email-parser)
+[![CircleCI](https://circleci.com/gh/demisto/email-parser/tree/master.svg?style=svg)](https://circleci.com/gh/demisto/email-parser/tree/master)
 # email-parser
 Parses an email message file and extracts the data from it.
 
