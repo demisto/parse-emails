@@ -1,7 +1,7 @@
 import logging
 import traceback
 from base64 import b64decode
-import magic
+# import magic
 import os
 
 from email_parser.handle_eml import handle_eml
@@ -23,11 +23,11 @@ class EmailParser(object):
         self.parsed_email = None
 
     def get_file_type(self, file_type):
-        if not file_type:
-            mime = magic.Magic()
-            file_type = mime.from_file(self._file_path)
-        if 'MIME entity text, ISO-8859 text' in file_type:
-            file_type = 'application/pkcs7-mime'
+        # if not file_type:
+        #     mime = magic.Magic()
+        #     file_type = mime.from_file(self._file_path)
+        # if 'MIME entity text, ISO-8859 text' in file_type:
+        #     file_type = 'application/pkcs7-mime'
         return file_type
 
     def check_if_is_msg(self):
