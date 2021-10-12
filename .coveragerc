@@ -1,8 +1,6 @@
 [run]
-source = email-parser/
-
 omit = **/tests/**
-    mailparser/__init__.py
+    email_parser/__init__.py
 
 [html]
 directory = coverage_html_report
