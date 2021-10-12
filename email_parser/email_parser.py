@@ -1,6 +1,8 @@
 import logging
 import traceback
 from base64 import b64decode
+import magic
+import os
 
 from email_parser.handle_eml import handle_eml
 from email_parser.handle_msg import handle_msg
@@ -11,13 +13,30 @@ class EmailParser(object):
     The core class for the EmailParser.
     """
 
-    def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None):
+    def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_type=''):
         self._file_path = file_path
-        self._file_type = file_type
-        self._file_name = file_name
+        self._file_type = self.get_file_type(file_type)
+        self._file_name = os.path.basename(self._file_path)
         self._max_depth = max_depth
         self._parse_only_headers = parse_only_headers
+        self._is_msg = self.check_if_is_msg()
         self.parsed_email = None
+
+    def get_file_type(self, file_type):
+        if not file_type:
+            mime = magic.Magic()
+            file_type = mime.from_file(self._file_path)
+        if 'MIME entity text, ISO-8859 text' in file_type:
+            file_type = 'application/pkcs7-mime'
+        return file_type
+
+    def check_if_is_msg(self):
+        file_type_lower = self._file_type.lower()
+        if 'composite document file v2 document' in file_type_lower \
+                or 'cdfv2 microsoft outlook message' in file_type_lower:
+            return True
+        else:
+            return False
 
     def email_parser(self):
         self.parsed_email = parse_email_files(file_path=self._file_path, max_depth=self._max_depth,
@@ -33,8 +52,6 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
 
     if max_depth < 1:
         raise Exception('Minimum max_depth is 1, the script will parse just the top email')
-    if 'MIME entity text, ISO-8859 text' in file_type:
-        file_type = 'application/pkcs7-mime'
     try:
         file_type_lower = file_type.lower()
         if 'composite document file v2 document' in file_type_lower \
@@ -44,8 +61,8 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
 
         elif any(eml_candidate in file_type_lower for eml_candidate in
                  ['rfc 822 mail', 'smtp mail', 'multipart/signed', 'multipart/alternative', 'multipart/mixed', 'message/rfc822',
-                  'application/pkcs7-mime', 'multipart/related']):
-            if 'unicode (with bom) text' in file_type_lower:
+                  'application/pkcs7-mime', 'multipart/related',  'utf-8 (with bom) text']):
+            if 'unicode (with bom) text' in file_type_lower or 'utf-8 (with bom) text' in file_type_lower:
                 email_data, attached_emails = handle_eml(
                     file_path, False, file_name, parse_only_headers, max_depth, bom=True
                 )
@@ -92,7 +109,6 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
                 raise Exception("Exception while trying to decode email from within base64: {}\n\nTrace:\n{}"
                                 .format(str(e), traceback.format_exc()))
         else:
-
             raise Exception("Unknown file format: [{}] for file: [{}]".format(file_type, file_name))
         output = recursive_convert_to_unicode(output)
         # email = output  # output may be a single email
