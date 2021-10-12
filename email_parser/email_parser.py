@@ -32,7 +32,7 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
     MAX_DEPTH_CONST = max_depth
 
     if max_depth < 1:
-        raise Exception('Minimum max_depth is 1, the script will parse just the top email')
+        raise Exception(' max_depth is 1, the script will parse just the top email')
     if 'MIME entity text, ISO-8859 text' in file_type:
         file_type = 'application/pkcs7-mime'
     try:
@@ -84,7 +84,7 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
                             output = create_email_output(email_data, attached_emails)
                         except Exception as e:
                             logging.debug("ParseEmailFiles failed with {}".format(str(e)))
-                            raise Exception("Could not extract email from file. Possible reasons for this error are:\n"
+                            raise Exception("Could not extract  from file. Possible reasons for this error are:\n"
                                             "- Base64 decode did not include rfc 822 strings.\n"
                                             "- Email contained no Content-Type and no data.")
 
@@ -93,7 +93,7 @@ def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_typ
                                 .format(str(e), traceback.format_exc()))
         else:
 
-            raise Exception("Unknown file format: [{}] for file: [{}]".format(file_type, file_name))
+            raise Exception("Unknown : [{}] for file: [{}]".format(file_type, file_name))
         output = recursive_convert_to_unicode(output)
 
         return output
