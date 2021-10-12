@@ -1,5 +1,5 @@
 [run]
-source = email-parser/
+source = email_parser/
 
 omit = **/tests/**
     mailparser/__init__.py
