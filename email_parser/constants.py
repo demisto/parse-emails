@@ -1,6 +1,8 @@
 REGEX_EMAIL = r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b"
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 MAX_DEPTH_CONST = 3
+USER_ENCODING = None
+DEFAULT_ENCODING = None
 PROPS_ID_MAP = {
     "0x0001": {
         "data_type": "0x0102",
