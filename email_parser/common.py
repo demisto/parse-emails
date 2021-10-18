@@ -1,7 +1,7 @@
 import base64
+import logging
 import quopri
 import re
-import logging
 from email.header import decode_header
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
@@ -36,7 +36,7 @@ def convert_to_unicode(s, is_msg_header=True):
             else:
                 res += str(decoded_s)
         return res.strip()
-    except Exception as err:
+    except Exception:
         for file_data in ENCODINGS_TYPES:
             try:
                 s = s.decode(file_data).encode('utf-8').strip()
