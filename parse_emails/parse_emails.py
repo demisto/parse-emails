@@ -2,13 +2,13 @@ import logging
 import traceback
 from base64 import b64decode
 
-from email_parser.handle_eml import handle_eml
-from email_parser.handle_msg import handle_msg
+from parse_emails.handle_eml import handle_eml
+from parse_emails.handle_msg import handle_msg
 
 
-class EmailParser(object):
+class ParseEmails(object):
     """
-    The core class for the EmailParser.
+    The core class for the ParseEmails.
     """
 
     def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None,
@@ -22,7 +22,7 @@ class EmailParser(object):
         self._default_encoding = default_encoding
         self.parsed_email = None
 
-    def email_parser(self):
+    def parse_emails(self):
         self.parsed_email = parse_email_files(file_path=self._file_path, max_depth=self._max_depth,
                                               parse_only_headers=self._parse_only_headers, file_type=self._file_type,
                                               file_name=self._file_name, forced_encoding=self._forced_encoding,

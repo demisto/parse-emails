@@ -1,7 +1,7 @@
-[![Coverage Status](https://coveralls.io/repos/github/demisto/email-parser/badge.svg?branch=master)](https://coveralls.io/github/demisto/email-parser?branch=master)
-[![CLA assistant](https://cla-assistant.io/readme/badge/demisto/email-parser)](https://cla-assistant.io/demisto/email-parser)
-[![CircleCI](https://circleci.com/gh/demisto/email-parser/tree/master.svg?style=svg)](https://circleci.com/gh/demisto/email-parser/tree/master)
-# email-parser
+[![Coverage Status](https://coveralls.io/repos/github/demisto/parse-emails/badge.svg?branch=master)](https://coveralls.io/github/demisto/parse-emails?branch=master)
+[![CLA assistant](https://cla-assistant.io/readme/badge/demisto/parse-emails)](https://cla-assistant.io/demisto/parse-emails)
+[![CircleCI](https://circleci.com/gh/demisto/parse-emails/tree/master.svg?style=svg)](https://circleci.com/gh/demisto/parse-emails/tree/master)
+# parse-emails
 Parses an email message file and extracts the data from it.
 
 The key features are:
@@ -15,18 +15,18 @@ Python 3.8.5+
 ## Installation
 
 ```console
-$ pip install email-parser
+$ pip install parse-emails
 ```
 
 ## Usage
 
-The main class `EmailParser` contains all what you need to parse an email:
+The main class `ParseEmails` contains all what you need to parse an email:
 
 ```python
-import email_parser
+import parse_emails
 
-email = email_parser.EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
-email.email_parser()
+email = parse_emails.ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
+email.parse_emails()
 print(email.parsed_email['Subject'])
 ```
 
