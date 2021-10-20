@@ -11,25 +11,37 @@ class EmailParser(object):
     The core class for the EmailParser.
     """
 
-    def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None):
+    def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None,
+                 forced_encoding=None, default_encoding=None):
         self._file_path = file_path
         self._file_type = file_type
         self._file_name = file_name
         self._max_depth = max_depth
         self._parse_only_headers = parse_only_headers
+        self._forced_encoding = forced_encoding
+        self._default_encoding = default_encoding
         self.parsed_email = None
 
     def email_parser(self):
         self.parsed_email = parse_email_files(file_path=self._file_path, max_depth=self._max_depth,
-                                              parse_only_headers=self._parse_only_headers, file_type=self._file_type, file_name=self._file_name)
+                                              parse_only_headers=self._parse_only_headers, file_type=self._file_type,
+                                              file_name=self._file_name, forced_encoding=self._forced_encoding,
+                                              default_encoding=self._default_encoding)
 
 
-def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None):
+def parse_email_files(file_path, max_depth=3, parse_only_headers=False, file_type='', file_name=None,
+                      forced_encoding=None, default_encoding=None):
+
     # we use the MAX_DEPTH_CONST to calculate the depth of the email
     # each level will reduce the max_depth by 1
     # not the best way to do it
     global MAX_DEPTH_CONST
+    global USER_ENCODING
+    global DEFAULT_ENCODING
+
     MAX_DEPTH_CONST = max_depth
+    USER_ENCODING = forced_encoding
+    DEFAULT_ENCODING = default_encoding
 
     if max_depth < 1:
         raise Exception('Minimum max_depth is 1, the script will parse just the top email')

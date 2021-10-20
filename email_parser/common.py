@@ -1,4 +1,5 @@
 import base64
+import logging
 import quopri
 import re
 from email.header import decode_header
@@ -21,13 +22,19 @@ def convert_to_unicode(s, is_msg_header=True):
                         return word_mime_decoded
             except Exception as e:
                 # in case we failed to mine-decode, we continue and try to decode
-                print('Failed decoding mime-encoded string: {}. Will try regular decoding.'.format(str(e)))
+                logging.debug('Failed decoding mime-encoded string: {}. Will try regular decoding.'.format(str(e)))
         for decoded_s, encoding in decode_header(s):  # return a list of pairs(decoded, charset)
             if encoding:
-                res += decoded_s.decode(encoding)
+                try:
+                    res += str(decoded_s.decode(encoding).encode('utf-8'))
+                except UnicodeDecodeError:
+                    logging.debug('Failed to decode encoded_string')
+                    replace_decoded = decoded_s.decode(encoding, errors='replace').encode('utf-8')
+                    logging.debug('Decoded string with replace usage {}'.format(replace_decoded))
+                    res += str(replace_decoded)
                 ENCODINGS_TYPES.add(encoding)
             else:
-                res += decoded_s.decode('utf-8', 'ignore')
+                res += str(decoded_s)
         return res.strip()
     except Exception:
         for file_data in ENCODINGS_TYPES:
@@ -36,8 +43,7 @@ def convert_to_unicode(s, is_msg_header=True):
                 break
             except:  # noqa: E722
                 pass
-    if isinstance(s, bytes):
-        return s.decode('utf-8', 'ignore')
+
     return s
 
 
