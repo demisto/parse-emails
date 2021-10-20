@@ -13,9 +13,9 @@ from email import message_from_string
 from email.parser import HeaderParser
 from email.utils import getaddresses
 
-from email_parser.constants import MAX_DEPTH_CONST, REGEX_EMAIL
+from parse_emails.constants import MAX_DEPTH_CONST, REGEX_EMAIL
 # from common import convert_to_unicode
-from email_parser.handle_msg import handle_msg
+from parse_emails.handle_msg import handle_msg
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}

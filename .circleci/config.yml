@@ -67,7 +67,7 @@ jobs:
             name: Tox build
             no_output_timeout: 15m
             command: |
-              tox -e py38 -v -- --cov=email_parser --cov-report=html
+              tox -e py38 -v -- --cov=parse_emails --cov-report=html
         - store_artifacts:
             path: coverage_html_report
         - run:

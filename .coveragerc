@@ -1,6 +1,6 @@
 [run]
 omit = **/tests/**
-    email_parser/__init__.py
+    parse_emails/__init__.py
 
 [html]
 directory = coverage_html_report

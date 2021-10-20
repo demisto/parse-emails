@@ -50,8 +50,8 @@ from struct import unpack
 import chardet  # type: ignore
 from olefile import OleFileIO, isOleFile
 
-from email_parser.common import convert_to_unicode
-from email_parser.constants import (DEFAULT_ENCODING, MAX_DEPTH_CONST,
+from parse_emails.common import convert_to_unicode
+from parse_emails.constants import (DEFAULT_ENCODING, MAX_DEPTH_CONST,
                                     PROPS_ID_MAP, REGEX_EMAIL, USER_ENCODING)
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
