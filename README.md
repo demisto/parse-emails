@@ -25,7 +25,7 @@ The main class `ParseEmails` contains all what you need to parse an email:
 ```python
 import parse_emails
 
-email = parse_emails.ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_type=test_type, file_name=test_name)
+email = parse_emails.ParseEmails(file_path=<file_path>, max_depth=3, parse_only_headers=False)
 email.parse_emails()
 print(email.parsed_email['Subject'])
 ```
@@ -34,11 +34,10 @@ print(email.parsed_email['Subject'])
 
 | **Argument Name** | **Description** |
 | --- | --- |
-| file_path | the file_path of a in msg or eml format |
-| parse_only_headers | Will parse only the headers and return headers table |
+| file_path* | the file_path of a in msg or eml format |
+| parse_only_headers | Will parse only the headers and return headers table, Default is False|
 | max_depth | How many levels deep we should parse the attached emails \(e.g. email contains an emails contains an email\). Default depth level is 3. Minimum level is 1, if set to 1 the script will parse only the first level email |
-| file_type | the file info |
-| file_name | the file name |
+| file_info | the file info |
 
 ## Outputs
 ---
