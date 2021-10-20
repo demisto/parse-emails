@@ -3,11 +3,11 @@ from __future__ import print_function
 
 import pytest
 
-from parse_emails.parse_emails import ParseEmails
 from parse_emails.handle_eml import unfold
 from parse_emails.handle_msg import (DataModel, MsOxMessage,
                                      create_headers_map, get_msg_mail_format,
                                      handle_msg)
+from parse_emails.parse_emails import ParseEmails
 
 
 def test_parse_emails():
