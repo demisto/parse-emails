@@ -7,6 +7,9 @@ name = "pypi"
 olefile = "*"
 datetime = "*"
 chardet = "*"
+pytest = "*"
+python-magic-bin = "0.4.14"
+
 
 [dev-packages]
 pre-commit = "*"
@@ -19,7 +22,6 @@ tox-pyenv = "*"
 pipfile-requirements = "*"
 flake8 = "*"
 coveralls = "*"
-
 
 [requires]
 python_version = "3.8.5"
