@@ -1,1 +1,1 @@
-from parse_emails.parse_emails import ParseEmails
+from parse_emails.parse_emails import EmailParser
