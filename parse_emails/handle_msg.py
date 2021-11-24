@@ -485,7 +485,7 @@ class Message(object):
 
     def _embed_images_to_html_body(self):
         # embed images into html body
-        if self.attachments:
+        if self.attachments and self.html:
             for attachment in self.attachments:
                 if attachment.AttachContentId and f'src="cid:{attachment.AttachContentId}"' in self.html:
                     img_base64 = base64.b64encode(attachment.data).decode('ascii')
@@ -842,14 +842,14 @@ class Message(object):
             #     # res = subprocess.check_output(run_cmd, stderr=subprocess.STDOUT, universal_newlines=True, timeout=)
             #     # logging.debug("completed running: {}. With result: {}".format(run_cmd, res))
             #
-            #     from RTFDE.deencapsulate import DeEncapsulator
-            #
-            #     rtf_obj = DeEncapsulator(rtf_body)
-            #     rtf_obj.deencapsulate()
-            #     if rtf_obj.content_type == 'html':
-            #         with open('test_rtfde.html', 'w') as f:
-            #             f.write(rtf_obj.html)
-            #             self.html = rtf_obj.html
+                from RTFDE.deencapsulate import DeEncapsulator
+
+                rtf_obj = DeEncapsulator(self.body)
+                rtf_obj.deencapsulate()
+                if rtf_obj.content_type == 'html':
+                    with open('test_rtfde.html', 'w') as f:
+                        f.write(rtf_obj.html)
+                        self.html = rtf_obj.html
 
     def _set_recipients(self):
         recipients = self.recipients

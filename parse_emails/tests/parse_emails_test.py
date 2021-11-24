@@ -10,6 +10,16 @@ from parse_emails.handle_msg import (DataModel, MsOxMessage,
 from parse_emails.parse_emails import ParseEmails
 
 
+def test_rtf_msg():
+
+    test_path = 'parse_emails/tests/test_data/msg_with_rtf_compressed.msg'
+
+    email_parser = ParseEmails(file_path=test_path)
+    results = email_parser.parse_emails()
+    assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results['HTML']
+    assert 'src="data:image/png;base64, ' in results['HTML']
+
+
 def test_parse_emails():
     test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
 
