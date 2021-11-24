@@ -9,9 +9,9 @@ from parse_emails.handle_eml import handle_eml
 from parse_emails.handle_msg import handle_msg
 
 
-class ParseEmails(object):
+class EmailParser(object):
     """
-    The core class for the ParseEmails.
+    The core class for the EmailParser.
     """
 
     def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_info='', forced_encoding=None,
@@ -47,7 +47,7 @@ class ParseEmails(object):
         else:
             return False
 
-    def parse_emails(self):
+    def parse(self):
         # we use the MAX_DEPTH_CONST to calculate the depth of the email
         # each level will reduce the max_depth by 1
         # not the best way to do it
