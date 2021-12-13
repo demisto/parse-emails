@@ -535,6 +535,23 @@ def test_parse_body_with_russian_language():
     assert 'Уважаемые' in email_data['HTML']
 
 
+def test_eml_contains_attachment_with_unknown_encoded_file_name(mocker):
+    """
+    Given: An email containing an attachment with unknown encoded name.
+    When: Parsing a valid email file with default parameters.
+    Then: The file name is parsed as expected and the debug alert exist.
+    """
+
+    test_path = 'test_data/Unknown_encode_attachment_name.eml'
+    test_type = 'message/rfc822'
+
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email.get('Attachments') == '04AIf|???.pdf'
+
+
 # def test_eml_contains_html_and_text():
 #     test_path = 'parse_emails/tests/test_data/multipart_alternative_format.p7m'
 #     test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
