@@ -542,7 +542,7 @@ def test_eml_contains_attachment_with_unknown_encoded_file_name(mocker):
     Then: The file name is parsed as expected and the debug alert exist.
     """
 
-    test_path = 'test_data/Unknown_encode_attachment_name.eml'
+    test_path = 'parse_emails/tests/test_data/Unknown_encode_attachment_name.eml'
     test_type = 'message/rfc822'
 
     results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
