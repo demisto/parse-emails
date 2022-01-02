@@ -42,6 +42,16 @@ def test_msg_utf_encoded_subject():
     assert 'TESTING' in subj and '?utf-8' not in subj
 
 
+def test_msg_with_attachments():
+    test_path = 'parse_emails/tests/test_data/html_attachment.msg'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['Attachments'] == 'dummy-attachment.txt'
+
+
 def test_eml_smtp_type():
     test_path = 'parse_emails/tests/test_data/smtp_email_type.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'

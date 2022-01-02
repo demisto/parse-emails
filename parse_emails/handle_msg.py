@@ -106,28 +106,28 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
     mail_format_type = get_msg_mail_format(msg_dict)
     headers, headers_map = create_headers_map(msg_dict.get('Headers'))
 
+    if parse_only_headers:
+        return {"HeadersMap": headers_map}, []
+
+    attached_emails_emls, attachments_data = save_attachments(msg.get_all_attachments(), file_name, max_depth - 1)
+    # add eml attached emails
+
+    attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1)
+
     email_data = {
         'To': msg_dict['To'],
         'CC': msg_dict['CC'],
         'From': msg_dict['From'],
         'Subject': headers_map.get('Subject'),
         'HTML': msg_dict['HTML'],
-        'Text': msg_dict['Text'],
+        'Text': str(msg_dict['Text']),
         'Headers': headers,
         'HeadersMap': headers_map,
-        'Attachments': '',
+        'Attachments': msg_dict.get('Attachments'),
+        'AttachmentsData': attachments_data,
         'Format': mail_format_type,
         'Depth': MAX_DEPTH_CONST - max_depth
     }
-
-    if parse_only_headers:
-        return {"HeadersMap": email_data.get("HeadersMap")}, []
-
-    attached_emails_emls = save_attachments(msg.get_all_attachments(), file_name, max_depth - 1)
-    # add eml attached emails
-
-    attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1)
-
     return email_data, attached_emails_emls + attached_emails_msg
 
 
@@ -241,10 +241,19 @@ def create_headers_map(msg_dict_headers):
 
 def save_attachments(attachments, root_email_file_name, max_depth):
     attached_emls = []
+    attachments_data = []
+
     for attachment in attachments:
         if attachment.data is not None:
             display_name = attachment.DisplayName if attachment.DisplayName else attachment.AttachFilename
             display_name = display_name if display_name else ''
+
+            attachments_data.append({
+                "Name": display_name,
+                "Content-ID": attachment.AttachContentId,
+                "FileData": attachment.data
+            })
+
             name_lower = display_name.lower()
             if max_depth > 0 and (name_lower.endswith(".eml") or name_lower.endswith('.p7m')):
                 tf = tempfile.NamedTemporaryFile(delete=False)
@@ -262,7 +271,7 @@ def save_attachments(attachments, root_email_file_name, max_depth):
                 finally:
                     os.remove(tf.name)
 
-    return attached_emls
+    return attached_emls, attachments_data
 
 
 class DataModel(object):
@@ -495,7 +504,7 @@ class Message(object):
     def _get_attachments_names(self):
         names = []
         for attachment in self.attachments:
-            names.append(attachment.DisplayName)
+            names.append(attachment.DisplayName or attachment.Filename)
 
         return names
 
@@ -545,7 +554,7 @@ class Message(object):
             'To': recipients,
             'From': sender,
             'Subject': self.subject,
-            'Text': self.body,
+            'Text': str(self.body),
             'HTML': html,
             'Headers': str(self.header) if self.header is not None else None,
             'HeadersMap': self.header_dict,

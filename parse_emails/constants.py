@@ -1,4 +1,4 @@
-REGEX_EMAIL = r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b"
+REGEX_EMAIL = r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[\b,]"
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 MAX_DEPTH_CONST = 3
 USER_ENCODING = None
