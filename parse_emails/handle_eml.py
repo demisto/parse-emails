@@ -227,7 +227,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'HTML': html,
                 'Text': text,
                 'HeadersMap': headers_map,
-                'Attachments': ','.join(attachment_names) if attachment_names else '',
+                'AttachmentNames': attachment_names if attachment_names else [],
                 'AttachmentsData': [
                     {
                         "Name": attachment_names[i],
