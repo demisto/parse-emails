@@ -13,7 +13,7 @@ from email import message_from_string
 from email.parser import HeaderParser
 from email.utils import getaddresses
 
-from parse_emails.constants import MAX_DEPTH_CONST, REGEX_EMAIL
+from parse_emails.constants import MAX_DEPTH_CONST
 # from common import convert_to_unicode
 from parse_emails.handle_msg import handle_msg
 
@@ -83,8 +83,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
         attached_emails = []
         parts = [eml]
-
-
 
         while parts:
             part = parts.pop()
