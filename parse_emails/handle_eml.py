@@ -77,9 +77,14 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         html = ''
         text = ''
         attachment_names = []
+        attachment_content_ids = []
+        attachment_content_dispositions = []
+        attachment_content = []
 
         attached_emails = []
         parts = [eml]
+
+
 
         while parts:
             part = parts.pop()
@@ -89,7 +94,14 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
             elif part.get_filename() or "attachment" in part.get("Content-Disposition", ""):
 
+                attachment_content_id = part.get('Content-ID')
+                attachment_content_disposition = part.get('Content-Disposition')
                 attachment_file_name = get_attachment_filename(part)
+
+                if attachment_file_name is None and part.get('filename'):
+                    attachment_file_name = os.path.normpath(part.get('filename'))
+                    if os.path.isabs(attachment_file_name):
+                        attachment_file_name = os.path.basename(attachment_file_name)
 
                 if "message/rfc822" in part.get("Content-Type", "") \
                         or ("application/octet-stream" in part.get("Content-Type", "") and
@@ -120,6 +132,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     else:
                         logging.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
 
+                    if file_content:
+                        # save the eml to war room as file entry
+                        attachment_content.append({'file_name': attachment_file_name, 'file_content': file_content})
+
                     if file_content and max_depth - 1 > 0:
                         f = tempfile.NamedTemporaryFile(delete=False)
                         try:
@@ -135,27 +151,42 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
                         finally:
                             os.remove(f.name)
+                    if not file_content:
+                        attachment_content.append(None)
                     attachment_names.append(attachment_file_name)
+                    attachment_content_ids.append(attachment_content_id)
+                    attachment_content_dispositions.append(attachment_content_disposition)
                 else:
                     # .msg and other files (png, jpeg)
                     if part.is_multipart() and max_depth - 1 > 0:
                         # email is DSN
                         msgs = part.get_payload()  # human-readable section
                         for i, individual_message in enumerate(msgs):
-
                             msg_info = decode_attachment_payload(individual_message)
                             attached_emails.append(msg_info)
 
                             attachment_file_name = individual_message.get_filename()
+                            attachment_content_id = individual_message.get('Content-ID')
+                            attachment_content_disposition = individual_message.get('Content-Disposition')
                             if attachment_file_name is None:
                                 attachment_file_name = "unknown_file_name{}".format(i)
 
+                            attachment_content.append({'file_name': attachment_file_name, 'file_content': msg_info})
                             attachment_names.append(attachment_file_name)
-
+                            attachment_content_ids.append(attachment_content_id)
+                            attachment_content_dispositions.append(attachment_content_disposition)
                     else:
                         file_content = part.get_payload(decode=True)
+                        if attachment_file_name.endswith('.p7s') or not file_content:
+                            attachment_content.append(None)
+                        # fileResult will return an error if file_content is None.
+                        if file_content and not attachment_file_name.endswith('.p7s'):
+                            attachment_content.append({'file_name': attachment_file_name, 'file_content': file_content})
 
                         if attachment_file_name.endswith(".msg") and max_depth - 1 > 0:
+                            if file_content:
+                                attachment_content.append(
+                                    {'file_name': attachment_file_name, 'file_content': file_content})
                             f = tempfile.NamedTemporaryFile(delete=False)
                             try:
                                 f.write(file_content)
@@ -169,6 +200,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 os.remove(f.name)
 
                         attachment_names.append(attachment_file_name)
+                        attachment_content_ids.append(attachment_content_id)
+                        attachment_content_dispositions.append(attachment_content_disposition)
 
             elif part.get_content_type() == 'text/html':
                 # This line replaces a new line that starts with `..` to a newline that starts with `.`
@@ -193,10 +226,16 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'Subject': eml['Subject'],
                 'HTML': html,
                 'Text': text,
-                'Headers': header_list,
                 'HeadersMap': headers_map,
                 'Attachments': ','.join(attachment_names) if attachment_names else '',
-                'AttachmentNames': attachment_names if attachment_names else [],
+                'AttachmentsData': [
+                    {
+                        "Name": attachment_names[i],
+                        "Content-ID": attachment_content_ids[i],
+                        "Content-Disposition": attachment_content_dispositions[i],
+                        "FileData": attachment_content[i]
+                    } for i in range(len(attachment_names))
+                ],
                 'Format': eml.get_content_type(),
                 'Depth': MAX_DEPTH_CONST - max_depth
             }
@@ -256,21 +295,15 @@ def get_email_address(eml, entry):
     Returns:
         res (str) : string of all required email addresses.
     """
-    gel_all_values_from_email_by_entry = eml.get_all(entry, [])
+    if entry == 'from':
+        gel_all_values_from_email_by_entry = [str(current_eml_no_newline).replace('\r\n', '').replace('\n', '')
+                                              for current_eml_no_newline in eml.get_all(entry, [])]
+    else:
+        gel_all_values_from_email_by_entry = eml.get_all(entry, [])
     addresses = getaddresses(gel_all_values_from_email_by_entry)
     if addresses:
         res = [item[1] for item in addresses]
         res = ', '.join(res)
-        if entry == 'from' and "\r\n" in gel_all_values_from_email_by_entry[0] and \
-                    (not re.search(REGEX_EMAIL, res) or len(addresses) > 1):
-            # this condition refers only to ['from'] header that does not have a valid email or have more then 1
-            # fixed an issue where email['From'] had '\r\n'.
-            # in order to solve, used replace_header() on email object,
-            # and did again get_all() on the new format of ['from']
-            original_value = eml['from']
-            eml.replace_header('from', ' '.join(eml["from"].splitlines()))
-            res = get_email_address(eml, entry)
-            eml.replace_header('from', original_value)  # replace again to the original header (keep on BC)
         return res
     return ''
 
