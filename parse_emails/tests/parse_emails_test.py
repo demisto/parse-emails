@@ -158,7 +158,7 @@ def test_eml_utf_text_with_bom():
     assert results.parsed_email['Subject'] == 'Test UTF Email'
 
 
-def test_parse():
+def test_FileName_ParentFileName_exist():
     '''Parse an file with attachment and check the FileName & ParentFileName exist
 
     Given
