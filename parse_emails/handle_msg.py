@@ -126,7 +126,8 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
         'Attachments': msg_dict.get('Attachments'),
         'AttachmentsData': attachments_data,
         'Format': mail_format_type,
-        'Depth': MAX_DEPTH_CONST - max_depth
+        'Depth': MAX_DEPTH_CONST - max_depth,
+        'FileName': file_name
     }
     return email_data, attached_emails_emls + attached_emails_msg
 
