@@ -158,6 +158,29 @@ def test_eml_utf_text_with_bom():
     assert results.parsed_email['Subject'] == 'Test UTF Email'
 
 
+def test_parse():
+    '''Parse an file with attachment and check the FileName & ParentFileName exist
+
+    Given
+    - A file with attachment
+
+    When
+    - parse file
+
+    Then
+    - FileName & ParentFileName exist on the outputs
+    '''
+    test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
+
+    email_parser = EmailParser(file_path=test_path)
+    results = email_parser.parse()
+    assert len(results) == 2
+    assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
+    assert results[0]['FileName'] == 'eml_contains_base64_eml.eml'
+    assert results[1]['FileName'] == 'message.eml'
+    assert results[1]['ParentFileName'] == 'eml_contains_base64_eml.eml'
+
+
 def test_email_with_special_character():
 
     test_path = 'parse_emails/tests/test_data/email_with_special_char_bytes.eml'
