@@ -144,6 +144,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             inner_eml, inner_attached_emails = handle_eml(file_path=f.name,
                                                                           file_name=attachment_file_name,
                                                                           max_depth=max_depth - 1)
+                            if inner_eml:
+                                inner_eml['ParentFileName'] = file_name
                             attached_emails.append(inner_eml)
                             attached_emails.extend(inner_attached_emails)
 
@@ -190,6 +192,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 f.close()
                                 inner_msg, inner_attached_emails = handle_msg(f.name, attachment_file_name, False,
                                                                               max_depth - 1)
+                                if inner_msg:
+                                    inner_msg['ParentFileName'] = file_name
                                 attached_emails.append(inner_msg)
                                 attached_emails.extend(inner_attached_emails)
 
