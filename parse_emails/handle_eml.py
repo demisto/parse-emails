@@ -132,7 +132,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
                     if file_content:
                         # save the eml to war room as file entry
-                        attachment_content.append({'file_name': attachment_file_name, 'file_content': file_content})
+                        attachment_content.append(file_content)
 
                     if file_content and max_depth - 1 > 0:
                         f = tempfile.NamedTemporaryFile(delete=False)
@@ -144,6 +144,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             inner_eml, inner_attached_emails = handle_eml(file_path=f.name,
                                                                           file_name=attachment_file_name,
                                                                           max_depth=max_depth - 1)
+                            if inner_eml:
+                                inner_eml['ParentFileName'] = file_name
                             attached_emails.append(inner_eml)
                             attached_emails.extend(inner_attached_emails)
 
@@ -169,7 +171,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             if attachment_file_name is None:
                                 attachment_file_name = "unknown_file_name{}".format(i)
 
-                            attachment_content.append({'file_name': attachment_file_name, 'file_content': msg_info})
+                            attachment_content.append(msg_info)
                             attachment_names.append(attachment_file_name)
                             attachment_content_ids.append(attachment_content_id)
                             attachment_content_dispositions.append(attachment_content_disposition)
@@ -179,18 +181,19 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             attachment_content.append(None)
                         # fileResult will return an error if file_content is None.
                         if file_content and not attachment_file_name.endswith('.p7s'):
-                            attachment_content.append({'file_name': attachment_file_name, 'file_content': file_content})
+                            attachment_content.append(file_content)
 
                         if attachment_file_name.endswith(".msg") and max_depth - 1 > 0:
                             if file_content:
-                                attachment_content.append(
-                                    {'file_name': attachment_file_name, 'file_content': file_content})
+                                attachment_content.append(file_content)
                             f = tempfile.NamedTemporaryFile(delete=False)
                             try:
                                 f.write(file_content)
                                 f.close()
                                 inner_msg, inner_attached_emails = handle_msg(f.name, attachment_file_name, False,
                                                                               max_depth - 1)
+                                if inner_msg:
+                                    inner_msg['ParentFileName'] = file_name
                                 attached_emails.append(inner_msg)
                                 attached_emails.extend(inner_attached_emails)
 
@@ -236,7 +239,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     } for i in range(len(attachment_names))
                 ],
                 'Format': eml.get_content_type(),
-                'Depth': MAX_DEPTH_CONST - max_depth
+                'Depth': MAX_DEPTH_CONST - max_depth,
+                'FileName': file_name
             }
         return email_data, attached_emails
 
