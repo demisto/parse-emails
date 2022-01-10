@@ -495,7 +495,7 @@ class Message(object):
 
     def _embed_images_to_html_body(self):
         # embed images into html body
-        if self.attachments:
+        if self.attachments and self.html:
             for attachment in self.attachments:
                 if attachment.AttachContentId and f'src="cid:{attachment.AttachContentId}"' in self.html:
                     img_base64 = base64.b64encode(attachment.data).decode('ascii')
