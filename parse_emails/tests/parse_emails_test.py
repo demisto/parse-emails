@@ -602,6 +602,3 @@ def test_double_dots_removed():
     results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
     results.parse()
     assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
-
-
-
