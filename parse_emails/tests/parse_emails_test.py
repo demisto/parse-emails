@@ -576,42 +576,32 @@ def test_parse_body_with_russian_language():
     assert 'Уважаемые' in email_data['HTML']
 
 
-# def test_eml_contains_html_and_text():
-#     test_path = 'parse_emails/tests/test_data/multipart_alternative_format.p7m'
-#     test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
-#
-#     results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-#     results.parse_emails()
-#
-#     assert isinstance(results.parsed_email, dict)
-#     assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
-#            "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
+def test_eml_contains_html_and_text():
+    test_path = 'parse_emails/tests/test_data/multipart_alternative_format.p7m'
+    test_type = 'multipart/alternative;, ISO-8859 text, with CRLF line terminators'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+    assert "<p class=\"MsoNormal\"><span style='font-size:10.0pt;font-family:" \
+           "\"xxxxx\",sans-serif;color:black'>żółć<o:p></o:p>" in results.parsed_email['HTML']
 
 
-# def test_double_dots_removed():
-#     """
-#     Fixes: https://github.com/demisto/etc/issues/27229
-#     Given:
-#         an eml file with a line break (`=\r\n`) which caused the duplication of dots (`..`).
-#     Then:
-#         replace the two dots with one and test that `part.get_payload()` decodes it correctly.
-#     """
-#     test_path = 'parse_emails/tests/test_data/multiple_to_cc.eml'
-#     test_type = "RFC 822 mail text, with CRLF line terminators"
-#
-#     results = ParseEmails(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-#     results.parse_emails()
-#     print(results.parsed_email['HTML'])
-#
-#     assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
+def test_double_dots_removed():
+    """
+    Fixes: https://github.com/demisto/etc/issues/27229
+    Given:
+        an eml file with a line break (`=\r\n`) which caused the duplication of dots (`..`).
+    Then:
+        replace the two dots with one and test that `part.get_payload()` decodes it correctly.
+    """
+    test_path = 'parse_emails/tests/test_data/multiple_to_cc.eml'
+    test_type = "RFC 822 mail text, with CRLF line terminators"
+
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
+    assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
 
 
-# def test_rtf_msg():
-#     test_path = 'parse_emails/tests/test_data/msg_with_rtf_compressed.msg'
-#     test_type = 'CDFV2 Microsoft Outlook Message'
-#
-#     results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-#     results.parse_emails()
-#
-#     assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results[0]['EntryContext']['Email']['HTML']
-#     assert 'src="data:image/png;base64, '
+
