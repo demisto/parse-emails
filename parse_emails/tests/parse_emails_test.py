@@ -7,15 +7,13 @@ from parse_emails.handle_eml import unfold
 from parse_emails.handle_msg import (DataModel, MsOxMessage,
                                      create_headers_map, get_msg_mail_format,
                                      handle_msg)
-from parse_emails.parse_emails import ParseEmails
+from parse_emails.parse_emails import EmailParser
 
 
 def test_rtf_msg():
-
     test_path = 'parse_emails/tests/test_data/msg_with_rtf_compressed.msg'
-
-    email_parser = ParseEmails(file_path=test_path)
-    results = email_parser.parse_emails()
+    email_parser = EmailParser(file_path=test_path)
+    results = email_parser.parse()
     assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results['HTML']
     assert 'src="data:image/png;base64, ' in results['HTML']
 
@@ -23,8 +21,8 @@ def test_rtf_msg():
 def test_parse_emails():
     test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
 
-    email_parser = ParseEmails(file_path=test_path)
-    results = email_parser.parse_emails()
+    email_parser = EmailParser(file_path=test_path)
+    results = email_parser.parse()
     assert len(results) == 2
     assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
 
@@ -52,12 +50,22 @@ def test_msg_utf_encoded_subject():
     assert 'TESTING' in subj and '?utf-8' not in subj
 
 
+def test_msg_with_attachments():
+    test_path = 'parse_emails/tests/test_data/html_attachment.msg'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['Attachments'] == 'dummy-attachment.txt'
+
+
 def test_eml_smtp_type():
     test_path = 'parse_emails/tests/test_data/smtp_email_type.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Test Smtp Email'
@@ -69,8 +77,8 @@ def test_smime2():
     test_path = 'parse_emails/tests/test_data/smime2.p7m'
     test_type = 'multipart/signed; protocol="application/pkcs7-signature";, ASCII text, with CRLF line terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Testing signed multipart email'
@@ -80,8 +88,8 @@ def test_eml_contains_eml():
     test_path = 'parse_emails/tests/test_data/Fwd_test-inner_attachment_eml.eml'
     test_type = 'news or mail text, ASCII text'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['Subject'] == 'Fwd: test - inner attachment eml'
@@ -97,8 +105,8 @@ def test_eml_contains_msg():
     test_path = 'parse_emails/tests/test_data/DONT_OPEN-MALICIOUS.eml'
     test_type = 'news or mail text, ASCII text'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['Subject'] == 'DONT OPEN - MALICIOS'
     assert results.parsed_email[0]['Depth'] == 0
@@ -113,8 +121,8 @@ def test_eml_contains_eml_depth():
     test_path = 'parse_emails/tests/test_data/Fwd_test-inner_attachment_eml.eml'
     test_type = 'news or mail text, ASCII text'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['Subject'] == 'Fwd: test - inner attachment eml'
@@ -128,8 +136,8 @@ def test_eml_utf_text():
     test_path = 'parse_emails/tests/test_data/utf_8_email.eml'
     test_type = 'UTF-8 Unicode text, with very long lines, with CRLF line terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Test UTF Email'
@@ -151,11 +159,34 @@ def test_eml_utf_text_with_bom():
     test_path = 'parse_emails/tests/test_data/utf_8_with_bom.eml'
     test_type = 'RFC 822 mail text, UTF-8 Unicode (with BOM) text, with very long lines, with CRLF line terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Test UTF Email'
+
+
+def test_FileName_ParentFileName_exist():
+    '''Parse an file with attachment and check the FileName & ParentFileName exist
+
+    Given
+    - A file with attachment
+
+    When
+    - parse file
+
+    Then
+    - FileName & ParentFileName exist on the outputs
+    '''
+    test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
+
+    email_parser = EmailParser(file_path=test_path)
+    results = email_parser.parse()
+    assert len(results) == 2
+    assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
+    assert results[0]['FileName'] == 'eml_contains_base64_eml.eml'
+    assert results[1]['FileName'] == 'message.eml'
+    assert results[1]['ParentFileName'] == 'eml_contains_base64_eml.eml'
 
 
 def test_email_with_special_character():
@@ -163,8 +194,8 @@ def test_email_with_special_character():
     test_path = 'parse_emails/tests/test_data/email_with_special_char_bytes.eml'
     test_type = 'RFC 822 mail text, ISO-8859 text, with very long lines, with CRLF line terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Hello dear friend'
 
@@ -179,8 +210,8 @@ def test_email_raw_headers():
     test_path = 'parse_emails/tests/test_data/multiple_to_cc.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['From'] == 'test@test.com'
@@ -206,8 +237,8 @@ def test_email_raw_headers_from_is_cyrillic_characters():
     test_path = 'parse_emails/tests/test_data/multiple_to_cc_from_Cyrillic_characters.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['From'] == 'no-reply@google.com'
@@ -224,8 +255,8 @@ def test_eml_contains_eml_with_status():
     test_path = 'parse_emails/tests/test_data/ParseEmailFiles-test-emls.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert results.parsed_email[1]['Subject'] == subject_attach
 
@@ -235,8 +266,8 @@ def test_eml_contains_base64_encoded_eml(file_name):
     test_path = f'parse_emails/tests/test_data/{file_name}'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
@@ -253,8 +284,8 @@ def test_eml_data_type(file_info):
     test_path = 'parse_emails/tests/test_data/smtp_email_type.eml'
     test_type = file_info
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Test Smtp Email'
 
@@ -263,8 +294,8 @@ def test_smime():
     test_path = 'parse_emails/tests/test_data/smime.p7m'
     test_type = 'multipart/signed; protocol="application/pkcs7-signature";, ASCII text, with CRLF line terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Testing Email Attachment'
@@ -274,8 +305,8 @@ def test_smime_msg():
     test_path = 'parse_emails/tests/test_data/smime-p7s.msg'
     test_type = 'CDFV2 Microsoft Outlook Message'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'test'
@@ -302,8 +333,8 @@ def test_unknown_file_info():
     test_type = 'bad'
 
     try:
-        results = ParseEmails(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-        results.parse_emails()
+        results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+        results.parse()
     except Exception as e:
         gotexception = True
         results = e
@@ -317,8 +348,8 @@ def test_no_content_type_file():
     test_path = 'parse_emails/tests/test_data/no_content_type.eml'
     test_type = 'ascii text'
 
-    results = ParseEmails(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'No content type'
@@ -346,8 +377,8 @@ def test_no_content_file():
     test_type = 'ascii text'
 
     try:
-        results = ParseEmails(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-        results.parse_emails()
+        results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+        results.parse()
     except Exception as e:
         gotexception = True
         results = e
@@ -359,8 +390,8 @@ def test_eml_contains_htm_attachment():
     test_path = 'parse_emails/tests/test_data/eml_contains_htm_attachment.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email[u'Attachments'] == '1.htm'
@@ -370,8 +401,8 @@ def test_signed_attachment():
     test_path = 'parse_emails/tests/test_data/email_with_signed_attachment.eml'
     test_type = 'multipart/mixed'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert len(results.parsed_email) == 2
 
@@ -380,8 +411,8 @@ def test_eml_format_multipart_mix():
     test_path = 'parse_emails/tests/test_data/multipart_mixed_format.p7m'
     test_type = 'multipart/mixed'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert "Warsaw, Poland <o:p></o:p>" in results.parsed_email['HTML']
@@ -391,8 +422,8 @@ def test_eml_format_multipart_related():
     test_path = 'parse_emails/tests/test_data/multipart_related_format.p7m'
     test_type = 'multipart/related'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert "Warsaw, Poland <o:p></o:p>" in results.parsed_email['HTML']
@@ -402,8 +433,8 @@ def test_eml_base64_header_comment_although_string():
     test_path = 'parse_emails/tests/test_data/DONT_OPEN-MALICIOUS_base64_headers.eml'
     test_type = 'UTF-8 Unicode text, with very long lines, with CRLF line terminators'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['Subject'] == 'DONT OPEN - MALICIOS'
@@ -430,8 +461,8 @@ def test_message_rfc822_without_info():
     test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml2.eml'
     test_type = 'message/rfc822'
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['To'] == 'wowo@demisto.com'
@@ -469,8 +500,8 @@ def test_eml_contains_htm_attachment_empty_file():
     test_path = 'parse_emails/tests/test_data/eml_contains_emptytxt_htm_file.eml'
     test_type = "RFC 822 mail text, with CRLF line terminators"
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['AttachmentNames'] == ['unknown_file_name0', 'SomeTest.HTM']
@@ -485,8 +516,8 @@ def test_eml_contains_htm_attachment_empty_file_max_depth():
     test_path = 'parse_emails/tests/test_data/eml_contains_emptytxt_htm_file.eml'
     test_type = "RFC 822 mail text, with CRLF line terminators"
 
-    results = ParseEmails(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
 
@@ -504,8 +535,8 @@ def test_only_parts_of_object_email_saved():
     test_path = 'parse_emails/tests/test_data/new-line-in-parts.eml'
     test_type = "RFC 822 mail text, with CRLF line terminators"
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['AttachmentNames'] == ['logo5.png', 'logo2.png']
@@ -521,8 +552,8 @@ def test_pkcs7_mime():
     test_path = 'parse_emails/tests/test_data/smime2.p7m'
     test_type = "MIME entity text, ISO-8859 text, with very long lines, with CRLF line terminators"
 
-    results = ParseEmails(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
-    results.parse_emails()
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Testing signed multipart email'
