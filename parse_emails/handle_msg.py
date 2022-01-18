@@ -118,9 +118,9 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
         'To': msg_dict['To'],
         'CC': msg_dict['CC'],
         'From': msg_dict['From'],
-        'Subject': headers_map.get('Subject'),
+        'Subject': headers_map.get('Subject') if headers_map.get('Subject') else msg_dict['Subject'],
         'HTML': msg_dict['HTML'],
-        'Text': str(msg_dict['Text']),
+        'Text': msg_dict['Text'],
         'Headers': headers,
         'HeadersMap': headers_map,
         'Attachments': msg_dict.get('Attachments'),
@@ -555,7 +555,7 @@ class Message(object):
             'To': recipients,
             'From': sender,
             'Subject': self.subject,
-            'Text': str(self.body),
+            'Text': self.properties.get('Body') if self.properties.get('Body') else str(self.body),
             'HTML': html,
             'Headers': str(self.header) if self.header is not None else None,
             'HeadersMap': self.header_dict,
@@ -830,8 +830,6 @@ class Message(object):
         self.body = property_values.get("Body")
 
         if "RtfCompressed" in property_values:
-            with open('test_compressed.rtf', mode='wb') as f:
-                f.write(property_values['RtfCompressed'])
             try:
                 import compressed_rtf
             except ImportError:
@@ -839,6 +837,13 @@ class Message(object):
             if compressed_rtf:
                 compressed_rtf_body = property_values['RtfCompressed']
                 self.body = compressed_rtf.decompress(compressed_rtf_body)
+
+                from RTFDE.deencapsulate import DeEncapsulator
+
+                rtf_obj = DeEncapsulator(self.body)
+                rtf_obj.deencapsulate()
+                if rtf_obj.content_type == 'html':
+                    self.html = rtf_obj.html
 
     def _set_recipients(self):
         recipients = self.recipients
