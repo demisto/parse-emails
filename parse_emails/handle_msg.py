@@ -829,7 +829,7 @@ class Message(object):
         self.html = property_values.get("Html")
         self.body = property_values.get("Body")
 
-        if "RtfCompressed" in property_values:
+        if not self.body and "RtfCompressed" in property_values:
             try:
                 import compressed_rtf
             except ImportError:
@@ -837,13 +837,6 @@ class Message(object):
             if compressed_rtf:
                 compressed_rtf_body = property_values['RtfCompressed']
                 self.body = compressed_rtf.decompress(compressed_rtf_body)
-
-                from RTFDE.deencapsulate import DeEncapsulator
-
-                rtf_obj = DeEncapsulator(self.body)
-                rtf_obj.deencapsulate()
-                if rtf_obj.content_type == 'html':
-                    self.html = rtf_obj.html
 
     def _set_recipients(self):
         recipients = self.recipients
