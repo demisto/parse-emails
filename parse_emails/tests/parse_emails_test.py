@@ -606,5 +606,5 @@ def test_handle_eml_parses_correct_message_id():
      - Validate that correct 'Message-ID' case sensitive is in 'HeadersMap' dict.
        Must be 'Message-ID' case sensitive.
     """
-    email_data, _ = handle_eml(file_path='test_data/invalid_message_id.eml')
+    email_data, _ = handle_eml(file_path='parse_emails/tests/test_data/invalid_message_id.eml')
     assert 'Message-ID' in email_data['HeadersMap']
