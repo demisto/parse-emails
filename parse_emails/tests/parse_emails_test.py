@@ -8,6 +8,7 @@ from parse_emails.handle_msg import (DataModel, MsOxMessage,
                                      create_headers_map, get_msg_mail_format,
                                      handle_msg)
 from parse_emails.parse_emails import EmailParser
+from parse_emails.handle_eml import handle_eml
 
 
 def test_parse_emails():
@@ -594,3 +595,17 @@ def test_double_dots_removed():
     results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
     results.parse()
     assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
+
+
+def test_handle_eml_parses_correct_message_id():
+    """
+    Given:
+     - eml file
+    When:
+     - parsing eml file into email data.
+    Then:
+     - Validate that correct 'Message-ID' case sensitive is in 'HeadersMap' dict.
+       Must be 'Message-ID' case sensitive.
+    """
+    email_data, _ = handle_eml(file_path='test_data/invalid_message_id.eml')
+    assert 'Message-ID' in email_data['HeadersMap']
