@@ -51,7 +51,8 @@ import chardet  # type: ignore
 from olefile import OleFileIO, isOleFile
 
 from parse_emails.common import convert_to_unicode
-from parse_emails.constants import (DEFAULT_ENCODING, PROPS_ID_MAP, REGEX_EMAIL, USER_ENCODING)
+from parse_emails.constants import (DEFAULT_ENCODING, PROPS_ID_MAP,
+                                    REGEX_EMAIL, USER_ENCODING)
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 
