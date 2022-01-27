@@ -13,7 +13,7 @@ from parse_emails.parse_emails import EmailParser
 def test_parse_emails():
     test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
 
-    email_parser = EmailParser(file_path=test_path)
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
     results = email_parser.parse()
     assert len(results) == 2
     assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
@@ -22,11 +22,12 @@ def test_parse_emails():
 def test_msg_html_with_attachments():
     msg = MsOxMessage('parse_emails/tests/test_data/html_attachment.msg')
     assert msg is not None
-    msg_dict = msg.as_dict(max_depth=2)
+    msg_dict = msg.as_dict(max_depth=2, original_depth=3)
     assert 'This is an html email' in msg_dict['Text']
     attachments_list = msg.get_all_attachments()
     assert len(attachments_list) == 1
     attach = attachments_list[0]
+    assert msg_dict['Depth'] == 1
     assert attach.AttachFilename == 'dummy-attachment.txt'
     assert attach.AttachMimeTag == 'text/plain'
     assert attach.data == b'This is a text attachment'
@@ -35,7 +36,7 @@ def test_msg_html_with_attachments():
 def test_msg_utf_encoded_subject():
     msg = MsOxMessage('parse_emails/tests/test_data/utf_subject.msg')
     assert msg is not None
-    msg_dict = msg.as_dict(max_depth=2)
+    msg_dict = msg.as_dict(max_depth=2, original_depth=2)
     # we test that subject which has utf-8 encoding (in the middle) is actually decoded
     assert '?utf-8' in msg_dict['HeadersMap']['Subject']
     subj = msg_dict['Subject']
@@ -113,14 +114,15 @@ def test_eml_contains_eml_depth():
     test_path = 'parse_emails/tests/test_data/Fwd_test-inner_attachment_eml.eml'
     test_type = 'news or mail text, ASCII text'
 
-    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
     results.parse()
 
-    assert len(results.parsed_email) == 2
-    assert results.parsed_email[0]['Subject'] == 'Fwd: test - inner attachment eml'
-    assert 'ArcSight_ESM_fixes.yml' in results.parsed_email[0]['Attachments']
-    assert 'test - inner attachment eml.eml' in results.parsed_email[0]['Attachments']
-    assert results.parsed_email[0]['Depth'] == 0
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['Subject'] == 'Fwd: test - inner attachment eml'
+    assert 'ArcSight_ESM_fixes.yml' in results.parsed_email['Attachments']
+    assert 'test - inner attachment eml.eml' in results.parsed_email['Attachments']
+    assert results.parsed_email['Depth'] == 0
+    assert len(results.parsed_email['AttachmentsData']) == 2
 
 
 def test_eml_utf_text():
