@@ -13,15 +13,13 @@ from email import message_from_string
 from email.parser import HeaderParser
 from email.utils import getaddresses
 
-from parse_emails.constants import MAX_DEPTH_CONST
-# from common import convert_to_unicode
 from parse_emails.handle_msg import handle_msg
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 
 
-def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, max_depth=3, bom=False):
+def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, max_depth=3, bom=False, original_depth=3):
     global ENCODINGS_TYPES
 
     if max_depth == 0:
@@ -152,7 +150,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             f.close()
                             inner_eml, inner_attached_emails = handle_eml(file_path=f.name,
                                                                           file_name=attachment_file_name,
-                                                                          max_depth=max_depth - 1)
+                                                                          max_depth=max_depth - 1,
+                                                                          original_depth=original_depth)
                             if inner_eml:
                                 inner_eml['ParentFileName'] = file_name
                             attached_emails.append(inner_eml)
@@ -200,7 +199,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 f.write(file_content)
                                 f.close()
                                 inner_msg, inner_attached_emails = handle_msg(f.name, attachment_file_name, False,
-                                                                              max_depth - 1)
+                                                                              max_depth - 1, original_depth)
                                 if inner_msg:
                                     inner_msg['ParentFileName'] = file_name
                                 attached_emails.append(inner_msg)
@@ -250,7 +249,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     } for i in range(len(attachment_names))
                 ],
                 'Format': eml.get_content_type(),
-                'Depth': MAX_DEPTH_CONST - max_depth,
+                'Depth': original_depth - max_depth,
                 'FileName': file_name
             }
         return email_data, attached_emails

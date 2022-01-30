@@ -51,8 +51,8 @@ import chardet  # type: ignore
 from olefile import OleFileIO, isOleFile
 
 from parse_emails.common import convert_to_unicode
-from parse_emails.constants import (DEFAULT_ENCODING, MAX_DEPTH_CONST,
-                                    PROPS_ID_MAP, REGEX_EMAIL, USER_ENCODING)
+from parse_emails.constants import (DEFAULT_ENCODING, PROPS_ID_MAP,
+                                    REGEX_EMAIL, USER_ENCODING)
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 
@@ -94,7 +94,7 @@ DATA_TYPE_MAP = {
 EMBEDDED_MSG_HEADER_SIZE = 24
 
 
-def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
+def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, original_depth=3):
     if max_depth == 0:
         return None, []
 
@@ -102,7 +102,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
     if not msg:
         raise Exception("Could not parse msg file!")
 
-    msg_dict = msg.as_dict(max_depth)
+    msg_dict = msg.as_dict(max_depth, original_depth)
     mail_format_type = get_msg_mail_format(msg_dict)
     headers, headers_map = create_headers_map(msg_dict.get('Headers'))
 
@@ -112,7 +112,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
     attached_emails_emls, attachments_data = save_attachments(msg.get_all_attachments(), file_name, max_depth - 1)
     # add eml attached emails
 
-    attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1)
+    attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1, original_depth)
 
     email_data = {
         'To': msg_dict['To'],
@@ -126,7 +126,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3):
         'Attachments': msg_dict.get('Attachments'),
         'AttachmentsData': attachments_data,
         'Format': mail_format_type,
-        'Depth': MAX_DEPTH_CONST - max_depth,
+        'Depth': original_depth - max_depth,
         'FileName': file_name
     }
     return email_data, attached_emails_emls + attached_emails_msg
@@ -158,8 +158,8 @@ class MsOxMessage(object):
             if ole_file is not None:
                 ole_file.close()
 
-    def as_dict(self, max_depth):
-        return self._message.as_dict(max_depth)
+    def as_dict(self, max_depth, original_depth):
+        return self._message.as_dict(max_depth, original_depth)
 
     def get_email_mime_content(self):
         email_obj = EmailFormatter(self)
@@ -170,8 +170,8 @@ class MsOxMessage(object):
         email_obj.save_file(file_path)
         return True
 
-    def get_attached_emails_hierarchy(self, max_depth):
-        return self._message.get_attached_emails_hierarchy(max_depth)
+    def get_attached_emails_hierarchy(self, max_depth, original_depth):
+        return self._message.get_attached_emails_hierarchy(max_depth, original_depth)
 
     def is_valid_msg_file(self):
         if not os.path.exists(self.msg_file_path):
@@ -264,7 +264,7 @@ def save_attachments(attachments, root_email_file_name, max_depth):
                     tf.close()
 
                     inner_eml, attached_inner_emails = handle_eml(tf.name, file_name=root_email_file_name,
-                                                                  max_depth=max_depth)
+                                                                  max_depth=max_depth, original_depth=original_depth)
                     if inner_eml:
                         attached_emls.append(inner_eml)
                     if attached_inner_emails:
@@ -517,7 +517,7 @@ class Message(object):
 
         return attachments
 
-    def as_dict(self, max_depth):
+    def as_dict(self, max_depth, original_depth):
         if max_depth == 0:
             return None
 
@@ -559,19 +559,19 @@ class Message(object):
             'HTML': html,
             'Headers': str(self.header) if self.header is not None else None,
             'HeadersMap': self.header_dict,
-            'Depth': MAX_DEPTH_CONST - max_depth
+            'Depth': original_depth - max_depth
         }
 
         return message_dict
 
-    def get_attached_emails_hierarchy(self, max_depth):
+    def get_attached_emails_hierarchy(self, max_depth, original_depth):
         if max_depth == 0:
             return []
 
         attached_emails = []
         for embedded_message in self.embedded_messages:
-            attached_emails.append(embedded_message.as_dict(max_depth))
-            attached_emails.extend(embedded_message.get_attached_emails_hierarchy(max_depth - 1))
+            attached_emails.append(embedded_message.as_dict(max_depth, original_depth))
+            attached_emails.extend(embedded_message.get_attached_emails_hierarchy(max_depth - 1, original_depth))
 
         return attached_emails
 
