@@ -610,3 +610,20 @@ def test_handle_eml_parses_correct_message_id():
     """
     email_data, _ = handle_eml(file_path='parse_emails/tests/test_data/invalid_message_id.eml')
     assert 'Message-ID' in email_data['HeadersMap']
+
+
+def test_long_subject_and_special_characters():
+    """
+    Fixes: https://github.com/demisto/etc/issues/47691
+    Given:
+        an eml file with a long subject and special characters.
+    Then:
+        assert all the subject is parsed correctly.
+
+    """
+    test_path = 'parse_emails/tests/test_data/Those_characters____will_mess_with_the_parsing_automation.eml'
+    test_type = 'RFC 822 mail text, with CRLF line terminators'
+
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
+    assert results.parsed_email['Subject'] == 'Those characters : üàéüö will mess with the parsing automation'

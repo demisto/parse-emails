@@ -13,6 +13,8 @@ from email import message_from_string
 from email.parser import HeaderParser
 from email.utils import getaddresses
 
+from parse_emails.common import convert_to_unicode
+
 from parse_emails.handle_msg import handle_msg
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
@@ -52,7 +54,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         header_list = []
         headers_map = {}  # type: dict
         for item in headers.items():
-            value = unfold(item[1])
+            val = unfold(item[1])
+            value = convert_to_unicode(val)
             item_dict = {
                 "name": item[0],
                 "value": value
@@ -234,9 +237,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'To': extract_address_eml(eml, 'to'),
                 'CC': extract_address_eml(eml, 'cc'),
                 'From': extract_address_eml(eml, 'from'),
-                'Subject': eml['Subject'],
-                'HTML': html,
-                'Text': text,
+                'Subject': convert_to_unicode(unfold(eml['Subject'])),
+                'HTML': convert_to_unicode(html, is_msg_header=False),
+                'Text': convert_to_unicode(text, is_msg_header=False),
                 'HeadersMap': headers_map,
                 'Attachments': ','.join(attachment_names) if attachment_names else '',
                 'AttachmentNames': attachment_names if attachment_names else [],
