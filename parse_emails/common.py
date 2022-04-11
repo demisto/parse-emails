@@ -34,7 +34,7 @@ def convert_to_unicode(s, is_msg_header=True):
                     res += replace_decoded
                 ENCODINGS_TYPES.add(encoding)
             else:
-                res += decoded_s
+                res += str(decoded_s)
         return res.strip()
     except Exception:
         for file_data in ENCODINGS_TYPES:

@@ -244,7 +244,6 @@ def test_email_raw_headers_from_is_cyrillic_characters():
 
 
 def test_eml_contains_eml_with_status():
-    subject_attach = '=?iso-8859-7?B?Rlc6IEZPT0RMSU5LINDLx9HZzMc=?='  # disable-secrets-detection
 
     test_path = 'parse_emails/tests/test_data/ParseEmailFiles-test-emls.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
@@ -252,7 +251,7 @@ def test_eml_contains_eml_with_status():
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
 
-    assert results.parsed_email[1]['Subject'] == subject_attach
+    assert results.parsed_email[1]['Subject'] == 'FW: FOODLINK ΠΛΗΡΩΜΗ'
 
 
 @pytest.mark.parametrize('file_name', ['eml_contains_base64_eml.eml', 'eml_contains_base64_eml2.eml'])

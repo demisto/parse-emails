@@ -269,7 +269,7 @@ def unfold(s):
     :param string s: a string to unfold
     :rtype: string
     """
-    return re.sub(r'[ \t]*[\r\n][ \t\r\n]*', ' ', s).strip(' ')
+    return re.sub(r'[ \t]*[\r\n][ \t\r\n]*', ' ', s).strip(' ') if s else s
 
 
 def decode_content(mime):
