@@ -620,7 +620,7 @@ def test_long_subject_and_special_characters():
         assert all the subject is parsed correctly.
 
     """
-    test_path = 'parse_emails/tests/test_data/Those_characters____will_mess_with_the_parsing_automation.eml'
+    test_path = 'parse_emails/tests/test_data/file_with_a_long_subject_and_special_characters.eml'
     test_type = 'RFC 822 mail text, with CRLF line terminators'
 
     results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)

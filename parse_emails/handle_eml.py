@@ -14,7 +14,6 @@ from email.parser import HeaderParser
 from email.utils import getaddresses
 
 from parse_emails.common import convert_to_unicode
-
 from parse_emails.handle_msg import handle_msg
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
