@@ -1,0 +1,3 @@
+# Changelog
+* Fixed an issue where a long subject with special characters was not parsed properly.
+
