@@ -837,9 +837,7 @@ class Message(object):
             if compressed_rtf:
                 compressed_rtf_body = property_values['RtfCompressed']
                 self.body = compressed_rtf.decompress(compressed_rtf_body)
-
                 from RTFDE.deencapsulate import DeEncapsulator
-
                 rtf_obj = DeEncapsulator(self.body)
                 rtf_obj.deencapsulate()
                 if rtf_obj.content_type == 'html':
