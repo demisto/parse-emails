@@ -48,21 +48,17 @@ class EmailParser(object):
             return False
 
     def parse(self):
-        # we use the MAX_DEPTH_CONST to calculate the depth of the email
-        # each level will reduce the max_depth by 1
-        # not the best way to do it
-        global MAX_DEPTH_CONST
         global USER_ENCODING
         global DEFAULT_ENCODING
 
-        MAX_DEPTH_CONST = self._max_depth
         USER_ENCODING = self._forced_encoding
         DEFAULT_ENCODING = self._default_encoding
 
         try:
             file_type_lower = self._file_type.lower()
             if self._is_msg:
-                email_data, attached_emails = handle_msg(self._file_path, self._file_name, self._parse_only_headers, self._max_depth)
+                email_data, attached_emails = handle_msg(self._file_path, self._file_name, self._parse_only_headers,
+                                                         self._max_depth, original_depth=self._max_depth)
                 output = create_email_output(email_data, attached_emails)
 
             elif any(eml_candidate in file_type_lower for eml_candidate in
@@ -71,7 +67,8 @@ class EmailParser(object):
                 if 'unicode (with bom) text' in file_type_lower or 'utf-8 (with bom) text' in file_type_lower:
                     self._bom = True
                 email_data, attached_emails = handle_eml(
-                    self._file_path, False, self._file_name, self._parse_only_headers, self._max_depth, bom=self._bom)
+                    self._file_path, False, self._file_name, self._parse_only_headers, self._max_depth, bom=self._bom,
+                    original_depth=self._max_depth)
                 output = create_email_output(email_data, attached_emails)
 
             elif ('ascii text' in file_type_lower or 'unicode text' in file_type_lower or
@@ -83,7 +80,8 @@ class EmailParser(object):
 
                     if file_contents and 'Content-Type:'.lower() in file_contents.lower():
                         email_data, attached_emails = handle_eml(self._file_path, b64=False, file_name=self._file_name,
-                                                                 parse_only_headers=self._parse_only_headers, max_depth=self._max_depth)
+                                                                 parse_only_headers=self._parse_only_headers,
+                                                                 max_depth=self._max_depth, original_depth=self._max_depth)
                         output = create_email_output(email_data, attached_emails)
                     else:
                         # Try a base64 decode
@@ -91,14 +89,14 @@ class EmailParser(object):
                         if file_contents and 'Content-Type:'.lower() in file_contents.lower():
                             email_data, attached_emails = handle_eml(self._file_path, b64=True, file_name=self._file_name,
                                                                      parse_only_headers=self._parse_only_headers,
-                                                                     max_depth=self._max_depth)
+                                                                     max_depth=self._max_depth, original_depth=self._max_depth)
                             output = create_email_output(email_data, attached_emails)
                         else:
                             try:
                                 # Try to open
                                 email_data, attached_emails = handle_eml(self._file_path, b64=False, file_name=self._file_name,
                                                                          parse_only_headers=self._parse_only_headers,
-                                                                         max_depth=self._max_depth)
+                                                                         max_depth=self._max_depth, original_depth=self._max_depth)
                                 is_data_populated = is_email_data_populated(email_data)
                                 if not is_data_populated:
                                     raise Exception("No email_data found")

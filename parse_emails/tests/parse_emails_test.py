@@ -3,25 +3,17 @@ from __future__ import print_function
 
 import pytest
 
-from parse_emails.handle_eml import unfold
+from parse_emails.handle_eml import handle_eml, unfold
 from parse_emails.handle_msg import (DataModel, MsOxMessage,
                                      create_headers_map, get_msg_mail_format,
                                      handle_msg)
 from parse_emails.parse_emails import EmailParser
 
 
-def test_rtf_msg():
-    test_path = 'parse_emails/tests/test_data/msg_with_rtf_compressed.msg'
-    email_parser = EmailParser(file_path=test_path)
-    results = email_parser.parse()
-    assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results['HTML']
-    assert 'src="data:image/png;base64, ' in results['HTML']
-
-
 def test_parse_emails():
     test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
 
-    email_parser = EmailParser(file_path=test_path)
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
     results = email_parser.parse()
     assert len(results) == 2
     assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
@@ -30,11 +22,12 @@ def test_parse_emails():
 def test_msg_html_with_attachments():
     msg = MsOxMessage('parse_emails/tests/test_data/html_attachment.msg')
     assert msg is not None
-    msg_dict = msg.as_dict(max_depth=2)
+    msg_dict = msg.as_dict(max_depth=2, original_depth=3)
     assert 'This is an html email' in msg_dict['Text']
     attachments_list = msg.get_all_attachments()
     assert len(attachments_list) == 1
     attach = attachments_list[0]
+    assert msg_dict['Depth'] == 1
     assert attach.AttachFilename == 'dummy-attachment.txt'
     assert attach.AttachMimeTag == 'text/plain'
     assert attach.data == b'This is a text attachment'
@@ -43,7 +36,7 @@ def test_msg_html_with_attachments():
 def test_msg_utf_encoded_subject():
     msg = MsOxMessage('parse_emails/tests/test_data/utf_subject.msg')
     assert msg is not None
-    msg_dict = msg.as_dict(max_depth=2)
+    msg_dict = msg.as_dict(max_depth=2, original_depth=2)
     # we test that subject which has utf-8 encoding (in the middle) is actually decoded
     assert '?utf-8' in msg_dict['HeadersMap']['Subject']
     subj = msg_dict['Subject']
@@ -121,14 +114,15 @@ def test_eml_contains_eml_depth():
     test_path = 'parse_emails/tests/test_data/Fwd_test-inner_attachment_eml.eml'
     test_type = 'news or mail text, ASCII text'
 
-    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
     results.parse()
 
-    assert len(results.parsed_email) == 2
-    assert results.parsed_email[0]['Subject'] == 'Fwd: test - inner attachment eml'
-    assert 'ArcSight_ESM_fixes.yml' in results.parsed_email[0]['Attachments']
-    assert 'test - inner attachment eml.eml' in results.parsed_email[0]['Attachments']
-    assert results.parsed_email[0]['Depth'] == 0
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['Subject'] == 'Fwd: test - inner attachment eml'
+    assert 'ArcSight_ESM_fixes.yml' in results.parsed_email['Attachments']
+    assert 'test - inner attachment eml.eml' in results.parsed_email['Attachments']
+    assert results.parsed_email['Depth'] == 0
+    assert len(results.parsed_email['AttachmentsData']) == 2
 
 
 def test_eml_utf_text():
@@ -250,7 +244,6 @@ def test_email_raw_headers_from_is_cyrillic_characters():
 
 
 def test_eml_contains_eml_with_status():
-    subject_attach = '=?iso-8859-7?B?Rlc6IEZPT0RMSU5LINDLx9HZzMc=?='  # disable-secrets-detection
 
     test_path = 'parse_emails/tests/test_data/ParseEmailFiles-test-emls.eml'
     test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
@@ -258,7 +251,7 @@ def test_eml_contains_eml_with_status():
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
 
-    assert results.parsed_email[1]['Subject'] == subject_attach
+    assert results.parsed_email[1]['Subject'] == 'FW: FOODLINK ΠΛΗΡΩΜΗ'
 
 
 @pytest.mark.parametrize('file_name', ['eml_contains_base64_eml.eml', 'eml_contains_base64_eml2.eml'])
@@ -602,3 +595,34 @@ def test_double_dots_removed():
     results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
     results.parse()
     assert 'http://schemas.microsoft.com/office/2004/12/omml' in results.parsed_email['HTML']
+
+
+def test_handle_eml_parses_correct_message_id():
+    """
+    Given:
+     - eml file
+    When:
+     - parsing eml file into email data.
+    Then:
+     - Validate that correct 'Message-ID' case sensitive is in 'HeadersMap' dict.
+       Must be 'Message-ID' case sensitive.
+    """
+    email_data, _ = handle_eml(file_path='parse_emails/tests/test_data/invalid_message_id.eml')
+    assert 'Message-ID' in email_data['HeadersMap']
+
+
+def test_long_subject_and_special_characters():
+    """
+    Fixes: https://github.com/demisto/etc/issues/47691
+    Given:
+        an eml file with a long subject and special characters.
+    Then:
+        assert all the subject is parsed correctly.
+
+    """
+    test_path = 'parse_emails/tests/test_data/file_with_a_long_subject_and_special_characters.eml'
+    test_type = 'RFC 822 mail text, with CRLF line terminators'
+
+    results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+    results.parse()
+    assert results.parsed_email['Subject'] == 'Those characters : üàéüö will mess with the parsing automation'

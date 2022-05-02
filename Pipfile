@@ -9,7 +9,6 @@ datetime = "*"
 chardet = "*"
 pytest = "*"
 python-magic = "*"
-RTFDE = "*"
 compressed_rtf = "*"
 
 [dev-packages]
