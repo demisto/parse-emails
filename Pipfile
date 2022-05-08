@@ -10,6 +10,7 @@ chardet = "*"
 pytest = "*"
 python-magic = "*"
 compressed_rtf = "*"
+RTFDE = "*"
 
 [dev-packages]
 pre-commit = "*"

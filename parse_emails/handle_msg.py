@@ -829,7 +829,7 @@ class Message(object):
         self.html = property_values.get("Html")
         self.body = property_values.get("Body")
 
-        if not self.body and "RtfCompressed" in property_values:
+        if "RtfCompressed" in property_values:
             try:
                 import compressed_rtf
             except ImportError:
