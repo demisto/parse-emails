@@ -629,6 +629,14 @@ def test_long_subject_and_special_characters():
 
 
 def test_rtf_msg():
+    """
+    Fixes: https://github.com/demisto/etc/issues/26951
+    Given:
+        an mgg file with a rtf compressed body.
+    Then:
+        assert the body is parsed correctly.
+
+    """
     test_path = 'parse_emails/tests/test_data/msg_with_rtf_compressed.msg'
     email_parser = EmailParser(file_path=test_path)
     results = email_parser.parse()
