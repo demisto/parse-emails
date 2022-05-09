@@ -626,3 +626,19 @@ def test_long_subject_and_special_characters():
     results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
     results.parse()
     assert results.parsed_email['Subject'] == 'Those characters : üàéüö will mess with the parsing automation'
+
+
+def test_rtf_msg():
+    """
+    Fixes: https://github.com/demisto/etc/issues/26951
+    Given:
+        an mgg file with a rtf compressed body.
+    Then:
+        assert the body is parsed correctly.
+
+    """
+    test_path = 'parse_emails/tests/test_data/msg_with_rtf_compressed.msg'
+    email_parser = EmailParser(file_path=test_path)
+    results = email_parser.parse()
+    assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results['HTML']
+    assert 'src="data:image/png;base64, ' in results['HTML']
