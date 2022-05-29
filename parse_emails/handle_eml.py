@@ -281,8 +281,10 @@ def decode_content(mime):
         if payload:
             if charset == 'ascii':
                 return payload.decode("ascii")
-            if charset == 'iso-8859-2':
+            elif charset == 'iso-8859-2':
                 return payload.decode('iso-8859-2')
+            elif charset == 'utf-8':
+                return payload.decode('utf-8')
             else:
                 return payload.decode("raw-unicode-escape")
         else:

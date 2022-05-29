@@ -137,6 +137,16 @@ def test_eml_utf_text():
     assert results.parsed_email['Subject'] == 'Test UTF Email'
 
 
+def test_eml_utf_text_special_chars():
+    test_path = 'parse_emails/tests/test_data/eml_with_special_utf_8_chars.eml'
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
+    results = email_parser.parse()
+
+    assert isinstance(results, dict)
+    assert results['Subject'] == 'Tèst àttæchêmęnt sùbjëct'
+    assert results['Text'] == 'Tèst àttæchêmęnt bœdy'
+
+
 def test_eml_utf_text_with_bom():
     '''Scenario: Parse an eml file that is UTF-8 Unicode (with BOM) text
 
