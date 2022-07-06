@@ -64,6 +64,17 @@ def test_eml_smtp_type():
     assert results.parsed_email['Subject'] == 'Test Smtp Email'
 
 
+def test_eml_smtp_envelope_headers():
+    test_path = 'parse_emails/tests/test_data/smtp_envelope_headers.eml'
+    test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['Subject'] == 'Test Smtp Email'
+
+
 # this is a test for another version of a multipart signed eml file
 def test_smime2():
 
