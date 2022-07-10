@@ -27,7 +27,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         return None, []
 
     with open(file_path, 'rb') as emlFile:
-
+        handle_SMTP_headers(emlFile)
         file_data = emlFile.read()
         if b64:
             file_data = b64decode(file_data)
@@ -294,6 +294,21 @@ def decode_content(mime):
         payload = mime.get_payload()
         if isinstance(payload, str):
             return payload
+
+
+def handle_SMTP_headers(emlFile):
+    """
+    Remove the transfer headers attached to the eml file by the SMTP protocol. The function reads the lines of the input
+    eml file until a line which isn't an SMTP header is reached.
+    """
+    SMTP_HEADERS = ['MAIL FROM', 'RCPT TO', 'DATA']
+    remove_smtp_header = True
+    while remove_smtp_header:
+        pos = emlFile.tell()
+        line = emlFile.readline()
+        if not any(smtp_header in str(line) for smtp_header in SMTP_HEADERS):
+            remove_smtp_header = False
+            emlFile.seek(pos)
 
 
 def mime_decode(word_mime_encoded):
