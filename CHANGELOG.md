@@ -1,7 +1,7 @@
 # Changelog
 v0.0.10
 * Fixed an issue where eml files that contained SMTP envelope headers where not handled properly.
-* Fixed an issue where a some file type was not supported.
+* Fixed an issue where the script failed on particular MIME entity file type.
 
 v0.0.9
 * Fixed an issue where special characters in the text and html parts were not parsed properly.
