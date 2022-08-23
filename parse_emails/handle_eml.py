@@ -279,14 +279,15 @@ def embed_images_to_html_body(html, attachments_images):
         str: the HTML embedded with images.
     """
     for attachment_id, image_base64 in attachments_images:
-        attachment_id = re.sub('<?>?', '', attachment_id)  # remove < and > from the attachment-ID.
-        # '<image001.jpg@01D8B147.CFCD4400>' --> image001.jpg@01D8B147.CFCD4400
-        image_base64 = re.sub('\n|\r', '', image_base64)  # remove escaping chars
-        attachment_cid_pattern = f'src="cid:{attachment_id}"'
-        if attachment_cid_pattern in html:
-            html = html.replace(
-                attachment_cid_pattern, f'src="data:image/jpeg;base64,{image_base64}"'
-            )
+        if attachment_id:
+            attachment_id = re.sub('<?>?', '', attachment_id)  # remove < and > from the attachment-ID.
+            # '<image001.jpg@01D8B147.CFCD4400>' --> image001.jpg@01D8B147.CFCD4400
+            image_base64 = re.sub('\n|\r', '', image_base64)  # remove escaping chars
+            attachment_cid_pattern = f'src="cid:{attachment_id}"'
+            if attachment_cid_pattern in html:
+                html = html.replace(
+                    attachment_cid_pattern, f'src="data:image/jpeg;base64,{image_base64}"'
+                )
     return html
 
 
