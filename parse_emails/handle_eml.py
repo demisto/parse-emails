@@ -89,6 +89,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         attachment_content_ids = []
         attachment_content_dispositions = []
         attachment_content = []
+        attachments_images = []  # could be .png / jpg files.
 
         attached_emails = []
         parts = [eml]
@@ -192,6 +193,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                         # fileResult will return an error if file_content is None.
                         if file_content and not attachment_file_name.endswith('.p7s'):
                             attachment_content.append(file_content)
+                            attachments_images.append((attachment_content_id, part.get_payload().strip()))
 
                         if attachment_file_name.endswith(".msg") and max_depth - 1 > 0:
                             if file_content:
@@ -225,6 +227,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
             elif part.get_content_type() == 'text/plain':
                 text = decode_content(part)
+
+        if attachments_images and html:  # embed images into the HTML body.
+            html = embed_images_to_html_body(html=html, attachments_images=attachments_images)
+
         email_data = None
         # if we are parsing a signed attachment there can be one of two options:
         # 1. it is 'multipart/signed' so it is probably a wrapper and we can ignore the outer "email"
@@ -255,6 +261,32 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'FileName': file_name
             }
         return email_data, attached_emails
+
+
+def embed_images_to_html_body(html, attachments_images):
+    """
+    Embed images into the HTML body by changing the src of the image to the image content in base64
+
+    Args:
+        html (str): the HTML of the email.
+        attachments_images (List(tuple[str, str])): a list of tuples containing attachment IDs and the image content in
+            base64.
+
+    https://sendgrid.com/blog/embedding-images-emails-facts/
+
+    Returns:
+        str: the HTML embedded with images.
+    """
+    for attachment_id, image_base64 in attachments_images:
+        attachment_id = re.sub('<?>?', '', attachment_id)  # remove < and > from the attachment-ID.
+        # '<image001.jpg@01D8B147.CFCD4400>' --> image001.jpg@01D8B147.CFCD4400
+        image_base64 = re.sub('\n|\r', '', image_base64)  # remove escaping chars
+        attachment_cid_pattern = f'src="cid:{attachment_id}"'
+        if attachment_cid_pattern in html:
+            html = html.replace(
+                attachment_cid_pattern, f'src="data:image/jpeg;base64,{image_base64}"'
+            )
+    return html
 
 
 def unfold(s):
