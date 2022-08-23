@@ -283,7 +283,7 @@ def embed_images_to_html_body(html, attachments_images):
 
     for attachment_id, image_base64 in attachments_images:
         if attachment_id:  # in p7m files types we can have png files without an attachment ID.
-            attachment_id = re.sub('<?>?', '', attachment_id)  # remove < and > from the attachment-ID.
+            attachment_id = re.sub('<|>', '', attachment_id)  # remove < and > from the attachment-ID.
             # '<image001.jpg@01D8B147.CFCD4400>' --> image001.jpg@01D8B147.CFCD4400
             image_base64 = re.sub('\n|\r', '', image_base64)  # remove escaping chars
             attachment_cid_pattern = f'src="cid:{attachment_id}"'
