@@ -193,7 +193,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                         # fileResult will return an error if file_content is None.
                         if file_content and not attachment_file_name.endswith('.p7s'):
                             attachment_content.append(file_content)
-                            attachments_images.append((attachment_content_id, part.get_payload().strip()))
+                            if attachment_file_name.endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                                attachments_images.append((attachment_content_id, part.get_payload().strip()))
 
                         if attachment_file_name.endswith(".msg") and max_depth - 1 > 0:
                             if file_content:
