@@ -435,7 +435,7 @@ def test_eml_format_multipart_mix():
 
 
 def test_eml_format_multipart_related():
-    test_path = 'test_data/multipart_related_format.p7m'
+    test_path = 'parse_emails/tests/test_data/multipart_related_format.p7m'
     test_type = 'multipart/related'
 
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
