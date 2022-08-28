@@ -1,6 +1,6 @@
 # Changelog
 v0.0.11
-* Added support for embedded images in EML files.
+* Added support for cid-embedded images in EML files.
 
 v0.0.10
 * Fixed an issue where eml files that contained SMTP envelope headers where not handled properly.
