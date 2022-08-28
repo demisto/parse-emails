@@ -1,4 +1,7 @@
 # Changelog
+v0.0.11
+* Added support for embedded images in EML files.
+
 v0.0.10
 * Fixed an issue where eml files that contained SMTP envelope headers where not handled properly.
 * Fixed an issue where the script failed on particular MIME entity file type.
