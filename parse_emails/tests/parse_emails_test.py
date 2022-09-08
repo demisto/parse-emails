@@ -667,6 +667,23 @@ def test_rtf_msg():
     assert 'src="data:image/png;base64, ' in results['HTML']
 
 
+def test_eml_with_attachment_with_no_name():
+    """
+    Fixes: https://jira-hq.paloaltonetworks.local/browse/XSUP-16126
+    Given:
+       Eml file with content type text/html and no file name in Content-Disposition .
+    Then:
+        assert it is parsed correctly.
+
+    """
+    test_path = 'parse-emails/parse_emails/tests/test_datatest-eml-text-html.eml'
+    parse_emails = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False)
+    results = parse_emails.parse()
+    assert results['To'] == 'demisto.test@test.com'
+    assert results['From'] == 'some@message.com'
+    assert 'VMail Enclosed for John Smith' in results['Subject']
+
+
 def test_embedding_image_into_html_of_eml():
     """
     Given:
