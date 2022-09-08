@@ -406,13 +406,10 @@ def get_attachment_filename(part):
         if os.path.isabs(attachment_file_name):
             attachment_file_name = os.path.basename(attachment_file_name)
     else:
-        if not isinstance(part.get_payload(), list):
-            attachment_file_name = 'unknown_file_name'
-        else:
-            for payload in part.get_payload():
-                if payload.get_filename():
-                    attachment_file_name = payload.get_filename()
-                    break
+        for payload in part.get_payload():
+            if payload.get_filename():
+                attachment_file_name = payload.get_filename()
+                break
 
     return attachment_file_name
 
