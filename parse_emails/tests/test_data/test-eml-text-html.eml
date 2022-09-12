@@ -23,7 +23,7 @@ Received-SPF: Pass (protection.outlook.com: domain of us-west-2.amazonses.com
  receiver=protection.outlook.com; client-ip=1.2.3.4;
  helo=a27-189.smtp-out.us-west-2.amazonses.com; pr=C
 Received: from a12-345.smtp-out.us-west-2.amazonses.com (1.2.3.4) by
- BN7NAM10FT054.mail.protection.outlook.com (10.13.157.112) with Microsoft SMTP
+ BN7NAM10FT054.mail.protection.outlook.com (1.2.3.4) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  1.2.3.4 via Frontend Transport; Tue, 30 Aug 2022 14:19:49 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
@@ -49,15 +49,15 @@ To: demisto.test@test.com
 From: ||John|| <some@message.com>
 Subject: =?us-ascii?Q?VMail_Enclosed_for_John_Smith_:August_30,_2022,_04:49_?=
  =?us-ascii?Q?AM_HDT?=
-Message-ID: <01010182ef1f6556-67f1cc3b-846b-4f57-9c31-5b7f0de11dcd-000000@us-west-2.amazonses.com>
+Message-ID: <123456789-67f1cc3b-846b-4f57-9c31-5b7f0de11dcd-000000@us-west-2.amazonses.com>
 X-Priority: 3
 Content-Type: multipart/mixed;
  boundary="b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM"
 Content-Transfer-Encoding: 8bit
-Feedback-ID: 1.us-west-2.y3HkldDy6L6EATuQ79HAckNLAxfwJoPSCbG3dNvHrMY=:AmazonSES
-X-SES-Outgoing: 2022.08.30-54.240.27.189
+Feedback-ID: 1.us-west-2.y3HkldDy6L6EATuQ79HAckNLAxfwJoPSCbG3dNvAbCD=:AmazonSES
+X-SES-Outgoing: 2022.08.30-1.2.3.4
 Return-Path:
- 01010182ef1f6556-67f1cc3b-846b-4f57-9c31-5b7f0de11dcd-000000@us-west-2.amazonses.com
+ 01010182ef1f6556-12345678-846b-4f57-9c31-5b7f0de11dcd-000000@us-west-2.amazonses.com
 X-MS-Exchange-Organization-ExpirationStartTime: 30 Aug 2022 14:19:49.7089
  (UTC)
 X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
@@ -66,7 +66,7 @@ X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
 X-MS-Exchange-Organization-Network-Message-Id:
  7693e187-3733-4519-deb9-08da8a92b2dd
 X-EOPAttributedMessage: 0
-X-EOPTenantAttributedMessage: 082722e4-dbdf-4801-b74f-274a5921d5ec:0
+X-EOPTenantAttributedMessage: 12345-dbdf-4801-b74f-274a5921d5ec:0
 X-MS-Exchange-Organization-MessageDirectionality: Incoming
 X-MS-PublicTrafficType: Email
 X-MS-Exchange-Organization-AuthSource:
@@ -81,7 +81,7 @@ X-Forefront-Antispam-Report:
  CIP:54.240.27.189;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:a27-189.smtp-out.us-west-2.amazonses.com;PTR:a27-189.smtp-out.us-west-2.amazonses.com;CAT:NONE;SFS:(13230016)(4636009)(564344004)(356005)(9316004)(83170400001)(22186003)(34756004)(7596003)(7636003)(8676002)(1096003)(5660300002)(58800400005)(6486002)(77540400001)(6916009)(43170500006)(36736006)(336012)(42882007)(71280400001)(956004)(7696005)(6506007)(33964004)(26005)(9686003)(83380400001)(79850400001)(130870200001);DIR:INB;
 X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2022 14:19:49.4589
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7693e187-3733-4519-deb9-08da8a92b2dd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1234e187-3733-4519-deb9-08da8a92b2dd
 X-MS-Exchange-CrossTenant-Id: 082722e4-dbdf-4801-b74f-274a5921d5ec
 X-MS-Exchange-CrossTenant-AuthSource:
  BN7NAM10FT054.eop-nam10.prod.protection.outlook.com
@@ -89,7 +89,7 @@ X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ABCDE12FG4017
 X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.8341183
-X-MS-Exchange-Processed-By-BccFoldering: 15.20.5588.010
+X-MS-Exchange-Processed-By-BccFoldering: 1.2.33.4
 X-Microsoft-Antispam-Mailbox-Delivery:
 	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097);
 X-Microsoft-Antispam-Message-Info:
