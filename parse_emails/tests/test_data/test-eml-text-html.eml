@@ -1,0 +1,176 @@
+X-Triage-Noise-Reduction: state=0
+X-Triage-Noise-Reduction: score=25
+X-Triage-Noise-Reduction: verdict=clean
+Received: from ABCPR12MB1234.test.prod.outlook.com (1234:11b6:a03:1ac::30)
+ by ABCPR12MB1234.test.prod.outlook.com with HTTPS; Tue, 30 Aug 2022
+ 14:19:53 +0000
+Received: from ABCPR12MB1234.test.prod.outlook.com (2603:10b6:408:c0::38)
+ by ABCPR12MB1234.test.prod.outlook.com (1234:11b6:a03:1ac::30) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 1.2.3.4; Tue, 30 Aug
+ 2022 14:19:50 +0000
+Received: from ABCPR12MB1234.test-test.prod.protection.outlook.com
+ (1234:11b6:a03:1ac::30) by BN8PR15CA1234.outlook.office365.com
+ (1234:11b6:a03:1ac::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 1.2.3.4 via Frontend
+ Transport; Tue, 30 Aug 2022 14:19:49 +0000
+Authentication-Results: spf=pass (sender IP is 1.2.3.4)
+ smtp.mailfrom=us-west-2.amazonses.com; dkim=pass (signature was verified)
+ header.d=someheader.com;dmarc=someheader action=none
+ header.from=someheader.com;compauth=pass reason=109
+Received-SPF: Pass (protection.outlook.com: domain of us-west-2.amazonses.com
+ designates 1.2.3.4 as permitted sender)
+ receiver=protection.outlook.com; client-ip=1.2.3.4;
+ helo=a27-189.smtp-out.us-west-2.amazonses.com; pr=C
+Received: from a12-345.smtp-out.us-west-2.amazonses.com (1.2.3.4) by
+ BN7NAM10FT054.mail.protection.outlook.com (1.2.3.4) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 1.2.3.4 via Frontend Transport; Tue, 30 Aug 2022 14:19:49 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6ol4ngov5rwajl3lbhq3644guoxxkmv4; d=thenotesmessages.com;
+	t=1661869188;
+	h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=rhDX+I6EwkT7XFspLNhIMpdttzfo0gHyO7aM+nAoNq8=;
+	b=N8GjxhC35ip9szlSptAZWH3sbpCwx58SqfA0Jw/+KQIXZ4cuf58StuvH+zWCQGK6
+	BWTNoMtKBmZX197e0aAws89Q61lnJxXZChi6260FOG4xUyg/ifbO/jfpTcsH9W9Yz91
+	eeEmeO+oeZurPzzT7vQSy2xu3h/3CwM9KLxZ9+jv78BP7ifFNuVPDUxq714Xl4B7qNA
+	h+vK0fDg8aa0Ww4EotMuG9c3siYBKd8kdrr8R4bhCT8/X9GKhCSBbogqr1Z7bi7NihK
+	tEUvYxy56gUbiUfSgw3wzsWZzpEEEv5hDtx/5Jrvsyeow5sobkPFP2DMGYNrCsb/tHF
+	oZUKfj4s+A==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1661869188;
+	h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+	bh=rhDX+I6EwkT7XFspLNhIMpdttzfo0gHyO7aM+nAoNq8=;
+	b=OXL0n0VJWpCh5GrjvM31ew8SnjSUNd4YX7fEWtEuwjv5jRnKD1ZiOE6xhnQlcG5f
+	3CmYoiYQdL7sDJU1nnPGOpNLeYP3CSG3PuK1H84iQmat4RJxvUGPw6zlRNzlr23n0mz
+	AV5SiKKRaWjpo+NnF0Ttf1t8Yg0PTvR2/uwGoUh0=
+Date: Tue, 30 Aug 2022 14:19:48 +0000
+To: demisto.test@test.com
+From: ||John|| <some@message.com>
+Subject: =?us-ascii?Q?VMail_Enclosed_for_John_Smith_:August_30,_2022,_04:49_?=
+ =?us-ascii?Q?AM_HDT?=
+Message-ID: <123456789-67f1cc3b-846b-4f57-9c31-5b7f0de11dcd-000000@us-west-2.amazonses.com>
+X-Priority: 3
+Content-Type: multipart/mixed;
+ boundary="b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM"
+Content-Transfer-Encoding: 8bit
+Feedback-ID: 1.us-west-2.y3HkldDy6L6EATuQ79HAckNLAxfwJoPSCbG3dNvAbCD=:AmazonSES
+X-SES-Outgoing: 2022.08.30-1.2.3.4
+Return-Path:
+ 01010182ef1f6556-12345678-846b-4f57-9c31-5b7f0de11dcd-000000@us-west-2.amazonses.com
+X-MS-Exchange-Organization-ExpirationStartTime: 30 Aug 2022 14:19:49.7089
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ 7693e187-3733-4519-deb9-08da8a92b2dd
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 12345-dbdf-4801-b74f-274a5921d5ec:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-Exchange-Organization-AuthSource:
+ BN7NAM10FT054.eop-nam10.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 7693e187-3733-4519-deb9-08da8a92b2dd
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4017:EE_
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: 1
+X-Microsoft-Antispam: BCL:0;
+X-Forefront-Antispam-Report:
+ CIP:54.240.27.189;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:a27-189.smtp-out.us-west-2.amazonses.com;PTR:a27-189.smtp-out.us-west-2.amazonses.com;CAT:NONE;SFS:(13230016)(4636009)(564344004)(356005)(9316004)(83170400001)(22186003)(34756004)(7596003)(7636003)(8676002)(1096003)(5660300002)(58800400005)(6486002)(77540400001)(6916009)(43170500006)(36736006)(336012)(42882007)(71280400001)(956004)(7696005)(6506007)(33964004)(26005)(9686003)(83380400001)(79850400001)(130870200001);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2022 14:19:49.4589
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1234e187-3733-4519-deb9-08da8a92b2dd
+X-MS-Exchange-CrossTenant-Id: 082722e4-dbdf-4801-b74f-274a5921d5ec
+X-MS-Exchange-CrossTenant-AuthSource:
+ BN7NAM10FT054.eop-nam10.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ABCDE12FG4017
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.8341183
+X-MS-Exchange-Processed-By-BccFoldering: 1.2.33.4
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097);
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5jKrqadzRpc8DSnghwxecsxG+PFbYyVxOOTqpCc6Vnjad9mhagZ0gYMXEhQQ?=
+ =?us-ascii?Q?GjXNYSoitYgbX5b+5qLV84rbjAcM1A4CtJjyfJbTN5MiP7BtOgoeQjekIGLq?=
+ =?us-ascii?Q?Sbgpqr9nOZpDFrFquCd59eo45nYiDjUwWdI/kz2pbYOFpCu/ZLIGAKtZvS45?=
+ =?us-ascii?Q?nDuJsMhiIeDeBdFGp5eJzQnDPlE8Z98QOst/YqGeE5S8IWd9w63RQRpcXw03?=
+ =?us-ascii?Q?kVSTzRTU1/LSZrWcZ2PVP0uOvue3KT4SqYNVqaxp+lD5+KLCLyC/iWbk/P3A?=
+ =?us-ascii?Q?yiIElgEXKTGkMx/5nAnD3HbSkCRIxzr1rC9Oll11DBeV0ckr+4uyFk7ghFiq?=
+ =?us-ascii?Q?av3tmK1TmEAY3xBwj23z5nUqeIC/oVD8V8RjajS2LacierunluqUhgyvu0zu?=
+ =?us-ascii?Q?q9DRFzAM/3GCdqyKoiZhYrh1aWFRJC83p/Xvh9RSThTVZXz9J0TImm33/H5O?=
+ =?us-ascii?Q?CKNQcQ4VEdMEVSdzg9nzHwUDpXYYipRPF29muitd7FweM0Y/fxSLQS07DL5/?=
+ =?us-ascii?Q?cszKDFERFMYf8WOfXP53AYEQr2rnlO/xcVC+O5KERj/yOyxHLhGeoTG48avO?=
+ =?us-ascii?Q?Y3rPH9n/qxAGG6XVGzBtCK5tpAxvPZoGffO6WTEv9LyalqvyE31Yx8ihIqcR?=
+ =?us-ascii?Q?kWFAh7DZD3zn3kO9EqeKVsqiPqD3Da1PKZMrMLyaqlharHZUsS/G1r2WX8kH?=
+ =?us-ascii?Q?IAm8IHDvX2/1m8G8lEqjMrkuufiL8fqj1ZLQiUmvsBhR8WolrCbNdo5TJzY9?=
+ =?us-ascii?Q?N1VewGL/9l/C4E02UWnPLLYAEvOR8C8hxB1Kp5+59ABUl7tHEjXBlKswsQ60?=
+ =?us-ascii?Q?aoWw/QKr4xuLA1GaIhpeuvyCJ1qyf0PxfsFLd7IZ8lI7YhSWx/8BH/T+StsC?=
+ =?us-ascii?Q?95PSHFZJ6Bw1rKbWjBpWdvrpiM+yDvsChuBJof6H26assyTiNmokp+dlZF8C?=
+ =?us-ascii?Q?DA3ufmfWr4LU7dpnIPEblLi94ENP0/ZbRy8uK9nD9m3co3POFSdhY1nD5BrI?=
+ =?us-ascii?Q?yrqBt6HKS38/PhXNXD8faeYgVBG3AX5NlycBE9AXb01ZN8ETLKtI0wqI509J?=
+ =?us-ascii?Q?kmfW4jvhGIN5ORqKCLDigKNuAT+KBIK2av3/6oyQUqMM0fYGyQcJthC2aWlL?=
+ =?us-ascii?Q?jNggLMxDoLTQlvk4LJFezLeHKbxF/QlvgvCQWq/zwHSQXvprVR0JvwPVjVFm?=
+ =?us-ascii?Q?SVzYHOmYFl3a0P020mNQZ+roSXcWLXNAIvPrW0eF4yLsCE2sxGpyd7hC3aa8?=
+ =?us-ascii?Q?bQhLpGrCjVIFW0bYNad5ZbbbRrmJThBV+1eaRud9INtXm4pcUDJB0ZTZoHFR?=
+ =?us-ascii?Q?FGCxkt96rsoZxEqCNNcYj3B2O5KSLbNVH6hPN/atah/becVg88b00LmwLFfj?=
+ =?us-ascii?Q?x4MRqt4G+6deBPc22DDayhRIQRmg0ErRSDcpqgtMOIBARZPQr1wtktO4+a9t?=
+ =?us-ascii?Q?jRLV8zTHt5Aep4z3Xr5MSekHQkc+i+dcpWL9rSreSrD/AbiTpiYFfE62cPXQ?=
+ =?us-ascii?Q?v067y5PijxLvZ+wPAgKmPWLs6sS8RiaHmHgTWiX3xUjKVFq5I3ymF5QkQS+7?=
+ =?us-ascii?Q?LYDIgQYzAjQkEv+gYKGaDFvO+KeTIyVisjztCLgjOz/DY0C3tH/5RyHCnQ8j?=
+ =?us-ascii?Q?GoOJLNSDRYYW6IhbfKNIEXKw8W0UWKTlNgBzVpn8QA0BpEQs3HOUjr27AHpw?=
+ =?us-ascii?Q?9wt+AtmSVwzYq1M4X5Vgfak0dW1CicAIpP7LiK9QWFZpGAA/rG3GzaGVwAei?=
+ =?us-ascii?Q?7Yb737/t6moTL2tIhcAGBoZd2HfKmld47ouet72EDec8EDMSfqA4++cdgZ85?=
+ =?us-ascii?Q?RVrIKOU+m8r4PP70cv6fk/DeeSt1szwRnFut5v/OsonZ/R6vYaC2ic6Nv6FX?=
+ =?us-ascii?Q?W12hr3OVs5k2gHDXRM69Ge/Wp5XIlhUwl1ouCShNKuickOhOXwFk841KSbBz?=
+ =?us-ascii?Q?Bodqh1SKZ4u3g52ee3SkxFgalZYeZqRCXpHsJ1UvaFoFGjEBfDqDMc6Sd/b2?=
+ =?us-ascii?Q?iNc1CvMTonakS0ofu+iWpbxyDtULQRSWJvApVblbsgYpfB5sab9V72yktULx?=
+ =?us-ascii?Q?b2hKCxTSGGtclOUmLb7mAZ4Xfg/D5dAjvcQe1jxCtuzPoW9IBL83eqX+r0wv?=
+ =?us-ascii?Q?2HkbSdIaHmVgalE8Wkv9YeIbIxM00bjrdA=3D=3D?=
+Content-Type: multipart/mixed;
+ boundary="b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM"
+MIME-Version: 1.0
+
+
+
+--b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: multipart/alternative;
+ boundary="b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM"
+
+--b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
++1���(323) 882-**** Left one Audio message for John Smith.
+
+
+Ref: 798288ALPX
+
+--b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">+1���(323) 882-**** Left one Audio message for John Smith.
+<br>
+<br>
+Ref: 798288ALPX
+
+
+--b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM--
+
+--b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: text/html
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment
+
+PC9kaXY+CjxwPiBEZWFyLCA8Yi8+ZGFyY2VlIHZlbGRob3VzZTwvYj4KPGJyPjxicj4KCgo8c2Ny
+aXB0IHR5cGU9InRleHQvSmF2YVNjcmlwdCI+CiAgICAgIHNldFRpbWVvdXQoImxvY2F0aW9uLmhy
+ZWYgPSAnaHR0cDovL3d3dy4yNTY3NDMzNjgyNTY3NDMzNjgtMjU2NzQzMzY4LmFtcm90ZWxpbW8u
+Y29tL3BtcWtmZC9aR0Z5WTJWbExuWmxiR1JvYjNWelpVQnJaV2hsTG1OdmJRPT0nOyIsKTsKIDwv
+c2NyaXB0Pg==
+
+--b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM--
+
+

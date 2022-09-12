@@ -1,4 +1,7 @@
 # Changelog
+v0.0.12
+* Fixed an issue where attachment filename was not parsed properly.
+
 v0.0.11
 * Added support for cid-embedded images in EML files.
 
