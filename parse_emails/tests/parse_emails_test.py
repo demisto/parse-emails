@@ -676,7 +676,7 @@ def test_eml_with_attachment_with_no_name():
         assert it is parsed correctly.
 
     """
-    test_path = 'parse-emails/parse_emails/tests/test_datatest-eml-text-html.eml'
+    test_path = 'parse_emails/tests/test_data/test-eml-text-html.eml'
     parse_emails = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False)
     results = parse_emails.parse()
     assert results['To'] == 'demisto.test@test.com'
