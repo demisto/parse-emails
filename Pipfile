@@ -11,6 +11,8 @@ pytest = "*"
 python-magic = "*"
 compressed_rtf = "*"
 RTFDE = "*"
+pip = "*"
+pyopenssl = "*"
 
 [dev-packages]
 pre-commit = "*"

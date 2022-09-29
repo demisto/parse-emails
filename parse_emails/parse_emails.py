@@ -3,7 +3,15 @@ import os
 import traceback
 from base64 import b64decode
 
+import OpenSSL.crypto
 import magic
+from OpenSSL import crypto
+from OpenSSL._util import (
+    ffi as _ffi,
+    lib as _lib,
+)
+from OpenSSL._util import lib
+
 
 from parse_emails.handle_eml import handle_eml
 from parse_emails.handle_msg import handle_msg
@@ -18,8 +26,8 @@ class EmailParser(object):
                  default_encoding=None):
 
         self._file_path = file_path
-        self._file_type = self.get_file_type(file_info)
         self._file_name = os.path.basename(self._file_path)
+        self._file_type = self.get_file_type(file_info)
         self._max_depth = max_depth
         self._parse_only_headers = parse_only_headers
         self._forced_encoding = forced_encoding
@@ -32,11 +40,26 @@ class EmailParser(object):
             raise Exception('Minimum max_depth is 1, the script will parse just the top email')
 
     def get_file_type(self, file_type):
+
+        mime = magic.Magic()
         if not file_type:
-            mime = magic.Magic()
             file_type = mime.from_file(self._file_path)
+
+        if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
+            if bio := remove_p7m_file_signature(self._file_path):
+                with open(self._file_path, 'w') as fp:  # override the contents of the .p7m file without the signature.
+                    try:
+                        bio_as_bytes = crypto._bio_to_string(bio)
+                        fp.write(bio_as_bytes.decode('unicode_escape'))
+                        file_type = mime.from_file(self._file_path)
+                    except UnicodeDecodeError:
+                        logging.error(f'could not decode bio {bio_as_bytes}')
+            else:
+                logging.error(f'could not remove {self._file_path=} signature.')
+
         if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
             file_type = 'application/pkcs7-mime'
+
         return file_type
 
     def check_if_is_msg(self):
@@ -119,6 +142,36 @@ class EmailParser(object):
 
         except Exception as ex:
             raise Exception(str(ex) + "\n\nTrace:\n" + traceback.format_exc())
+
+
+def remove_p7m_file_signature(file_path):
+    """
+    Removes the signature from a p7m file.
+
+    Notes:
+        1. mimic the command openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m
+        2. if the signature verification wasn't successful, will return None, otherwise will return the p7m file content
+           without the signature.
+
+    Usage Example:
+        https://stackoverflow.com/questions/68300185/python-how-to-extract-the-xml-part-from-xml-p7m-file
+
+    Returns:
+        an object that contains file data without the signature in case of success, None otherwise
+    """
+    with open(file_path, 'rb') as f:
+        try:
+            # mimic the command openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m
+            # for p7m files that have signature.
+            p7 = crypto.load_pkcs7_data(crypto.FILETYPE_ASN1, f.read())
+
+            bio = crypto._new_mem_buf()
+            res = _lib.PKCS7_verify(p7._pkcs7, _ffi.NULL, _ffi.NULL, _ffi.NULL, bio,
+                                    _lib.PKCS7_NOVERIFY | _lib.PKCS7_NOSIGS)
+            return bio if res == 1 else None  # if result != 1, it means the verification failed.
+        except OpenSSL.crypto.Error as e:
+            logging.error(f'Error occurred while removing {file_path} signature: {e}')
+            return None
 
 
 def create_email_output(email_data, attached_emails):
