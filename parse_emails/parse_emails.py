@@ -10,7 +10,6 @@ from OpenSSL._util import (
     ffi as _ffi,
     lib as _lib,
 )
-from OpenSSL._util import lib
 
 
 from parse_emails.handle_eml import handle_eml
@@ -56,7 +55,7 @@ class EmailParser(object):
                     except UnicodeDecodeError:
                         logging.error(f'could not decode bio {bio_as_bytes}')
             else:
-                logging.error(f'could not remove {self._file_path=} signature.')
+                logging.error(f'could not remove file {self._file_path} signature.')
 
         if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
             file_type = 'application/pkcs7-mime'
