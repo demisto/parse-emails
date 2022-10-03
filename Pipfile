@@ -13,6 +13,7 @@ compressed_rtf = "*"
 RTFDE = "*"
 pip = "*"
 pyopenssl = "*"
+types-pyopenssl = "*"
 
 [dev-packages]
 pre-commit = "*"

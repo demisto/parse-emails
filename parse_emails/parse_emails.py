@@ -3,14 +3,11 @@ import os
 import traceback
 from base64 import b64decode
 
-import OpenSSL.crypto
 import magic
+import OpenSSL.crypto
 from OpenSSL import crypto
-from OpenSSL._util import (
-    ffi as _ffi,
-    lib as _lib,
-)
-
+from OpenSSL._util import ffi as _ffi
+from OpenSSL._util import lib as _lib
 
 from parse_emails.handle_eml import handle_eml
 from parse_emails.handle_msg import handle_msg
