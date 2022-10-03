@@ -46,7 +46,8 @@ class EmailParser(object):
             file_type = mime.from_file(self._file_path)
 
         if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
-            if bio := remove_p7m_file_signature(self._file_path):
+            bio = remove_p7m_file_signature(self._file_path)
+            if bio:
                 with open(self._file_path, 'w') as fp:  # override the contents of the .p7m file without the signature.
                     try:
                         bio_as_bytes = crypto._bio_to_string(bio)
