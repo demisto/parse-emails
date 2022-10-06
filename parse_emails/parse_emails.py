@@ -41,6 +41,7 @@ class EmailParser(object):
             file_type = mime.from_file(self._file_path)
 
         logging.debug(f'file_type={file_type}')
+        logging.debug(f'file_name={self._file_name}')
 
         if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
             logging.info(f'Removing signature from p7m file {self._file_path}')
