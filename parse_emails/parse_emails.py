@@ -4,7 +4,6 @@ import traceback
 from base64 import b64decode
 
 import magic
-import OpenSSL.crypto
 from OpenSSL import crypto
 from OpenSSL._util import ffi as _ffi
 from OpenSSL._util import lib as _lib
@@ -166,7 +165,7 @@ def remove_p7m_file_signature(file_path):
             res = _lib.PKCS7_verify(p7._pkcs7, _ffi.NULL, _ffi.NULL, _ffi.NULL, bio,
                                     _lib.PKCS7_NOVERIFY | _lib.PKCS7_NOSIGS)
             return bio if res == 1 else None  # if result != 1, it means the verification failed.
-        except OpenSSL.crypto.Error as e:
+        except crypto.Error as e:
             logging.error(f'Error occurred while removing {file_path} signature: {e}')
             return None
 
