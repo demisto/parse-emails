@@ -4,9 +4,9 @@ import traceback
 from base64 import b64decode
 
 import magic
-from OpenSSL import crypto
-from OpenSSL._util import ffi as _ffi
-from OpenSSL._util import lib as _lib
+from OpenSSL import crypto  # type: ignore
+from OpenSSL._util import ffi as _ffi  # type: ignore
+from OpenSSL._util import lib as _lib  # type: ignore
 
 from parse_emails.handle_eml import handle_eml
 from parse_emails.handle_msg import handle_msg
@@ -40,11 +40,7 @@ class EmailParser(object):
         if not file_type:
             file_type = mime.from_file(self._file_path)
 
-        logging.debug(f'file_type={file_type}')
-        logging.debug(f'file_name={self._file_name}')
-        logging.debug(f'file_path={self._file_path}')
-
-        if file_type == 'data':
+        if file_type == 'data' or self._file_name.lower().strip().endswith('.p7m'):
             logging.info(f'Removing signature from file {self._file_path}')
             bio = remove_p7m_file_signature(self._file_path)
             if bio:
