@@ -18,10 +18,10 @@ class EmailParser(object):
     """
 
     def __init__(self, file_path, max_depth=3, parse_only_headers=False, file_info='', forced_encoding=None,
-                 default_encoding=None):
+                 default_encoding=None, file_name=None):
 
         self._file_path = file_path
-        self._file_name = os.path.basename(self._file_path)
+        self._file_name = file_name or os.path.basename(self._file_path)
         self._file_type = self.get_file_type(file_info)
         self._max_depth = max_depth
         self._parse_only_headers = parse_only_headers
@@ -40,7 +40,7 @@ class EmailParser(object):
         if not file_type:
             file_type = mime.from_file(self._file_path)
 
-        if file_type == 'data' or self._file_name.lower().strip().endswith('.p7m'):
+        if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
             logging.info(f'Removing signature from file {self._file_path}')
             bio = remove_p7m_file_signature(self._file_path)
             if bio:

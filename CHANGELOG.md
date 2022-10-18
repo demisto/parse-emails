@@ -1,4 +1,8 @@
 # Changelog
+v0.0.13
+* Fixed an issue where signed .p7m files were not recognized.
+* Add the option the pass the file-name.
+
 v0.0.12
 * Fixed an issue where attachment filename was not parsed properly.
 
