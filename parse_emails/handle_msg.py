@@ -775,6 +775,17 @@ class Message(object):
 
         return None
 
+    @staticmethod
+    def _simplify_text_for_rtf_parsing(rtf_body):
+        """
+            Replaces control characters within the text with their RTF encoded versions \\'HH.
+        """
+        cleaned = rtf_body.replace(b'\\\\', b"\\'5c")
+        cleaned = cleaned.replace(b'\\{', b"\\'7b")
+        cleaned = cleaned.replace(b'\\}', b"\\'7d")
+        cleaned = cleaned.replace(b'\\~', b"")
+        return cleaned
+
     def _set_properties(self):
         property_values = self.properties
 
@@ -837,6 +848,7 @@ class Message(object):
             if compressed_rtf:
                 compressed_rtf_body = property_values['RtfCompressed']
                 rtf_body = compressed_rtf.decompress(compressed_rtf_body)
+                rtf_body = self._simplify_text_for_rtf_parsing(rtf_body)
                 from RTFDE.deencapsulate import DeEncapsulator
                 rtf_obj = DeEncapsulator(rtf_body)
                 rtf_obj.deencapsulate()
