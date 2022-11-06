@@ -1,4 +1,7 @@
 # Changelog
+v0.0.14
+* Fixed an issue where extracting the RTF body from msg emails failed.
+
 v0.0.13
 * Fixed an issue where signed .p7m files were not recognized.
 * Added the option to pass in the filename.
