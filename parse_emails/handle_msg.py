@@ -780,8 +780,8 @@ class Message(object):
         """
             Replaces control characters within the text with their RTF encoded versions \\'HH.
 
-            This function is a temporary hack - should be removed when version 0.0.3 of the RTFDE.deencapsulate package
-            is released.
+            This function is a temporary hack (https://github.com/seamustuohy/RTFDE/issues/5#issuecomment-1095355075) -
+            should be removed when version 0.0.3 of the RTFDE.deencapsulate package is released.
         """
         cleaned = \
             rtf_body.replace(b'\\\\', b"\\'5c").replace(b'\\{', b"\\'7b").replace(b'\\}', b"\\'7d").replace(b'\\~', b"")
