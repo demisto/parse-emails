@@ -1,7 +1,7 @@
 # Changelog
 
 v0.0.15
-* Added missing smime type: 'mime entity text, ascii text, with crlf line terminators'.
+* Fixed an issue where the script failed on a particular MIME entity file type.
 
 v0.0.14
 * Fixed an issue where extracting the RTF body from msg emails failed.
