@@ -83,7 +83,7 @@ class EmailParser(object):
 
             elif any(eml_candidate in file_type_lower for eml_candidate in
                      ['rfc 822 mail', 'smtp mail', 'multipart/signed', 'multipart/alternative', 'multipart/mixed', 'message/rfc822',
-                      'application/pkcs7-mime', 'multipart/related', 'utf-8 (with bom) text', 'mime entity text, ascii text, with crlf line terminators']):
+                      'application/pkcs7-mime', 'multipart/related', 'utf-8 (with bom) text']):
                 if 'unicode (with bom) text' in file_type_lower or 'utf-8 (with bom) text' in file_type_lower:
                     self._bom = True
                 email_data, attached_emails = handle_eml(
@@ -95,7 +95,7 @@ class EmailParser(object):
                   ('data' == file_type_lower.strip() and self._file_name and self._file_name.lower().strip().endswith('.eml'))):
                 try:
                     # Try to open the email as-is
-                    with open(self._file_path, 'r', encoding='utf-8') as f:
+                    with open(self._file_path, 'r', encoding='utf-8', errors='replace') as f:
                         file_contents = f.read()
 
                     if file_contents and 'Content-Type:'.lower() in file_contents.lower():

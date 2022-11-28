@@ -90,6 +90,18 @@ def test_smime2():
     assert results.parsed_email['Subject'] == 'Testing signed multipart email'
 
 
+def test_smime_entity_ascii_crlf():
+
+    test_path = 'parse_emails/tests/test_data/smime_mime_entity_ascii_crlf.p7m'
+    test_type = 'MIME entity text, ASCII text, with CRLF line terminators'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['Subject'] == 'Testing Email Attachment'
+
+
 def test_eml_contains_eml():
     test_path = 'parse_emails/tests/test_data/Fwd_test-inner_attachment_eml.eml'
     test_type = 'news or mail text, ASCII text'
