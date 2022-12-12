@@ -713,3 +713,16 @@ def test_embedding_image_into_html_of_eml():
     with open('parse_emails/tests/test_data/image.jpg', 'rb') as f:
         base64_img = base64.b64encode(f.read()).decode('ascii')
         assert f'src="data:image/jpeg;base64,{base64_img}"' in results['HTML']
+
+
+@pytest.mark.parametrize('data_value, data_type, expected_value',
+                         [(b'\x01', '0x0002', 1),
+                          (b'\x01', '0x0003', 1),
+                          ])
+def test_get_value(data_value, data_type, expected_value):
+    data_model = DataModel()
+    value = data_model.get_value(
+        data_value=data_value,
+        data_type=data_type
+    )
+    assert value == expected_value
