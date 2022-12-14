@@ -131,7 +131,6 @@ class EmailParser(object):
                     raise Exception("Exception while trying to decode email from within base64: {}\n\nTrace:\n{}"
                                     .format(str(e), traceback.format_exc()))
             else:
-
                 raise Exception("Unknown file format: [{}] for file: [{}]".format(self._file_type, self._file_name))
             output = recursive_convert_to_unicode(output)
             self.parsed_email = output
