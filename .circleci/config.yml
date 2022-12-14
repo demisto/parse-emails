@@ -53,7 +53,7 @@ jobs:
 
   tox3-8-unit-tests:
       docker:
-        - image: circleci/python:3.8.3-buster-node
+        - image: cimg/python:3.11.1-browsers
       steps:
         - checkout
         - *create_requirement_files
