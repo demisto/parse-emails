@@ -35,7 +35,7 @@ jobs:
   tox3-7-unit-tests:
       # docker image circleci/python:3.8.3-buster-node also contains python 3.7
       docker:
-        - image: circleci/python:3.8.3-buster-node
+        - image: cimg/python:3.11.1-browsers
       steps:
         - checkout
         - *create_requirement_files
@@ -82,7 +82,7 @@ jobs:
 
   prepare-tox3-7:
     docker:
-      - image: circleci/python:3.8.3-buster-node
+      - image: cimg/python:3.11.1-browsers
     steps:
       - checkout
       - *create_requirement_files
@@ -102,7 +102,7 @@ jobs:
             - .tox
   precommit-checks:
       docker:
-        - image: circleci/python:3.8.3-buster-node
+        - image: cimg/python:3.11.1-browsers
       steps:
         - checkout
         - attach_workspace:
@@ -116,7 +116,7 @@ jobs:
               deactivate
   deploy:
       docker:
-        - image: circleci/python:3.8.3-buster
+        - image: cimg/python:3.11.1-browsers
       steps:
         - checkout
         - run:
@@ -127,7 +127,7 @@ jobs:
 
   run tests:
       docker:
-        - image: circleci/python:3.8.3-buster
+        - image: cimg/python:3.11.1-browsers
       steps:
         - run:
             name: run linting and metrics
