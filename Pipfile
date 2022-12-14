@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 olefile = "*"
 datetime = "*"
-chardet = "*"
+chardet = "4.0.0"
 pytest = "*"
 python-magic = "*"
 compressed_rtf = "*"
