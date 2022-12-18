@@ -72,6 +72,7 @@ jobs:
               pre-commit --version
               pre-commit run -a
               deactivate
+
   deploy:
       docker:
         - image: circleci/python:3.8.3-buster   # todo: change to latest
@@ -81,7 +82,6 @@ jobs:
             name: Deploy
             when: always
             command: |
-#              ./deploy.sh
               poetry publish -u __token__ -p ${PYPI_TOKEN}               # todo: check if deploy to test needed
 
 workflows:
