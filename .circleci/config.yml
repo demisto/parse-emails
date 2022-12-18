@@ -90,13 +90,13 @@ workflows:
     jobs:
     - run-unit-tests:
         <<: *tag_filter
-          matrix:
-            parameters:
-              pythonversion: ["3.8", "3.9", "3.10"]
+        matrix:
+          parameters:
+            pythonversion: ["3.8", "3.9", "3.10"]
           name: run-unit-tests-<< matrix.pythonversion >>
-      - precommit-checks:
-          <<: *tag_filter
-      - deploy:
-          <<: *tag_filter
-          requires:
-            - run-unit-tests
+    - precommit-checks:
+        <<: *tag_filter
+    - deploy:
+        <<: *tag_filter
+        requires:
+          - run-unit-tests
