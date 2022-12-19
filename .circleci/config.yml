@@ -37,6 +37,9 @@ references:
 
 jobs:
   run-unit-tests:
+      parameters:
+        pythonversion:
+          type: string
       docker:
         - image: cimg/python:<< parameters.pythonversion >>-node
       steps:
