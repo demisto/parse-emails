@@ -1,7 +1,7 @@
 # Changelog
 v0.0.16
 * Fixed an issue where where open file would fail on wrong encoding. now ignoring failed characters.
-  
+
 v0.0.15
 * Fixed an issue where the script failed on a particular MIME entity file type.
 
