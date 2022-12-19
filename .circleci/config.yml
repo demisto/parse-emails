@@ -63,7 +63,7 @@ jobs:
         - <<: *install_build_dependencies
         - run:
             name: Pytest
-            command: pytest -p no:warnings -v
+            command: poetry run pytest -p no:warnings -v
         - run:
             name: Coveralls upload
             command: |
