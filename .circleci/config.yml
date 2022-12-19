@@ -3,8 +3,18 @@
 ### https://circleci.com/docs/config-sample
 ### =============================================================
 version: 2.1
+orbs:
+  python: circleci/python@<< pipeline.parameters.python-orb-version >>
+  node: circleci/node@<< pipeline.parameters.node-orb-version >>
+  orb-tools: circleci/orb-tools@10.0
 
 parameters:
+  python-orb-version:
+    type: string
+    default: "2.0.3"
+  node-orb-version:
+    type: string
+    default: "5.0.1"
   cache-version:
     type: string
     default: v4  # Change this parameter to clear cache.
