@@ -45,8 +45,7 @@ jobs:
         - *install_build_dependencies
         - run:
             name: Pytest
-            command: |
-              pytest -p no:warnings -v
+            command: pytest -p no:warnings -v
         - run:
             name: Coveralls upload
             command: |
@@ -81,8 +80,8 @@ jobs:
         - run:
             name: Deploy
             when: always
-            command: |
-              poetry publish -u __token__ -p ${PYPI_TOKEN}               # todo: check if deploy to test needed
+            command: poetry publish -u __token__ -p ${PYPI_TOKEN}
+
 
 workflows:
   version: 2.1
@@ -93,7 +92,7 @@ workflows:
         matrix:
           parameters:
             pythonversion: ["3.8", "3.9", "3.10"]
-          name: run-unit-tests-<< matrix.pythonversion >>
+        name: run-unit-tests-<< matrix.pythonversion >>
     - precommit-checks:
         <<: *tag_filter
     - deploy:
