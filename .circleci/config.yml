@@ -4,6 +4,11 @@
 ### =============================================================
 version: 2.1
 
+parameters:
+  cache-version:
+    type: string
+    default: v4  # Change this parameter to clear cache.
+
 references:
   version_tag_regex: &version_tag_regex
                        /^v\d+\.\d+\.\d+$/ # version regex vx.x.x (i.e. v1.2.3)
