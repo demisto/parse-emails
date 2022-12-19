@@ -41,8 +41,8 @@ jobs:
         - image: cimg/python:<< parameters.pythonversion >>-node
       steps:
         - checkout
-        - *install_poetry
-        - *install_build_dependencies
+        - <<: *install_poetry
+        - <<: *install_build_dependencies
         - run:
             name: Pytest
             command: pytest -p no:warnings -v
@@ -91,7 +91,7 @@ workflows:
         <<: *tag_filter
         matrix:
           parameters:
-            pythonversion: ["3.8", "3.9", "3.10"]
+            pythonversion: ["3.7", "3.8"]
         name: run-unit-tests-<< matrix.pythonversion >>
     - precommit-checks:
         <<: *tag_filter
