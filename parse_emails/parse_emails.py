@@ -122,7 +122,7 @@ class EmailParser:
                                     raise Exception("No email_data found")
                                 output = create_email_output(email_data, attached_emails)
                             except Exception as e:
-                                logging.debug("ParseEmailFiles failed with {}".format(str(e)))
+                                logging.debug(f"ParseEmailFiles failed with {str(e)}")
                                 raise Exception("Could not extract email from file. Possible reasons for this error are:\n"
                                                 "- Base64 decode did not include rfc 822 strings.\n"
                                                 "- Email contained no Content-Type and no data.")
@@ -132,7 +132,7 @@ class EmailParser:
                                     .format(str(e), traceback.format_exc()))
             else:
 
-                raise Exception("Unknown file format: [{}] for file: [{}]".format(self._file_type, self._file_name))
+                raise Exception(f"Unknown file format: [{self._file_type}] for file: [{self._file_name}]")
             output = recursive_convert_to_unicode(output)
             self.parsed_email = output
             return output

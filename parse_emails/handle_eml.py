@@ -178,7 +178,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             attachment_content_id = individual_message.get('Content-ID')
                             attachment_content_disposition = individual_message.get('Content-Disposition')
                             if attachment_file_name is None:
-                                attachment_file_name = "unknown_file_name{}".format(i)
+                                attachment_file_name = f"unknown_file_name{i}"
 
                             attachment_content.append(msg_info)
                             attachment_names.append(attachment_file_name)
