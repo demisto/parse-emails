@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "parse-emails"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Parses an email message file and extracts the data from it."
+authors = ["Cortex XSOAR"]
 readme = "README.md"
 packages = [{include = "parse_emails"}]
 
