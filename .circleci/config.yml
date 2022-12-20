@@ -157,5 +157,5 @@ workflows:
               only: *version_tag_regex
             branches:
               ignore: /.*/
-      requires:
-        - run-unit-tests
+        requires:
+          - run-unit-tests
