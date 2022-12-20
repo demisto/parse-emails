@@ -77,7 +77,7 @@ jobs:
 
   precommit-checks:
       docker:
-        - image: circleci/python:3.8.3-buster-node  # todo: change to latest
+        - image: cimg/python:<< parameters.pythonversion >>-node
       steps:
         - checkout
         - attach_workspace:
@@ -92,12 +92,11 @@ jobs:
 
   deploy:
       docker:
-        - image: circleci/python:3.8.3-buster   # todo: change to latest
+        - image: cimg/python:<< parameters.pythonversion >>-node
       steps:
         - checkout
         - run:
             name: Deploy
-            when: always
             command: poetry publish -u __token__ -p ${PYPI_TOKEN}
 
 
