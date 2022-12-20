@@ -20,7 +20,7 @@ parameters:
     default: v4  # Change this parameter to clear cache.
   global-docker-image:
     type: string
-    default: cimg/python:3.8-node
+    default: cimg/python:3.10-node
 
 references:
   version_tag_regex: &version_tag_regex
@@ -145,7 +145,7 @@ workflows:
         <<: *tag_filter
         matrix:
           parameters:
-            pythonversion: ["3.7", "3.8"]
+            pythonversion: ["3.8", "3.9", "3.10"]
         name: run-unit-tests-<< matrix.pythonversion >>
     - precommit-checks:
         <<: *tag_filter
