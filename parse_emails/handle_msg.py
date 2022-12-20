@@ -24,7 +24,6 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 OF THE POSSIBILITY OF SUCH DAMAGE.
 
 """
-from __future__ import print_function
 
 import base64
 # -*- coding: utf-8 -*-
@@ -132,7 +131,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, orig
     return email_data, attached_emails_emls + attached_emails_msg
 
 
-class MsOxMessage(object):
+class MsOxMessage:
     """
      Base class for Microsoft Message Object
     """
@@ -275,7 +274,7 @@ def save_attachments(attachments, root_email_file_name, max_depth):
     return attached_emls, attachments_data
 
 
-class DataModel(object):
+class DataModel:
 
     def __init__(self):
         self.data_type_name = None
@@ -469,7 +468,7 @@ class DataModel(object):
         return data_value
 
 
-class Message(object):
+class Message:
     """
      Class to store Message properties
     """
@@ -747,7 +746,7 @@ class Message(object):
 
         try:
             raw_content = ole_file.openstream(stream_name).read()
-        except IOError:
+        except OSError:
             raw_content = ''
         if not raw_content:
             logging.debug('Could not read raw content from stream "{}", '
@@ -882,10 +881,10 @@ class Message(object):
         self.attachments = [Attachment(attach) for attach in attachments.values()]
 
     def __repr__(self):
-        return u'Message [%s]' % self.properties.get('InternetMessageId', self.properties.get("Subject"))
+        return 'Message [%s]' % self.properties.get('InternetMessageId', self.properties.get("Subject"))
 
 
-class EmailFormatter(object):
+class EmailFormatter:
     def __init__(self, msg_object):
         self.msg_obj = msg_object
         self.message = MIMEMultipart()
@@ -1070,7 +1069,7 @@ def parse_email_headers(header, raw=False):
     return parsed_headers
 
 
-class Recipient(object):
+class Recipient:
     """
      class to store recipient attributes
     """
@@ -1087,7 +1086,7 @@ class Recipient(object):
         return '{} ({})'.format(self.DisplayName, self.EmailAddress)
 
 
-class Attachment(object):
+class Attachment:
     """
      class to store attachment attributes
     """

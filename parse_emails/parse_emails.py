@@ -12,7 +12,7 @@ from parse_emails.handle_eml import handle_eml
 from parse_emails.handle_msg import handle_msg
 
 
-class EmailParser(object):
+class EmailParser:
     """
     The core class for the EmailParser.
     """
@@ -95,7 +95,7 @@ class EmailParser(object):
                   ('data' == file_type_lower.strip() and self._file_name and self._file_name.lower().strip().endswith('.eml'))):
                 try:
                     # Try to open the email as-is
-                    with open(self._file_path, 'r', encoding='utf-8', errors='replace') as f:
+                    with open(self._file_path, encoding='utf-8', errors='replace') as f:
                         file_contents = f.read()
 
                     if file_contents and 'Content-Type:'.lower() in file_contents.lower():
