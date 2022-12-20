@@ -76,22 +76,41 @@ jobs:
               else
                 echo "Skipping coveralls"
               fi
-        # todo: artifacts
+        - store_test_results:
+            path: integration-test-results
 
   precommit-checks:
       docker:
         - image: << pipeline.parameters.global-docker-image >>
       steps:
         - checkout
+        - <<: *install_poetry
         - attach_workspace:
             at: ~/project
+        - <<: *install_build_dependencies
+        - run:
+            name: create cache key for pre-commit
+            command: |
+              cp .pre-commit-config.yaml pre-commit-cache-key.txt
+              poetry run python --version --version >> pre-commit-cache-key.txt
+        - restore_cache:
+            keys:
+            - v1-pc-cache-{{ checksum "pre-commit-cache-key.txt" }}
         - run:
             name: Pre-commit
             command: |
-              pip install pre-commit
-              pre-commit --version
-              pre-commit run -a
-              deactivate
+              poetry run pre-commit --version
+              poetry run pre-commit run -a
+
+        - run:
+            name: Run Pytest collection
+            command: |
+                poetry run pytest --collect-only .
+
+        - save_cache:
+            key: v1-pc-cache-{{ checksum "pre-commit-cache-key.txt" }}
+            paths:
+              - ~/.cache/pre-commit
 
   build:
       docker:
@@ -133,6 +152,10 @@ workflows:
     - build:
         <<: *tag_filter
     - deploy:
-        <<: *tag_filter
-        requires:
-          - run-unit-tests
+        filters:
+            tags:
+              only: *version_tag_regex
+            branches:
+              ignore: /.*/
+      requires:
+        - run-unit-tests
