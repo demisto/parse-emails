@@ -93,6 +93,21 @@ jobs:
               pre-commit run -a
               deactivate
 
+  build:
+      docker:
+        - image: << pipeline.parameters.global-docker-image >>
+      steps:
+          - checkout
+          - run:
+              name: Build Distrubution
+              command: poetry build
+          - persist_to_workspace:
+              root: ~/project
+              paths:
+                - dist
+          - store_artifacts:
+              path: dist
+
   deploy:
       docker:
         - image: << pipeline.parameters.global-docker-image >>
@@ -114,6 +129,8 @@ workflows:
             pythonversion: ["3.7", "3.8"]
         name: run-unit-tests-<< matrix.pythonversion >>
     - precommit-checks:
+        <<: *tag_filter
+    - build:
         <<: *tag_filter
     - deploy:
         <<: *tag_filter
