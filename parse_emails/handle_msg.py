@@ -307,11 +307,11 @@ class DataModel:
 
     @staticmethod
     def PtypInteger16(data_value):
-        return int(data_value.encode('hex'), 16)
+        return int(data_value.hex(), 16)
 
     @staticmethod
     def PtypInteger32(data_value):
-        return int(data_value.encode('hex'), 32)
+        return int(data_value.hex(), 32)
 
     @staticmethod
     def PtypFloating32(data_value):
