@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "parse-emails"
+version = "0.1.0"
+description = "Parses an email message file and extracts the data from it."
+authors = ["Cortex XSOAR"]
+readme = "README.md"
+packages = [{include = "parse_emails"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+olefile = "*"
+datetime = "*"
+chardet = "*"
+pytest = "*"
+python-magic = "*"
+compressed_rtf = "*"
+RTFDE = "*"
+pip = "*"
+pyopenssl = "*"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-datadir-ng = "*"
+pytest-mock = "*"
+pytest-subprocess = "*"
+tox-pyenv = "*"
+pipfile-requirements = "*"
+flake8 = "*"
+coveralls = "*"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

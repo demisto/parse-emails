@@ -3,73 +3,70 @@
 ### https://circleci.com/docs/config-sample
 ### =============================================================
 version: 2.1
+orbs:
+  python: circleci/python@<< pipeline.parameters.python-orb-version >>
+  node: circleci/node@<< pipeline.parameters.node-orb-version >>
+  orb-tools: circleci/orb-tools@10.0
+
+parameters:
+  python-orb-version:
+    type: string
+    default: "2.0.3"
+  node-orb-version:
+    type: string
+    default: "5.0.1"
+  cache-version:
+    type: string
+    default: v4  # Change this parameter to clear cache.
+  global-docker-image:
+    type: string
+    default: cimg/python:3.10-node
+
 references:
-    tag_filter: &tag_filter
-      filters:
-        tags:
-          only: /^v\d+\.\d+\.\d+$/
+  version_tag_regex: &version_tag_regex
+                       /^v\d+\.\d+\.\d+$/ # version regex vx.x.x (i.e. v1.2.3)
 
-    reqs_tox: &reqs_tox
-      requires:
-        - prepare-tox3-7
+  filter_tag_only: &filter_tag_only
+    tags:
+      only: *version_tag_regex
 
-    create_requirement_files: &create_requirement_files
-      run:
-        name: Create requirement files
+  tag_filter: &tag_filter
+    filters:
+      tags:
+        only: *version_tag_regex
+
+  install_poetry: &install_poetry
+    - run:
+        name: Install Poetry
         command: |
-          pip install pipfile-requirements
-          pipfile2req > requirements.txt
-          pipfile2req -d > requirements-dev.txt
+          # in old images we need to remove existing poetry
+          rm -rf $HOME/.poetry/bin/poetry
+          sudo curl -sSL https://install.python-poetry.org | python3 -
+          poetry --version
 
-    restore_tox_37_cache: &restore_tox_37_cache
-      restore_cache:
-        key: tox-37-cache-{{ checksum "Pipfile" }}-{{ checksum "Pipfile.lock" }}
-
-    save_tox_37_cache: &save_tox_37_cache
-      save_cache:
-        key: tox-37-cache-{{ checksum "Pipfile" }}-{{ checksum "Pipfile.lock" }}
-        paths:
-          - .tox/py37
+  install_build_dependencies: &install_build_dependencies
+    - python/install-packages:
+        pkg-manager: "poetry"
+        cache-version: << pipeline.parameters.cache-version >>
+        pre-install-steps:
+          - run:
+              name: Check if pyproject.toml is consistent with poetry.lock
+              command: poetry lock --check
 
 jobs:
-  tox3-7-unit-tests:
-      # docker image circleci/python:3.8.3-buster-node also contains python 3.7
+  run-unit-tests:
+      parameters:
+        pythonversion:
+          type: string
       docker:
-        - image: circleci/python:3.8.3-buster-node
+        - image: cimg/python:<< parameters.pythonversion >>-node
       steps:
         - checkout
-        - *create_requirement_files
-        - *restore_tox_37_cache
+        - <<: *install_poetry
+        - <<: *install_build_dependencies
         - run:
-            name: Setup Tox
-            command: |
-              pip install tox
-        - run:
-            name: Tox build
-            no_output_timeout: 15m
-            command: |
-              tox -e py37 -v
-        - *save_tox_37_cache
-
-  tox3-8-unit-tests:
-      docker:
-        - image: circleci/python:3.8.3-buster-node
-      steps:
-        - checkout
-        - *create_requirement_files
-        - restore_cache:
-            key: tox-38-cache-{{ checksum "Pipfile" }}-{{ checksum "Pipfile.lock" }}
-        - run:
-            name: Setup Tox
-            command: |
-              pip install tox
-        - run:
-            name: Tox build
-            no_output_timeout: 15m
-            command: |
-              tox -e py38 -v -- --cov=parse_emails --cov-report=html
-        - store_artifacts:
-            path: coverage_html_report
+            name: Pytest
+            command: poetry run pytest -p no:warnings -v
         - run:
             name: Coveralls upload
             command: |
@@ -79,76 +76,86 @@ jobs:
               else
                 echo "Skipping coveralls"
               fi
+        - store_test_results:
+            path: integration-test-results
 
-  prepare-tox3-7:
-    docker:
-      - image: circleci/python:3.8.3-buster-node
-    steps:
-      - checkout
-      - *create_requirement_files
-      - *restore_tox_37_cache
-      - run:
-          name: Setup Tox
-          command: |
-            pip install tox
-      - run:
-          name: Tox build
-          command: |
-            tox -e py37 --notest
-      - *save_tox_37_cache
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .tox
   precommit-checks:
       docker:
-        - image: circleci/python:3.8.3-buster-node
+        - image: << pipeline.parameters.global-docker-image >>
       steps:
         - checkout
+        - <<: *install_poetry
         - attach_workspace:
             at: ~/project
+        - <<: *install_build_dependencies
+        - run:
+            name: create cache key for pre-commit
+            command: |
+              cp .pre-commit-config.yaml pre-commit-cache-key.txt
+              poetry run python --version --version >> pre-commit-cache-key.txt
+        - restore_cache:
+            keys:
+            - v1-pc-cache-{{ checksum "pre-commit-cache-key.txt" }}
         - run:
             name: Pre-commit
             command: |
-              . .tox/py37/bin/activate
-              pre-commit --version
-              pre-commit run -a
-              deactivate
+              poetry run pre-commit --version
+              poetry run pre-commit run -a
+
+        - run:
+            name: Run Pytest collection
+            command: |
+                poetry run pytest --collect-only .
+
+        - save_cache:
+            key: v1-pc-cache-{{ checksum "pre-commit-cache-key.txt" }}
+            paths:
+              - ~/.cache/pre-commit
+
+  build:
+      docker:
+        - image: << pipeline.parameters.global-docker-image >>
+      steps:
+          - checkout
+          - run:
+              name: Build Distrubution
+              command: poetry build
+          - persist_to_workspace:
+              root: ~/project
+              paths:
+                - dist
+          - store_artifacts:
+              path: dist
+
   deploy:
       docker:
-        - image: circleci/python:3.8.3-buster
+        - image: << pipeline.parameters.global-docker-image >>
       steps:
         - checkout
         - run:
             name: Deploy
-            when: always
-            command: |
-              ./deploy.sh
+            command: poetry publish -u __token__ -p ${PYPI_TOKEN}
 
-  run tests:
-      docker:
-        - image: circleci/python:3.8.3-buster
-      steps:
-        - run:
-            name: run linting and metrics
-            when: always
-            command: |
-              flake8 ./
+
 workflows:
   version: 2.1
   build_and_release:
     jobs:
-      - tox3-7-unit-tests:
-          <<: *tag_filter
-      - tox3-8-unit-tests:
-          <<: *tag_filter
-      - prepare-tox3-7:
-          <<: *tag_filter
-      - precommit-checks:
-          <<: *tag_filter
-          <<: *reqs_tox
-      - deploy:
-          <<: *tag_filter
-          requires:
-            - tox3-7-unit-tests
-            - tox3-8-unit-tests
+    - run-unit-tests:
+        <<: *tag_filter
+        matrix:
+          parameters:
+            pythonversion: ["3.8", "3.9", "3.10"]
+        name: run-unit-tests-<< matrix.pythonversion >>
+    - precommit-checks:
+        <<: *tag_filter
+    - build:
+        <<: *tag_filter
+    - deploy:
+        filters:
+            tags:
+              only: *version_tag_regex
+            branches:
+              ignore: /.*/
+        requires:
+          - run-unit-tests

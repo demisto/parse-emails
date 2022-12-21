@@ -1,6 +1,3 @@
-# coding=utf-8
-from __future__ import print_function
-
 import base64
 
 import pytest
@@ -273,7 +270,7 @@ def test_email_raw_headers_from_is_cyrillic_characters():
     assert results.parsed_email['From'] == 'no-reply@google.com'
     assert results.parsed_email['To'] == 'test@test.com, example1@example.com'
     assert results.parsed_email['CC'] == 'test@test.com, example1@example.com'
-    assert results.parsed_email['HeadersMap']['From'] == u'"✅✅✅ ВА ! https://example.com  ." <no-reply@google.com>'
+    assert results.parsed_email['HeadersMap']['From'] == '"✅✅✅ ВА ! https://example.com  ." <no-reply@google.com>'
     assert results.parsed_email['HeadersMap']['To'] == 'Guy Test <test@test.com>, Guy Test1 <example1@example.com>'
     assert results.parsed_email['HeadersMap']['CC'] == 'Guy Test <test@test.com>, Guy Test1 <example1@example.com>'
 
@@ -422,7 +419,7 @@ def test_eml_contains_htm_attachment():
     results.parse()
 
     assert isinstance(results.parsed_email, dict)
-    assert results.parsed_email[u'Attachments'] == '1.htm'
+    assert results.parsed_email['Attachments'] == '1.htm'
 
 
 def test_signed_attachment():
@@ -509,9 +506,9 @@ def test_create_headers_map_empty_headers():
      - Validate that the function does not fail
     """
     msg_dict = {
-        'From': None, 'CC': None, 'BCC': None, 'To': u'test@demisto.com', 'Depth': 0, 'HeadersMap': {},
-        'Attachments': u'image002.png,image003.png,image004.png,image001.png', 'Headers': None, 'Text': u'Hi',
-        'Subject': u'test'
+        'From': None, 'CC': None, 'BCC': None, 'To': 'test@demisto.com', 'Depth': 0, 'HeadersMap': {},
+        'Attachments': 'image002.png,image003.png,image004.png,image001.png', 'Headers': None, 'Text': 'Hi',
+        'Subject': 'test'
     }
     headers, headers_map = create_headers_map(msg_dict.get('Headers'))
     assert headers == []
@@ -589,13 +586,13 @@ def test_pkcs7_mime():
 
 def test_PtypString():
     data_value = DataModel.PtypString(b'IPM.Note')
-    assert data_value == u'IPM.Note'
+    assert data_value == 'IPM.Note'
 
     data_value = DataModel.PtypString(b'I\x00P\x00M\x00.\x00N\x00o\x00t\x00e\x00')
-    assert data_value == u'IPM.Note'
+    assert data_value == 'IPM.Note'
 
     data_value = DataModel.PtypString(b'e\x9c\xe6\xb9pe')
-    assert data_value == u'eśćąpe'
+    assert data_value == 'eśćąpe'
 
 
 def test_parse_body_with_russian_language():
