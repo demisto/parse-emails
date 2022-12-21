@@ -24,7 +24,6 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 OF THE POSSIBILITY OF SUCH DAMAGE.
 
 """
-from __future__ import print_function
 
 import base64
 # -*- coding: utf-8 -*-
@@ -132,7 +131,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, orig
     return email_data, attached_emails_emls + attached_emails_msg
 
 
-class MsOxMessage(object):
+class MsOxMessage:
     """
      Base class for Microsoft Message Object
     """
@@ -190,7 +189,7 @@ def get_msg_mail_format(msg_dict):
     try:
         return msg_dict.get('Headers', 'Content-type:').split('Content-type:')[1].split(';')[0]
     except Exception as e:
-        logging.debug('Got exception while trying to get msg mail format - {}'.format(str(e)))
+        logging.debug(f'Got exception while trying to get msg mail format - {str(e)}')
         return ''
 
 
@@ -275,7 +274,7 @@ def save_attachments(attachments, root_email_file_name, max_depth):
     return attached_emls, attachments_data
 
 
-class DataModel(object):
+class DataModel:
 
     def __init__(self):
         self.data_type_name = None
@@ -355,7 +354,7 @@ class DataModel(object):
         if data_value:
             try:
                 if USER_ENCODING:
-                    logging.debug('Using argument user_encoding: {} to decode parsed message.'.format(USER_ENCODING))
+                    logging.debug(f'Using argument user_encoding: {USER_ENCODING} to decode parsed message.')
                     return data_value.decode(USER_ENCODING, errors="ignore")
                 res = chardet.detect(data_value)
                 enc = res['encoding'] or 'ascii'  # in rare cases chardet fails to detect and return None as encoding
@@ -469,7 +468,7 @@ class DataModel(object):
         return data_value
 
 
-class Message(object):
+class Message:
     """
      Class to store Message properties
     """
@@ -742,12 +741,12 @@ class Message(object):
         property_name = property_details.get("name")
         property_type = property_details.get("data_type")
         if not property_type:
-            logging.debug('could not parse property type, skipping property "{}"'.format(property_details))
+            logging.debug(f'could not parse property type, skipping property "{property_details}"')
             return None
 
         try:
             raw_content = ole_file.openstream(stream_name).read()
-        except IOError:
+        except OSError:
             raw_content = ''
         if not raw_content:
             logging.debug('Could not read raw content from stream "{}", '
@@ -882,10 +881,10 @@ class Message(object):
         self.attachments = [Attachment(attach) for attach in attachments.values()]
 
     def __repr__(self):
-        return u'Message [%s]' % self.properties.get('InternetMessageId', self.properties.get("Subject"))
+        return 'Message [%s]' % self.properties.get('InternetMessageId', self.properties.get("Subject"))
 
 
-class EmailFormatter(object):
+class EmailFormatter:
     def __init__(self, msg_object):
         self.msg_obj = msg_object
         self.message = MIMEMultipart()
@@ -988,7 +987,7 @@ class EmailFormatter(object):
                 encoders.encode_base64(attach)
             # Set the filename parameter
             base_filename = os.path.basename(filename)
-            attach.add_header('Content-ID', '<{}>'.format(base_filename))
+            attach.add_header('Content-ID', f'<{base_filename}>')
             attach.add_header('Content-Disposition', 'attachment', filename=base_filename)
             self.message.attach(attach)
 
@@ -1062,7 +1061,7 @@ def parse_email_headers(header, raw=False):
 
     for addr in email_address_headers.keys():
         for (name, email_address) in email.utils.getaddresses(headers.get_all(addr, [])):
-            email_address_headers[addr].append("{} <{}>".format(name, email_address))
+            email_address_headers[addr].append(f"{name} <{email_address}>")
 
     parsed_headers = dict(headers)
     parsed_headers.update(email_address_headers)
@@ -1070,7 +1069,7 @@ def parse_email_headers(header, raw=False):
     return parsed_headers
 
 
-class Recipient(object):
+class Recipient:
     """
      class to store recipient attributes
     """
@@ -1084,10 +1083,10 @@ class Recipient(object):
         self.RecipientType = recipients_properties.get("RecipientType")
 
     def __repr__(self):
-        return '{} ({})'.format(self.DisplayName, self.EmailAddress)
+        return f'{self.DisplayName} ({self.EmailAddress})'
 
 
-class Attachment(object):
+class Attachment:
     """
      class to store attachment attributes
     """
@@ -1114,7 +1113,7 @@ class Attachment(object):
         self.AttachExtension = attachment_properties.get("AttachExtension")
 
     def __repr__(self):
-        return '{} ({} / {})'.format(self.Filename, self.AttachmentSize, len(self.data or []))
+        return f'{self.Filename} ({self.AttachmentSize} / {len(self.data or [])})'
 
 
 def format_size(num, suffix='B'):
@@ -1122,7 +1121,7 @@ def format_size(num, suffix='B'):
         return "unknown"
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
         if abs(num) < 1024.0:
-            return "{:3.1f}{}{}".format(num, unit, suffix)
+            return f"{num:3.1f}{unit}{suffix}"
         num /= 1024.0
     return "{:.1f}{}{}".format(num, 'Yi', suffix)
 

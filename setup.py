@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# coding: utf-8
 
 """Parse Email Files
 """
@@ -20,7 +19,7 @@ parser = configparser.ConfigParser()
 parser.read("Pipfile")
 install_requires = [f'{key}{value}'.replace('\"', '').replace('*', '') for key, value in parser['packages'].items()]
 
-with open('README.md', 'r') as f:
+with open('README.md') as f:
     readme = f.read()
 
 setup(
