@@ -162,3 +162,5 @@ workflows:
               ignore: /.*/
         requires:
           - run-unit-tests
+          - build
+          - precommit-checks
