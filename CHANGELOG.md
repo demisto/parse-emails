@@ -1,4 +1,7 @@
 # Changelog
+v0.1.4
+* Re-adding MIT License. 
+
 v0.1.3
 * Infrastructure fixes.
 
