@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.2
+* Fix deploy step.
+
 v0.1.1
 * Fixed an issue where parsing numbers failed.
 
