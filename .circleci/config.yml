@@ -132,6 +132,9 @@ jobs:
         - image: << pipeline.parameters.global-docker-image >>
       steps:
         - checkout
+        - <<: *install_poetry
+        - attach_workspace:
+            at: ~/project
         - run:
             name: Deploy
             command: poetry publish -u __token__ -p ${PYPI_TOKEN}
