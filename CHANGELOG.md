@@ -1,4 +1,6 @@
 # Changelog
+v0.1.3
+* Infrastructure fixes.
 
 v0.1.2
 * Fix deploy step.
