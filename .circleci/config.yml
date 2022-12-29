@@ -67,6 +67,8 @@ jobs:
         - run:
             name: Pytest
             command: poetry run pytest -p no:warnings -v
+        - store_artifacts:
+            path: coverage_html_report
         - run:
             name: Coveralls upload
             command: |
