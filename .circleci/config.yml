@@ -66,7 +66,7 @@ jobs:
         - <<: *install_build_dependencies
         - run:
             name: Pytest
-            command: poetry run pytest -p no:warnings -v
+            command: poetry run pytest -p no:warnings -v --cov=email_parser --cov-report=html
         - store_artifacts:
             path: coverage_html_report
         - run:
