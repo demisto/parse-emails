@@ -66,7 +66,9 @@ jobs:
         - <<: *install_build_dependencies
         - run:
             name: Pytest
-            command: poetry run pytest -p no:warnings -v --cov=email_parser --cov-report=html
+            command: poetry run pytest -p no:warnings -v --cov=parse_emails --cov-report=html
+        - store_test_results:
+            path: integration-test-results
         - store_artifacts:
             path: coverage_html_report
         - run:
@@ -78,8 +80,6 @@ jobs:
               else
                 echo "Skipping coveralls"
               fi
-        - store_test_results:
-            path: integration-test-results
 
   precommit-checks:
       docker:
