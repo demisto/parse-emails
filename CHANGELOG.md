@@ -1,4 +1,7 @@
 # Changelog
+v0.1.5
+* Add outputs of Headers as a list of names and values.
+
 v0.1.4
 * Re-adding MIT License.
 
