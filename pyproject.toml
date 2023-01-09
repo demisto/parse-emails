@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "parse-emails"
-version = "0.1.4"
+version = "0.1.5"
 description = "Parses an email message file and extracts the data from it."
 authors = ["Demisto"]
 license = "MIT"

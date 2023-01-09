@@ -245,6 +245,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'HTML': convert_to_unicode(html, is_msg_header=False),
                 'Text': convert_to_unicode(text, is_msg_header=False),
                 'HeadersMap': headers_map,
+                'Headers': header_list,
                 'Attachments': ','.join(attachment_names) if attachment_names else '',
                 'AttachmentNames': attachment_names if attachment_names else [],
                 'AttachmentsData': [
