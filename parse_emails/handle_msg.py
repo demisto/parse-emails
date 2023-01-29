@@ -49,6 +49,7 @@ from struct import unpack
 import chardet  # type: ignore
 from olefile import OleFileIO, isOleFile
 
+from parse_emails.parse_emails import save_attachments
 from parse_emails.common import convert_to_unicode
 from parse_emails.constants import (DEFAULT_ENCODING, PROPS_ID_MAP,
                                     REGEX_EMAIL, USER_ENCODING)
@@ -108,7 +109,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, orig
     if parse_only_headers:
         return {"HeadersMap": headers_map}, []
 
-    attached_emails_emls, attachments_data = save_attachments(msg.get_all_attachments(), file_name, max_depth - 1)
+    attached_emails_emls, attachments_data = save_attachments(msg.get_all_attachments(), file_name, max_depth - 1, original_depth)
     # add eml attached emails
 
     attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1, original_depth)
@@ -239,39 +240,39 @@ def create_headers_map(msg_dict_headers):
     return headers, headers_map
 
 
-def save_attachments(attachments, root_email_file_name, max_depth):
-    attached_emls = []
-    attachments_data = []
-
-    for attachment in attachments:
-        if attachment.data is not None:
-            display_name = attachment.DisplayName if attachment.DisplayName else attachment.AttachFilename
-            display_name = display_name if display_name else ''
-
-            attachments_data.append({
-                "Name": display_name,
-                "Content-ID": attachment.AttachContentId,
-                "FileData": attachment.data
-            })
-
-            name_lower = display_name.lower()
-            if max_depth > 0 and (name_lower.endswith(".eml") or name_lower.endswith('.p7m')):
-                tf = tempfile.NamedTemporaryFile(delete=False)
-
-                try:
-                    tf.write(attachment.data)
-                    tf.close()
-
-                    inner_eml, attached_inner_emails = handle_eml(tf.name, file_name=root_email_file_name,
-                                                                  max_depth=max_depth, original_depth=original_depth)
-                    if inner_eml:
-                        attached_emls.append(inner_eml)
-                    if attached_inner_emails:
-                        attached_emls.extend(attached_inner_emails)
-                finally:
-                    os.remove(tf.name)
-
-    return attached_emls, attachments_data
+# def save_attachments(attachments, root_email_file_name, max_depth, original_depth):
+#     attached_emls = []
+#     attachments_data = []
+#
+#     for attachment in attachments:
+#         if attachment.data is not None:
+#             display_name = attachment.DisplayName if attachment.DisplayName else attachment.AttachFilename
+#             display_name = display_name if display_name else ''
+#
+#             attachments_data.append({
+#                 "Name": display_name,
+#                 "Content-ID": attachment.AttachContentId,
+#                 "FileData": attachment.data
+#             })
+#
+#             name_lower = display_name.lower()
+#             if max_depth > 0 and (name_lower.endswith(".eml") or name_lower.endswith('.p7m')):
+#                 tf = tempfile.NamedTemporaryFile(delete=False)
+#
+#                 try:
+#                     tf.write(attachment.data)
+#                     tf.close()
+#
+#                     inner_eml, attached_inner_emails = handle_eml(tf.name, file_name=root_email_file_name,
+#                                                                   max_depth=max_depth, original_depth=original_depth)
+#                     if inner_eml:
+#                         attached_emls.append(inner_eml)
+#                     if attached_inner_emails:
+#                         attached_emls.extend(attached_inner_emails)
+#                 finally:
+#                     os.remove(tf.name)
+#
+#     return attached_emls, attachments_data
 
 
 class DataModel:
