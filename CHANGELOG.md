@@ -1,6 +1,6 @@
 # Changelog
 v0.1.6
-* Fixed an issue where a multipart email is not being parsed properly.
+* Fixed an issue where a multipart email was not parsed properly.
 
 v0.1.5
 * Add outputs of Headers as a list of names and values.
