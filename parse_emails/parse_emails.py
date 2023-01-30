@@ -1,6 +1,5 @@
 import logging
 import os
-import tempfile
 import traceback
 from base64 import b64decode
 

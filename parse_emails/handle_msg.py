@@ -34,7 +34,6 @@ import logging
 import os
 import quopri
 import re
-import tempfile
 from datetime import datetime, timedelta
 # coding=utf-8
 from email import encoders
@@ -108,7 +107,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, orig
     if parse_only_headers:
         return {"HeadersMap": headers_map}, []
 
-    eml_attachments, attachments_data = save_attachments(msg.get_all_attachments(), file_name, max_depth - 1, original_depth)
+    eml_attachments, attachments_data = save_attachments(msg.get_all_attachments(), max_depth - 1)
     # add eml attached emails
 
     attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1, original_depth)
@@ -239,8 +238,7 @@ def create_headers_map(msg_dict_headers):
     return headers, headers_map
 
 
-def save_attachments(attachments, root_email_file_name, max_depth, original_depth):
-    attached_emls = []
+def save_attachments(attachments, max_depth):
     attachments_data = []
     eml_attachments = []
 

@@ -202,7 +202,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 f.write(file_content)
                                 f.close()
                                 inner_msg, inner_attached_emails, attached_eml = handle_msg(f.name, attachment_file_name, False,
-                                                                              max_depth - 1, original_depth)
+                                                                                            max_depth - 1, original_depth)
                                 if attached_eml:
                                     attached_eml = parse_inner_eml(attachments=attached_eml,
                                                                    original_depth=original_depth)
