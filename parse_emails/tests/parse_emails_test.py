@@ -283,6 +283,8 @@ def test_eml_contains_eml_with_status():
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
 
+    for result in results.parsed_email:
+        assert isinstance(result, dict)
     assert results.parsed_email[1]['Subject'] == 'FW: FOODLINK ΠΛΗΡΩΜΗ'
 
 

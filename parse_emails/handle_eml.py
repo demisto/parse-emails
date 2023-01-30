@@ -172,7 +172,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                         msgs = part.get_payload()  # human-readable section
                         for i, individual_message in enumerate(msgs):
                             msg_info = decode_attachment_payload(individual_message)
-                            attached_emails.append(msg_info)
 
                             attachment_file_name = individual_message.get_filename()
                             attachment_content_id = individual_message.get('Content-ID')
@@ -426,3 +425,7 @@ def decode_attachment_payload(message):
     except TypeError:
         msg_info = str(msg)
     return msg_info
+
+
+def handle_inner_msg_or_email():
+    pass
