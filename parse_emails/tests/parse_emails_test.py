@@ -338,7 +338,7 @@ def test_smime_msg():
 
 
 def test_msg_headers_map():
-    email_data, ignore = handle_msg('parse_emails/tests/test_data/utf_subject.msg', 'utf_subject.msg')
+    email_data, ignore, ignore = handle_msg('parse_emails/tests/test_data/utf_subject.msg', 'utf_subject.msg')
     assert '?utf-8' not in email_data['Subject']
     assert 'TESTING' in email_data['Subject']
     assert 'This is a test email.' in email_data['Text']
@@ -596,7 +596,7 @@ def test_PtypString():
 
 
 def test_parse_body_with_russian_language():
-    email_data, ignore = handle_msg('parse_emails/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
+    email_data, ignore, ignore = handle_msg('parse_emails/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
     assert str(email_data['Text']).startswith('Уважаемые коллеги')
     assert 'Уважаемые' in email_data['HTML']
 

@@ -9,7 +9,7 @@ from OpenSSL import crypto  # type: ignore
 from OpenSSL._util import ffi as _ffi  # type: ignore
 from OpenSSL._util import lib as _lib  # type: ignore
 
-from parse_emails.handle_eml import handle_eml
+from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
 
 
@@ -78,13 +78,17 @@ class EmailParser:
         try:
             file_type_lower = self._file_type.lower()
             if self._is_msg:
-                email_data, attached_emails = handle_msg(self._file_path, self._file_name, self._parse_only_headers,
-                                                         self._max_depth, original_depth=self._max_depth)
+                email_data, attached_emails, attached_eml = handle_msg(self._file_path, self._file_name,
+                                                                       self._parse_only_headers,
+                                                                       self._max_depth, original_depth=self._max_depth)
+                if attached_eml:
+                    attached_eml = parse_inner_eml(attachments=attached_eml, original_depth=self._max_depth)
+                    attached_emails += attached_eml
                 output = create_email_output(email_data, attached_emails)
 
             elif any(eml_candidate in file_type_lower for eml_candidate in
-                     ['rfc 822 mail', 'smtp mail', 'multipart/signed', 'multipart/alternative', 'multipart/mixed', 'message/rfc822',
-                      'application/pkcs7-mime', 'multipart/related', 'utf-8 (with bom) text']):
+                     ['rfc 822 mail', 'smtp mail', 'multipart/signed', 'multipart/alternative', 'multipart/mixed',
+                      'message/rfc822', 'application/pkcs7-mime', 'multipart/related', 'utf-8 (with bom) text']):
                 if 'unicode (with bom) text' in file_type_lower or 'utf-8 (with bom) text' in file_type_lower:
                     self._bom = True
                 email_data, attached_emails = handle_eml(
@@ -93,7 +97,8 @@ class EmailParser:
                 output = create_email_output(email_data, attached_emails)
 
             elif ('ascii text' in file_type_lower or 'unicode text' in file_type_lower or
-                  ('data' == file_type_lower.strip() and self._file_name and self._file_name.lower().strip().endswith('.eml'))):
+                  ('data' == file_type_lower.strip() and self._file_name and
+                   self._file_name.lower().strip().endswith('.eml'))):
                 try:
                     # Try to open the email as-is
                     with open(self._file_path, encoding='utf-8', errors='replace') as f:
@@ -217,38 +222,3 @@ def recursive_convert_to_unicode(replace_to_utf):
         return replace_to_utf
     except TypeError:
         return replace_to_utf
-
-
-def save_attachments(attachments, root_email_file_name, max_depth, original_depth):
-    attached_emls = []
-    attachments_data = []
-
-    for attachment in attachments:
-        if attachment.data is not None:
-            display_name = attachment.DisplayName if attachment.DisplayName else attachment.AttachFilename
-            display_name = display_name if display_name else ''
-
-            attachments_data.append({
-                "Name": display_name,
-                "Content-ID": attachment.AttachContentId,
-                "FileData": attachment.data
-            })
-
-            name_lower = display_name.lower()
-            if max_depth > 0 and (name_lower.endswith(".eml") or name_lower.endswith('.p7m')):
-                tf = tempfile.NamedTemporaryFile(delete=False)
-
-                try:
-                    tf.write(attachment.data)
-                    tf.close()
-
-                    inner_eml, attached_inner_emails = handle_eml(tf.name, file_name=root_email_file_name,
-                                                                  max_depth=max_depth, original_depth=original_depth)
-                    if inner_eml:
-                        attached_emls.append(inner_eml)
-                    if attached_inner_emails:
-                        attached_emls.extend(attached_inner_emails)
-                finally:
-                    os.remove(tf.name)
-
-    return attached_emls, attachments_data
