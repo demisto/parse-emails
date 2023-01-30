@@ -425,7 +425,3 @@ def decode_attachment_payload(message):
     except TypeError:
         msg_info = str(msg)
     return msg_info
-
-
-def handle_inner_msg_or_email():
-    pass
