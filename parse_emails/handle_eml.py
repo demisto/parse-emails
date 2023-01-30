@@ -168,7 +168,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 else:
                     # .msg and other files (png, jpeg)
                     if part.is_multipart() and max_depth - 1 > 0:
-                        # email is DSN
+                        # email is DSN/Multipart
                         msgs = part.get_payload()  # human-readable section
                         for i, individual_message in enumerate(msgs):
                             msg_info = decode_attachment_payload(individual_message)
