@@ -427,7 +427,8 @@ def decode_attachment_payload(message):
     try:
         # In some cases the body content is empty and cannot be decoded.
         msg_info = base64.b64decode(msg)
-    except TypeError:
+    except Exception as e:
+        logging.debug(f'exception while trying to decode_attachment_payload - {str(e)}')
         msg_info = str(msg)
     return msg_info
 
