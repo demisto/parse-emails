@@ -283,6 +283,8 @@ def test_eml_contains_eml_with_status():
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
 
+    for result in results.parsed_email:
+        assert isinstance(result, dict)
     assert results.parsed_email[1]['Subject'] == 'FW: FOODLINK ΠΛΗΡΩΜΗ'
 
 
@@ -528,8 +530,8 @@ def test_eml_contains_htm_attachment_empty_file():
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
 
-    assert len(results.parsed_email) == 2
-    assert results.parsed_email[0]['AttachmentNames'] == ['unknown_file_name0', 'SomeTest.HTM']
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['AttachmentNames'] == ['unknown_file_name0', 'SomeTest.HTM']
 
 
 def test_eml_contains_htm_attachment_empty_file_max_depth():
