@@ -1,7 +1,7 @@
 # Changelog
 v0.1.6
 * Fixed an issue where a multipart email was not parsed properly.
-* Fixed an issue where parsing an msg file that contains an eml as attachment was failed.
+* Fixed an issue where parsing an msg file that contains an eml as an attachment failed.
 
 v0.1.5
 * Add outputs of Headers as a list of names and values.
