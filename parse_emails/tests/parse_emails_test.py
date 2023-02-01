@@ -598,7 +598,7 @@ def test_PtypString():
 
 
 def test_parse_body_with_russian_language():
-    email_data, ignore, ignore = handle_msg('parse_emails/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
+    email_data, _, _ = handle_msg('parse_emails/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
     assert str(email_data['Text']).startswith('Уважаемые коллеги')
     assert 'Уважаемые' in email_data['HTML']
 
