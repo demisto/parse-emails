@@ -200,8 +200,12 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             try:
                                 f.write(file_content)
                                 f.close()
-                                inner_msg, inner_attached_emails = handle_msg(f.name, attachment_file_name, False,
-                                                                              max_depth - 1, original_depth)
+                                inner_msg, inner_attached_emails, attached_eml = handle_msg(f.name, attachment_file_name, False,
+                                                                                            max_depth - 1, original_depth)
+                                if attached_eml:
+                                    attached_eml = parse_inner_eml(attachments=attached_eml,
+                                                                   original_depth=original_depth)
+                                    attached_emails += attached_eml
                                 if inner_msg:
                                     inner_msg['ParentFileName'] = file_name
                                 attached_emails.append(inner_msg)
@@ -422,6 +426,29 @@ def decode_attachment_payload(message):
     try:
         # In some cases the body content is empty and cannot be decoded.
         msg_info = base64.b64decode(msg)
-    except TypeError:
+    except Exception as e:
+        logging.debug(f'exception while trying to decode_attachment_payload - {str(e)}')
         msg_info = str(msg)
     return msg_info
+
+
+def parse_inner_eml(attachments, original_depth):
+    attached_emls = []
+    for attachment in attachments:
+        tf = tempfile.NamedTemporaryFile(delete=False)
+
+        try:
+            tf.write(attachment.get('data'))
+            tf.close()
+
+            inner_eml, attached_inner_emails = handle_eml(tf.name, file_name=attachment.get('name'),
+                                                          max_depth=attachment.get('max_depth'),
+                                                          original_depth=original_depth)
+            if inner_eml:
+                attached_emls.append(inner_eml)
+            if attached_inner_emails:
+                attached_emls.extend(attached_inner_emails)
+        finally:
+            os.remove(tf.name)
+
+    return attached_emls

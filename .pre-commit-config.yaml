@@ -24,8 +24,8 @@ repos:
       rev: v2.0.1
       hooks:
           - id: autopep8
-    - repo: https://github.com/timothycrosley/isort
-      rev: v5.11.3
+    - repo: https://github.com/PyCQA/isort
+      rev: "5.12.0"
       hooks:
           - id: isort
             types: [python]

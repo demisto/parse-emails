@@ -340,7 +340,7 @@ def test_smime_msg():
 
 
 def test_msg_headers_map():
-    email_data, ignore = handle_msg('parse_emails/tests/test_data/utf_subject.msg', 'utf_subject.msg')
+    email_data, _, _ = handle_msg('parse_emails/tests/test_data/utf_subject.msg', 'utf_subject.msg')
     assert '?utf-8' not in email_data['Subject']
     assert 'TESTING' in email_data['Subject']
     assert 'This is a test email.' in email_data['Text']
@@ -598,7 +598,7 @@ def test_PtypString():
 
 
 def test_parse_body_with_russian_language():
-    email_data, ignore = handle_msg('parse_emails/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
+    email_data, _, _ = handle_msg('parse_emails/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
     assert str(email_data['Text']).startswith('Уважаемые коллеги')
     assert 'Уважаемые' in email_data['HTML']
 
@@ -725,3 +725,21 @@ def test_get_value(data_value, data_type, expected_value):
         data_type=data_type
     )
     assert value == expected_value
+
+
+def test_parse_msg_contains_eml():
+    """
+    Given:
+     - msg file that contains a eml file
+    When:
+     - parsing the file.
+    Then:
+     - Validate that both emails are parsed.
+    """
+    test_path = 'parse_emails/tests/test_data/msg_contains_eml.msg'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=3)
+    results = email_parser.parse()
+    assert len(results) == 2
+    assert results[0]['FileName'] == 'msg_contains_eml.msg'
+    assert results[1]['FileName'] == 'message.eml'

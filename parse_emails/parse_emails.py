@@ -8,7 +8,7 @@ from OpenSSL import crypto  # type: ignore
 from OpenSSL._util import ffi as _ffi  # type: ignore
 from OpenSSL._util import lib as _lib  # type: ignore
 
-from parse_emails.handle_eml import handle_eml
+from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
 
 
@@ -77,13 +77,17 @@ class EmailParser:
         try:
             file_type_lower = self._file_type.lower()
             if self._is_msg:
-                email_data, attached_emails = handle_msg(self._file_path, self._file_name, self._parse_only_headers,
-                                                         self._max_depth, original_depth=self._max_depth)
+                email_data, attached_emails, attached_eml = handle_msg(self._file_path, self._file_name,
+                                                                       self._parse_only_headers,
+                                                                       self._max_depth, original_depth=self._max_depth)
+                if attached_eml:
+                    attached_eml = parse_inner_eml(attachments=attached_eml, original_depth=self._max_depth)
+                    attached_emails += attached_eml
                 output = create_email_output(email_data, attached_emails)
 
             elif any(eml_candidate in file_type_lower for eml_candidate in
-                     ['rfc 822 mail', 'smtp mail', 'multipart/signed', 'multipart/alternative', 'multipart/mixed', 'message/rfc822',
-                      'application/pkcs7-mime', 'multipart/related', 'utf-8 (with bom) text']):
+                     ['rfc 822 mail', 'smtp mail', 'multipart/signed', 'multipart/alternative', 'multipart/mixed',
+                      'message/rfc822', 'application/pkcs7-mime', 'multipart/related', 'utf-8 (with bom) text']):
                 if 'unicode (with bom) text' in file_type_lower or 'utf-8 (with bom) text' in file_type_lower:
                     self._bom = True
                 email_data, attached_emails = handle_eml(
@@ -92,7 +96,8 @@ class EmailParser:
                 output = create_email_output(email_data, attached_emails)
 
             elif ('ascii text' in file_type_lower or 'unicode text' in file_type_lower or
-                  ('data' == file_type_lower.strip() and self._file_name and self._file_name.lower().strip().endswith('.eml'))):
+                  ('data' == file_type_lower.strip() and self._file_name and
+                   self._file_name.lower().strip().endswith('.eml'))):
                 try:
                     # Try to open the email as-is
                     with open(self._file_path, encoding='utf-8', errors='replace') as f:
