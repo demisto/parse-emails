@@ -18,7 +18,6 @@ def test_parse_emails():
     assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
 
 
-
 def test_msg_html_with_attachments():
     msg = MsOxMessage('parse_emails/tests/test_data/html_attachment.msg')
     assert msg is not None
