@@ -10,13 +10,13 @@ from parse_emails.parse_emails import EmailParser
 
 
 def test_parse_emails():
-    test_path = 'parse_emails/tests/test_data/msg_contains_base64_eml.msg'
+    test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
 
-    email_parser = EmailParser(file_path=test_path, max_depth=3)
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
     results = email_parser.parse()
     assert len(results) == 2
-    assert results[0]['FileName'] == 'msg_contains_base64_eml.msg'
-    assert results[1]['FileName'] == 'message.eml'
+    assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
+
 
 
 def test_msg_html_with_attachments():
