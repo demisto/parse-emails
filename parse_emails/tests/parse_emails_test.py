@@ -340,7 +340,7 @@ def test_smime_msg():
 
 
 def test_msg_headers_map():
-    email_data, ignore, ignore = handle_msg('parse_emails/tests/test_data/utf_subject.msg', 'utf_subject.msg')
+    email_data, _, _ = handle_msg('parse_emails/tests/test_data/utf_subject.msg', 'utf_subject.msg')
     assert '?utf-8' not in email_data['Subject']
     assert 'TESTING' in email_data['Subject']
     assert 'This is a test email.' in email_data['Text']
