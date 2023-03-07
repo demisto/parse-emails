@@ -1,4 +1,8 @@
 # Changelog
+
+v0.1.7
+* Fixed an issue where an eml file containing chinese characters was not decoded correctly.
+
 v0.1.6
 * Fixed an issue where a multipart email was not parsed properly.
 * Fixed an issue where parsing an msg file that contains an eml as an attachment failed.
