@@ -743,3 +743,21 @@ def test_parse_msg_contains_eml():
     assert len(results) == 2
     assert results[0]['FileName'] == 'msg_contains_eml.msg'
     assert results[1]['FileName'] == 'message.eml'
+
+
+def test_parse_eml_file_chinese_chars():
+    """
+    Given:
+     - eml file that contains a text in chinese
+
+    When:
+     - parsing the file.
+
+    Then:
+     - make sure the chinese characters were decoded successfully.
+    """
+    test_path = 'parse_emails/tests/test_data/chinese.eml'
+    email_parser = EmailParser(file_path=test_path)
+    results = email_parser.parse()
+
+    assert results['Text'] == '你好，我是程序员，很高兴认识你'
