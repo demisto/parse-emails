@@ -1,5 +1,4 @@
 import base64
-import os
 
 import pytest
 
@@ -784,4 +783,3 @@ def test_parse_eml_file_chinese_chars_encodings(test_file_path, expected_chinese
     results = email_parser.parse()
 
     assert results['Text'] == expected_chinese_str
-
