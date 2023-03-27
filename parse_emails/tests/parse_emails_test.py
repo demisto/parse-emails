@@ -742,7 +742,7 @@ def test_parse_msg_contains_eml():
     results = email_parser.parse()
     assert len(results) == 2
     assert results[0]['FileName'] == 'msg_contains_eml.msg'
-    assert results[1]['FileName'] == 'chinese_iso_2022_jp_encoding.eml'
+    assert results[1]['FileName'] == 'message.eml'
 
 
 @pytest.mark.parametrize(
