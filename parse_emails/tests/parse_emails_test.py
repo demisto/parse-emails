@@ -211,7 +211,7 @@ def test_FileName_ParentFileName_exist():
     assert len(results) == 2
     assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
     assert results[0]['FileName'] == 'eml_contains_base64_eml.eml'
-    assert results[1]['FileName'] == 'chinese_iso_2022_jp_encoding.eml'
+    assert results[1]['FileName'] == 'message.eml'
     assert results[1]['ParentFileName'] == 'eml_contains_base64_eml.eml'
 
 
@@ -298,7 +298,7 @@ def test_eml_contains_base64_encoded_eml(file_name):
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
-    assert 'chinese_iso_2022_jp_encoding.eml' in results.parsed_email[0]['Attachments']
+    assert 'message.eml' in results.parsed_email[0]['Attachments']
     assert results.parsed_email[0]['Depth'] == 0
 
     assert results.parsed_email[1]["Subject"] == 'test - inner attachment eml'
