@@ -1,4 +1,5 @@
 import base64
+import os
 
 import pytest
 
@@ -211,7 +212,7 @@ def test_FileName_ParentFileName_exist():
     assert len(results) == 2
     assert results[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
     assert results[0]['FileName'] == 'eml_contains_base64_eml.eml'
-    assert results[1]['FileName'] == 'message.eml'
+    assert results[1]['FileName'] == 'chinese_iso_2022_jp_encoding.eml'
     assert results[1]['ParentFileName'] == 'eml_contains_base64_eml.eml'
 
 
@@ -298,7 +299,7 @@ def test_eml_contains_base64_encoded_eml(file_name):
 
     assert len(results.parsed_email) == 2
     assert results.parsed_email[0]['Subject'] == 'Fwd: test - inner attachment eml (base64)'
-    assert 'message.eml' in results.parsed_email[0]['Attachments']
+    assert 'chinese_iso_2022_jp_encoding.eml' in results.parsed_email[0]['Attachments']
     assert results.parsed_email[0]['Depth'] == 0
 
     assert results.parsed_email[1]["Subject"] == 'test - inner attachment eml'
@@ -742,13 +743,36 @@ def test_parse_msg_contains_eml():
     results = email_parser.parse()
     assert len(results) == 2
     assert results[0]['FileName'] == 'msg_contains_eml.msg'
-    assert results[1]['FileName'] == 'message.eml'
+    assert results[1]['FileName'] == 'chinese_iso_2022_jp_encoding.eml'
 
 
-def test_parse_eml_file_chinese_chars():
+@pytest.mark.parametrize(
+    'test_file_path, expected_chinese_str', [
+        (
+            'parse_emails/tests/test_data/chinese_gb2312_encoding.eml',
+            '你好，我是程序员，很高兴认识你'
+        ),
+        (
+            'parse_emails/tests/test_data/chinese_iso_2022_jp_encoding.eml',
+            '中文字'
+        ),
+        (
+            'parse_emails/tests/test_data/chinese_big5_encoding.eml',
+            '圖形碼'
+        ),
+        (
+            'parse_emails/tests/test_data/chinese_gbk_encoding.eml',
+            '你好，中国'
+        )
+    ]
+)
+def test_parse_eml_file_chinese_chars_encodings(test_file_path, expected_chinese_str):
     """
     Given:
-     - eml file that contains a text in chinese
+     - Case A: chinese eml file encoded in gb2312
+     - Case B: chinese eml file encoded in iso-2022-jp
+     - Case C: chinese eml file encoded in big5
+     - Case D: chinese eml file encoded in gbk
 
     When:
      - parsing the file.
@@ -756,8 +780,8 @@ def test_parse_eml_file_chinese_chars():
     Then:
      - make sure the chinese characters were decoded successfully.
     """
-    test_path = 'parse_emails/tests/test_data/chinese.eml'
-    email_parser = EmailParser(file_path=test_path)
+    email_parser = EmailParser(file_path=test_file_path)
     results = email_parser.parse()
 
-    assert results['Text'] == '你好，我是程序员，很高兴认识你'
+    assert results['Text'] == expected_chinese_str
+

@@ -326,6 +326,12 @@ def decode_content(mime):
                 return payload.decode('utf-8')
             elif charset in ('gb2312', 'gb18030'):  # chinese encodings
                 return payload.decode('gb18030')
+            elif charset == 'iso-2022-jp':
+                return payload.decode('iso-2022-jp')
+            elif charset == 'big5':
+                return payload.decode('big5')
+            elif charset == 'gbk':
+                return payload.decode('gbk')
             else:
                 return payload.decode("raw-unicode-escape")
         else:
