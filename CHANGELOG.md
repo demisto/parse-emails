@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.8
+* Fixed an issue where an eml file containing chinese characters encoded with *iso-2022-jp*, *big5* and *gbk* was not decoded correctly.
+
 v0.1.7
 * Fixed an issue where an eml file containing chinese characters was not decoded correctly.
 
