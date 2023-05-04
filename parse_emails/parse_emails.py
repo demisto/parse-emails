@@ -105,7 +105,7 @@ class EmailParser:
                     with open(self._file_path, encoding='utf-8', errors='replace') as f:
                         file_contents = f.read()
 
-                    if (file_contents and 'Content-Type:'.lower() in file_contents.lower()) or (is_eml_ext and
+                    if (file_contents and 'Content-Type:'.lower() in file_contents.lower()) or (is_eml_ext and not
                                                                                                 all(ord(char) < 128 for char in file_contents)):
                         email_data, attached_emails = handle_eml(self._file_path, b64=False, file_name=self._file_name,
                                                                  parse_only_headers=self._parse_only_headers,
