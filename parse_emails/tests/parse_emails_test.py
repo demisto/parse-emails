@@ -74,6 +74,17 @@ def test_eml_smtp_envelope_headers():
     assert results.parsed_email['Subject'] == 'Test Smtp Email'
 
 
+def test_eml_non_ascii():
+    test_path = 'parse_emails/tests/test_data/eml_non_ascii.eml'
+    test_type = 'news or mail text, Non-ISO extended-ASCII text, with CRLF line terminators'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+    assert results.parsed_email['Subject'] == '[Phish Alert] [ext] Order history download'
+
+
 # this is a test for another version of a multipart signed eml file
 def test_smime2():
 
