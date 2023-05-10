@@ -82,7 +82,7 @@ def test_eml_non_ascii():
     results.parse()
 
     assert isinstance(results.parsed_email, dict)
-    assert results.parsed_email['Subject'] == '[Phish Alert] [ext] Order history download'
+    assert results.parsed_email['Subject'] == 'Test Non Ascii'
 
 
 # this is a test for another version of a multipart signed eml file
