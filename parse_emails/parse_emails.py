@@ -76,6 +76,9 @@ class EmailParser:
 
         try:
             file_type_lower = self._file_type.lower()
+            is_eml_ext = False
+            if self._file_name and self._file_name.lower().strip().endswith('.eml'):
+                is_eml_ext = True
             if self._is_msg:
                 email_data, attached_emails, attached_eml = handle_msg(self._file_path, self._file_name,
                                                                        self._parse_only_headers,
@@ -96,14 +99,14 @@ class EmailParser:
                 output = create_email_output(email_data, attached_emails)
 
             elif ('ascii text' in file_type_lower or 'unicode text' in file_type_lower or
-                  ('data' == file_type_lower.strip() and self._file_name and
-                   self._file_name.lower().strip().endswith('.eml'))):
+                  ('data' == file_type_lower.strip() and is_eml_ext)):
                 try:
                     # Try to open the email as-is
                     with open(self._file_path, encoding='utf-8', errors='replace') as f:
                         file_contents = f.read()
 
-                    if file_contents and 'Content-Type:'.lower() in file_contents.lower():
+                    if (file_contents and 'Content-Type:'.lower() in file_contents.lower()) or (is_eml_ext and not
+                                                                                                all(ord(char) < 128 for char in file_contents)):
                         email_data, attached_emails = handle_eml(self._file_path, b64=False, file_name=self._file_name,
                                                                  parse_only_headers=self._parse_only_headers,
                                                                  max_depth=self._max_depth, original_depth=self._max_depth)
