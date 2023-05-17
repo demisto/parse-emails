@@ -1,4 +1,3 @@
-
 import pytest
 
 from parse_emails.handle_eml import handle_eml, unfold
