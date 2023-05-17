@@ -706,25 +706,6 @@ def test_eml_with_attachment_with_no_name():
     assert 'VMail Enclosed for John Smith' in results['Subject']
 
 
-def test_embedding_image_into_html_of_eml():
-    """
-    Given:
-     - eml file containing images as CID (and contains HTML)
-
-    When:
-     - parsing eml file into email data.
-
-    Then:
-     - Validate that the src of the img tag contains the file in base64
-    """
-    test_path = 'parse_emails/tests/test_data/eml_contains_image_as_cid.eml'  # contains image.jpg as an attachment to the eml file.
-    email_parser = EmailParser(file_path=test_path)
-    results = email_parser.parse()
-    with open('parse_emails/tests/test_data/image.jpg', 'rb') as f:
-        base64_img = base64.b64encode(f.read()).decode('ascii')
-        assert f'src="data:image/jpeg;base64,{base64_img}"' in results['HTML']
-
-
 @pytest.mark.parametrize('data_value, data_type, expected_value',
                          [(b'\x01', '0x0002', 1),
                           (b'\x01', '0x0003', 1),

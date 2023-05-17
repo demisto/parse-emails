@@ -230,9 +230,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             elif part.get_content_type() == 'text/plain':
                 text = decode_content(part)
 
-        if attachments_images and html:  # embed images into the HTML body.
-            html = embed_images_to_html_body(html=html, attachments_images=attachments_images)
-
         email_data = None
         # if we are parsing a signed attachment there can be one of two options:
         # 1. it is 'multipart/signed' so it is probably a wrapper and we can ignore the outer "email"

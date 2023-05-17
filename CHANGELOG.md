@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.91
+* Deprecate the support for cid-embedded images in EML files.
+
 v0.1.9
 * Fixed an issue where an eml file containing non ascii characters was not decoded correctly.
 
