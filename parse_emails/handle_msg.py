@@ -484,7 +484,10 @@ class Message:
         # embed images into html body
         if self.attachments and self.html:
             for attachment in self.attachments:
-                if attachment.AttachContentId and f'src="cid:{attachment.AttachContentId}"' in self.html:
+                html_content = self.html
+                if isinstance(html_content, bytes):
+                    html_content = html_content.decode('utf-8')
+                if attachment.AttachContentId and f'src="cid:{attachment.AttachContentId}"' in html_content:
                     img_base64 = base64.b64encode(attachment.data).decode('ascii')
                     self.html = self.html.replace(f'src="cid:{attachment.AttachContentId}"',
                                                   f'src="data:image/png;base64, {img_base64}"')
