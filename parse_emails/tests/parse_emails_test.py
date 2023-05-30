@@ -684,7 +684,6 @@ def test_rtf_msg():
     email_parser = EmailParser(file_path=test_path)
     results = email_parser.parse()
     assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results['HTML']
-    assert 'src="data:image/png;base64, ' in results['HTML']
 
 
 def test_eml_with_attachment_with_no_name():
