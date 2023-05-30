@@ -478,19 +478,6 @@ class Message:
         self._set_properties()
         self._set_attachments()
         self._set_recipients()
-        self._embed_images_to_html_body()
-
-    def _embed_images_to_html_body(self):
-        # embed images into html body
-        if self.attachments and self.html:
-            for attachment in self.attachments:
-                html_content = self.html
-                if isinstance(html_content, bytes):
-                    html_content = html_content.decode('utf-8')
-                if attachment.AttachContentId and f'src="cid:{attachment.AttachContentId}"' in html_content:
-                    img_base64 = base64.b64encode(attachment.data).decode('ascii')
-                    self.html = self.html.replace(f'src="cid:{attachment.AttachContentId}"',
-                                                  f'src="data:image/png;base64, {img_base64}"')
 
     def _get_attachments_names(self):
         names = []

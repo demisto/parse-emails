@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.11
+* Deprecate the support for cid-embedded images in EML and MSG files.
+
 v0.1.10
 * Fixed an issue where the html in a msg will return as bytes and when doing the in search in *_embed_images_to_html_body* we get an error because we try to search a string in bytes.
 
