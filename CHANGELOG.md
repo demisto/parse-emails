@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.12
+* Fixed an issue where a Subject containing special characters was not decoded correctly.
+
 v0.1.11
 * Deprecate the support for cid-embedded images in EML and MSG files.
 
