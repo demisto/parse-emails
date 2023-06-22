@@ -34,7 +34,10 @@ def convert_to_unicode(s, is_msg_header=True):
                     res += replace_decoded
                 ENCODINGS_TYPES.add(encoding)
             else:
-                res += str(decoded_s)
+                if isinstance(decoded_s, str):
+                    res += decoded_s
+                else:
+                    res += str(decoded_s, 'utf-8')
         return res.strip()
     except Exception:
         for file_data in ENCODINGS_TYPES:
