@@ -10,6 +10,7 @@ from base64 import b64decode
 from email import message_from_string
 from email.parser import HeaderParser
 from email.utils import getaddresses
+from email.header import decode_header, make_header
 
 from parse_emails.common import convert_to_unicode
 from parse_emails.handle_msg import handle_msg
@@ -376,7 +377,7 @@ def extract_address_eml(eml, entry):
 def get_attachment_filename(part):
     attachment_file_name = None
     if part.get_filename():
-        attachment_file_name = part.get_filename()
+        attachment_file_name = str(decode_header(make_header(part.get_filename())))
 
     elif attachment_file_name is None and part.get('filename'):
         attachment_file_name = os.path.normpath(part.get('filename'))
