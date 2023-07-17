@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.13
+* Fixed an issue where an attachment file name with special characters was not decoded correctly.
+
 v0.1.12
 * Fixed an issue where a Subject containing special characters was not decoded correctly.
 
