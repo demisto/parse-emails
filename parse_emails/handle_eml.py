@@ -377,7 +377,7 @@ def extract_address_eml(eml, entry):
 def get_attachment_filename(part):
     attachment_file_name = None
     if part.get_filename():
-        attachment_file_name = str(decode_header(make_header(part.get_filename())))
+        attachment_file_name = str(make_header(decode_header(part.get_filename())))
 
     elif attachment_file_name is None and part.get('filename'):
         attachment_file_name = os.path.normpath(part.get('filename'))
