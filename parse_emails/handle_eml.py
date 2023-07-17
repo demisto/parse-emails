@@ -8,9 +8,9 @@ import re
 import tempfile
 from base64 import b64decode
 from email import message_from_string
+from email.header import decode_header, make_header
 from email.parser import HeaderParser
 from email.utils import getaddresses
-from email.header import decode_header, make_header
 
 from parse_emails.common import convert_to_unicode
 from parse_emails.handle_msg import handle_msg
