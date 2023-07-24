@@ -238,8 +238,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         # 2. if it is 'multipart/signed' but has 'to'/'from'/'subject' fields, so it is actually a real mail.
         if 'multipart/signed' not in eml.get_content_type() \
             or ('multipart/signed' in eml.get_content_type() and
-                ((extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject'))
-                 or attachment_names)):
+                ((extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject')) or
+                 attachment_names)):
             email_data = {
                 'To': extract_address_eml(eml, 'to'),
                 'CC': extract_address_eml(eml, 'cc'),
