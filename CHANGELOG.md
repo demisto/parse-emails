@@ -1,4 +1,6 @@
 # Changelog
+v0.1.14
+* Fixed an issue where attachments were not being saved to the war room when users attempted to upload S/MIME files that lacked the To/From/Subject fields.
 
 v0.1.13
 * Fixed an issue where an attachment file name with special characters was not decoded correctly.
