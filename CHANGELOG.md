@@ -1,4 +1,6 @@
 # Changelog
+v0.1.14
+* Fixed an issue where the parsed_email didn't contain the email wrapper and its AttachmentsData in cases of S/MIME files that lacked the To, From, and Subject fields.
 
 v0.1.13
 * Fixed an issue where an attachment file name with special characters was not decoded correctly.

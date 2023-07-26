@@ -104,8 +104,10 @@ def test_smime_entity_ascii_crlf():
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
 
-    assert isinstance(results.parsed_email, dict)
-    assert results.parsed_email['Subject'] == 'Testing Email Attachment'
+    assert isinstance(results.parsed_email, list)
+    assert results.parsed_email[0]['Subject'] is None
+    assert isinstance(results.parsed_email[0]['AttachmentsData'], list)
+    assert results.parsed_email[0]['AttachmentNames'] == ['smime.p7s', 'Attachment.eml']
 
 
 def test_eml_contains_eml():
@@ -333,8 +335,10 @@ def test_smime():
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
 
-    assert isinstance(results.parsed_email, dict)
-    assert results.parsed_email['Subject'] == 'Testing Email Attachment'
+    assert isinstance(results.parsed_email, list)
+    assert results.parsed_email[0]['Subject'] is None
+    assert isinstance(results.parsed_email[0]['AttachmentsData'], list)
+    assert results.parsed_email[0]['AttachmentNames'] == ['smime.p7s', 'Attachment.eml']
 
 
 def test_smime_msg():

@@ -233,11 +233,13 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
         email_data = None
         # if we are parsing a signed attachment there can be one of two options:
-        # 1. it is 'multipart/signed' so it is probably a wrapper and we can ignore the outer "email"
-        # 2. if it is 'multipart/signed' but has 'to' address so it is actually a real mail.
+        # 1. it is 'multipart/signed' so it is probably a wrapper, and we can ignore the outer "email"
+        #    However, we should save its AttachmentsData.
+        # 2. if it is 'multipart/signed' but has 'to'/'from'/'subject' fields, so it is actually a real mail.
         if 'multipart/signed' not in eml.get_content_type() \
-                or ('multipart/signed' in eml.get_content_type() and
-                    (extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject'))):
+            or ('multipart/signed' in eml.get_content_type() and
+                ((extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject')) or
+                 attachment_names)):
             email_data = {
                 'To': extract_address_eml(eml, 'to'),
                 'CC': extract_address_eml(eml, 'cc'),
@@ -291,7 +293,7 @@ def decode_content(mime):
             elif charset == 'iso-8859-2':
                 return payload.decode('iso-8859-2')
             elif charset == 'utf-8':
-                return payload.decode('utf-8')
+                return payload.decode('utf-8', errors='ignore')
             elif charset in ('gb2312', 'gb18030'):  # chinese encodings
                 return payload.decode('gb18030')
             elif charset == 'iso-2022-jp':
