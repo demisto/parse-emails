@@ -192,9 +192,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             attachment_content.append(None)
                         # fileResult will return an error if file_content is None.
                         if file_content and not attachment_file_name.endswith('.p7s'):
-                            # base64 of embeded image
-                            if "base64" in part.get("Content-Transfer-Encoding", ""):
-                                file_content = b64decode(file_content)
                             attachment_content.append(file_content)
                             if attachment_file_name.endswith(('.png', '.jpg', '.jpeg', '.gif')):
                                 attachments_images.append((attachment_content_id, part.get_payload().strip()))
