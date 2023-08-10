@@ -100,8 +100,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 parts += [part_ for part_ in part.get_payload() if isinstance(part_, email.message.Message)]
 
             elif part.get_filename()\
-                or "attachment" in part.get("Content-Disposition", "")\
-                or part.get("X-Attachment-Id"):
+                    or "attachment" in part.get("Content-Disposition", "")\
+                    or part.get("X-Attachment-Id"):
 
                 attachment_content_id = part.get('Content-ID')
                 attachment_content_disposition = part.get('Content-Disposition')
