@@ -1,6 +1,9 @@
 # Changelog
+v0.1.16
+* Fixed an issue where the email address fields were not extracted properly.
+
 v0.1.15
-* Fixed an issue where inline image without *Content-Disposition* header did not parsed.
+* Fixed an issue where inline image without *Content-Disposition* header did not parse.
 
 v0.1.14
 * Fixed an issue where the parsed_email didn't contain the email wrapper and its AttachmentsData in cases of S/MIME files that lacked the To, From, and Subject fields.

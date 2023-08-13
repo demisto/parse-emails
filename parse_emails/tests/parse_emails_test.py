@@ -159,6 +159,17 @@ def test_eml_contains_eml_depth():
 
 
 def test_eml_utf_text():
+    """
+    Given:
+        EML file containing a 'From' field in the following structure: "From: Test TEST, test<test@test.com>"
+    When:
+        parsing the email
+    Then:
+        assert it is parsed correctly.
+        parsed_email['From'] == 'test@test.com' and != 'Test, test@test.com'
+        TODO: When a fix is released: https://github.com/python/cpython/issues/107919
+              the conditional check 'if "@"' in the get_email_address function can be removed.
+    """
 
     test_path = 'parse_emails/tests/test_data/utf_8_email.eml'
     test_type = 'UTF-8 Unicode text, with very long lines, with CRLF line terminators'
@@ -168,6 +179,8 @@ def test_eml_utf_text():
 
     assert isinstance(results.parsed_email, dict)
     assert results.parsed_email['Subject'] == 'Test UTF Email'
+    assert results.parsed_email['From'] == 'test@test.com'
+    assert results.parsed_email['To'] == 'test@test.com'
 
 
 def test_eml_utf_text_special_chars():

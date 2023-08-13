@@ -355,7 +355,7 @@ def get_email_address(eml, entry):
         gel_all_values_from_email_by_entry = eml.get_all(entry, [])
     addresses = getaddresses(gel_all_values_from_email_by_entry)
     if addresses:
-        res = [item[1] for item in addresses]
+        res = [email_address for real_name, email_address in addresses if "@" in email_address]
         res = ', '.join(res)
         return res
     return ''
