@@ -99,7 +99,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     and "attachment" not in part.get("Content-Disposition", ""):
                 parts += [part_ for part_ in part.get_payload() if isinstance(part_, email.message.Message)]
 
-            elif part.get_filename() or "attachment" in part.get("Content-Disposition", ""):
+            elif part.get_filename()\
+                    or "attachment" in part.get("Content-Disposition", "")\
+                    or part.get("X-Attachment-Id"):
 
                 attachment_content_id = part.get('Content-ID')
                 attachment_content_disposition = part.get('Content-Disposition')
@@ -386,7 +388,9 @@ def get_attachment_filename(part):
         if os.path.isabs(attachment_file_name):
             attachment_file_name = os.path.basename(attachment_file_name)
     else:
-        if not isinstance(part.get_payload(), list):
+        if attach_id := part.get("X-Attachment-Id"):
+            attachment_file_name = attach_id
+        elif not isinstance(part.get_payload(), list):
             attachment_file_name = 'unknown_file_name'
         else:
             for payload in part.get_payload():
