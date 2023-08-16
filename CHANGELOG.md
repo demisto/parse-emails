@@ -1,5 +1,8 @@
 # Changelog
 v0.1.16
+* Fixed an issue where *Macintosh HFS* file type got "Unknown file format" while parsing.
+
+v0.1.16
 * Fixed an issue where the email address fields were not extracted properly.
 
 v0.1.15
