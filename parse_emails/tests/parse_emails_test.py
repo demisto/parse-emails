@@ -50,9 +50,12 @@ def test_msg_with_attachments():
     assert results.parsed_email['Attachments'] == 'dummy-attachment.txt'
 
 
-def test_eml_smtp_type():
+@pytest.mark.parametrize('file_type', ['application/pkcs7-mime', 'macintosh hfs', 'message/rfc822', 'multipart/alternative',
+                                       'multipart/mixed', 'multipart/related', 'multipart/signed', 'rfc 822 mail',
+                                       'smtp mail', 'utf-8 (with bom) text'])
+def test_eml_smtp_type(file_type):
     test_path = 'parse_emails/tests/test_data/smtp_email_type.eml'
-    test_type = 'SMTP mail, UTF-8 Unicode text, with CRLF terminators'
+    test_type = f'{file_type}, UTF-8 Unicode text, with CRLF terminators'
 
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False, file_info=test_type)
     results.parse()
