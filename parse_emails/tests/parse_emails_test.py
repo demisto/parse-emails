@@ -793,6 +793,7 @@ def test_parse_eml_file_chinese_chars_encodings(test_file_path, expected_chinese
 
     assert results['Text'] == expected_chinese_str
 
+
 @pytest.mark.parametrize(
     'test_file_path', [
         (
