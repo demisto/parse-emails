@@ -8,9 +8,9 @@ from OpenSSL import crypto  # type: ignore
 from OpenSSL._util import ffi as _ffi  # type: ignore
 from OpenSSL._util import lib as _lib  # type: ignore
 
+from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
-from parse_emails.constants import STRINGS_TO_REMOVE
 
 
 class EmailParser:
@@ -149,7 +149,7 @@ class EmailParser:
 
         except Exception as ex:
             raise Exception(str(ex) + "\n\nTrace:\n" + traceback.format_exc())
-    
+
 
 def remove_unicode_spaces(output):
     for replace in STRINGS_TO_REMOVE:
