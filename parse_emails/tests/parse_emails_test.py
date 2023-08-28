@@ -792,3 +792,28 @@ def test_parse_eml_file_chinese_chars_encodings(test_file_path, expected_chinese
     results = email_parser.parse()
 
     assert results['Text'] == expected_chinese_str
+
+
+@pytest.mark.parametrize(
+    'test_file_path', [
+        (
+            'parse_emails/tests/test_data/smime_unicode_issue.p7m'
+        )
+    ]
+)
+def test_parse_p7m_file_with_unicode_spaces(test_file_path):
+    """
+    Given:
+     - Case A: .p7m file with unicode spaces.
+
+    When:
+     - parsing the file.
+
+    Then:
+     - Ensures no unicode spaces inside the text.
+    """
+    email_parser = EmailParser(file_path=test_file_path)
+    results = email_parser.parse()
+
+    assert "\u200a" not in results
+    assert "\u200d" not in results

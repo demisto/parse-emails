@@ -8,6 +8,7 @@ from OpenSSL import crypto  # type: ignore
 from OpenSSL._util import ffi as _ffi  # type: ignore
 from OpenSSL._util import lib as _lib  # type: ignore
 
+from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
 
@@ -141,12 +142,20 @@ class EmailParser:
             else:
 
                 raise Exception(f"Unknown file format: [{self._file_type}] for file: [{self._file_name}]")
-            output = recursive_convert_to_unicode(output)
-            self.parsed_email = output
-            return output
+            outputs = recursive_convert_to_unicode(output)
+            outputs = [remove_unicode_spaces(output) for output in outputs] if isinstance(outputs, list) else remove_unicode_spaces(outputs)
+            self.parsed_email = outputs
+            return outputs
 
         except Exception as ex:
             raise Exception(str(ex) + "\n\nTrace:\n" + traceback.format_exc())
+
+
+def remove_unicode_spaces(output):
+    for replace in STRINGS_TO_REMOVE:
+        output = {key: val.replace(replace, '') if isinstance(val, str) else val for key,
+                  val in output.items()} if isinstance(output, dict) else output.replace(replace, '')
+    return output
 
 
 def remove_p7m_file_signature(file_path):

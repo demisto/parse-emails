@@ -1,4 +1,7 @@
 # Changelog
+v0.1.17
+* Fixed an issue where several unicode spaces weren't parsed as expected.
+
 v0.1.16
 * Fixed an issue where *Macintosh HFS* file type got "Unknown file format" while parsing.
 
