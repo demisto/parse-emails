@@ -1,0 +1,568 @@
+MIME-Version: 1.0
+Content-Type: multipart/signed;
+	protocol="application/x-pkcs7-signature";
+	micalg=2.16.840.1.101.3.4.2.1;
+	boundary="----=_NextPart_000_0060_01D9D66E.EFF77960"
+
+This is a multipart message in MIME format.
+
+------=_NextPart_000_0060_01D9D66E.EFF77960
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_001_0061_01D9D66E.EFF77960"
+
+
+------=_NextPart_001_0061_01D9D66E.EFF77960
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_002_0062_01D9D66E.EFF77960"
+
+
+------=_NextPart_002_0062_01D9D66E.EFF77960
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Attached is an email that looks like a fishing or other type of attack.
+
+ 
+
+Thanks
+
+ 
+
+test test
+
+Contingent Worker
+
+244 test Street
+
+ 
+
+
+------=_NextPart_002_0062_01D9D66E.EFF77960
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40"><head><META =
+HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 15 =
+(filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:"Segoe UI";
+	panose-1:2 11 5 2 4 2 4 2 2 3;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri",sans-serif;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DEN-US =
+link=3D"#0563C1" vlink=3D"#954F72" style=3D'word-wrap:break-word'><div =
+class=3DWordSection1><p class=3DMsoNormal>Attached is an email that =
+looks like a fishing or other type of attack.<o:p></o:p></p><p =
+class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
+class=3DMsoNormal>Thanks<o:p></o:p></p><p =
+class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal =
+style=3D'margin-left:.75in;background:white'><span =
+style=3D'font-size:9.0pt;font-family:"Segoe =
+UI",sans-serif;color:#0C64C0;background:white'>Robert =
+Berry<o:p></o:p></span></p><p class=3DMsoNormal =
+style=3D'margin-left:.75in;background:white'><span =
+style=3D'font-size:9.0pt;font-family:"Segoe =
+UI",sans-serif;color:#0C64C0;background:white'>Contingent =
+Worker</span><span style=3D'font-family:"Segoe =
+UI",sans-serif;color:#201F1E'><o:p></o:p></span></p><p class=3DMsoNormal =
+style=3D'margin-left:.75in;background:white'><span =
+style=3D'font-size:9.0pt;font-family:"Segoe =
+UI",sans-serif;color:#0C64C0;background:white'>Supporting Lincoln =
+Laboratory, Massachusetts Institute of Technology</span><span =
+style=3D'font-family:"Segoe =
+UI",sans-serif;color:#201F1E'><o:p></o:p></span></p><p class=3DMsoNormal =
+style=3D'margin-left:.75in;background:white'><span =
+style=3D'font-size:9.0pt;font-family:"Segoe =
+UI",sans-serif;color:#0C64C0;background:white'>244 Wood =
+Street</span><span style=3D'font-family:"Segoe =
+UI",sans-serif;color:#201F1E'><o:p></o:p></span></p><p class=3DMsoNormal =
+style=3D'margin-left:.75in;background:white'><span =
+style=3D'font-size:9.0pt;font-family:"Segoe =
+UI",sans-serif;color:#0C64C0;background:white'>Lexington, =
+Massachusetts&nbsp;02421-64</span><span style=3D'font-family:"Segoe =
+UI",sans-serif;color:#201F1E'><o:p></o:p></span></p><p =
+class=3DMsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+------=_NextPart_002_0062_01D9D66E.EFF77960--
+
+------=_NextPart_001_0061_01D9D66E.EFF77960
+Content-Type: message/rfc822
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment
+
+Received: from test.com.edu (exchange-forwarding-4.com.edu [18.7.62.34])
+	by MX2.LL.test.EDU (8.17.1.19/8.17.1.19) with ESMTPS id 37N7lr5w034953
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <test@test.com>; Wed, 23 Aug 2023 03:47:53 -0400
+Received: from test.test.edu (test-DMZ-2.test.EDU [18.7.62.37])
+        by exchange-forwarding-4.test.edu (8.14.7/8.12.4) with ESMTP id 37N7mKSE007843
+        for <test@EXCHANGE-FORWARDING.test.EDU>; Wed, 23 Aug 2023 03:48:26 -0400
+Received: from test-dmz-2.test.edu (test-dmz-2.test.edu [127.0.0.1])
+	by test-dmz-2.test.edu (8.14.7/8.9.2) with ESMTP id 37N7mKp1018719
+	for <test@exchange-forwarding.test.edu>; Wed, 23 Aug 2023 03:48:26 -0400
+Received: from fireeye-mail1-2022.fireeye-mail1-2022.test.ll.test.edu
+ (172.25.1.10) by LLEX2019-3.testll.ad.local (172.25.4.125) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42 via Frontend Transport; Wed, 23 Aug 2023 03:49:00 -0400
+Received: by fireeye-mail1-2022.fireeye-mail1-2022.test.ll.test.edu (Postfix, from userid 600)
+	id 4RVyyh5ZSQz57pjq; Wed, 23 Aug 2023 03:48:34 -0400 (EDT)
+Received: from test.LL.test.EDU (unknown [172.25.1.6])
+	by fireeye-mail1-2022.fireeye-mail1-2022.test.ll.test.edu (Postfix) with ESMTP id 4RVyy50pYlz57pk2
+	for <test@ll.test.edu>; Wed, 23 Aug 2023 03:48:29 -0400 (EDT)
+Received: from CO1PEPF000042AB.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e:cafe::17) by SJ0PR03CA0045.outlook.office365.com
+ (2603:10b6:a03:33e::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.23 via Frontend
+ Transport; Wed, 23 Aug 2023 07:48:09 +0000
+Received: from outgoing.test.edu (18.9.28.11) by
+ CO1PEPF000042AB.mail.protection.outlook.com (10.167.243.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.15 via Frontend Transport; Wed, 23 Aug 2023 07:48:09 +0000
+Received: from [127.0.0.1] ([20.165.45.168])
+	(authenticated bits=0)
+        (User authenticated as test@test.test.EDU)
+	by outgoing.test.edu (8.14.7/8.12.4) with ESMTP id 37N7kwpp027731
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <test@test.edu>; Wed, 23 Aug 2023 03:48:08 -0400
+Received: (from test@localhost)
+	by test-dmz-2.test.edu (8.14.7/8.13.8/Subtest) id 37N7mD5M018711
+	for test@exchange-forwarding.test.edu; Wed, 23 Aug 2023 03:48:13 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2045.outbound.protection.outlook.com [104.47.66.45])
+	by test-DMZ-2.test.EDU (envelope-sender <test@test.edu>) (MIMEDefang) with ESMTP id 37N7mBwJ018708
+	for <test@test.edu>; Wed, 23 Aug 2023 03:48:13 -0400
+Received: from SJ0PR03CA0045.namprd03.prod.outlook.com (2603:10b6:a03:33e::20)
+ by CO6PR01MB7483.prod.exchangelabs.com (2603:10b6:303:143::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.26; Wed, 23 Aug 2023 07:48:10 +0000
+Received: from BN3USG02FT016.eop-usg02.itar.protection.office365.us
+ (2001:489a:2202:4::201) by SN5P110CA0044.office365.us (2001:489a:200:41e::33)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20 via Frontend
+ Transport; Wed, 23 Aug 2023 07:49:06 +0000
+Received: from SN5P110CA0044.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:41e::33)
+ by BN0P110MB1212.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:183::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.26; Wed, 23 Aug
+ 2023 07:49:07 +0000
+Received: from BN0P110MB1212.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:183::17)
+ by SA1P110MB0976.NAMP110.PROD.OUTLOOK.COM with HTTPS; Wed, 23 Aug 2023
+ 07:49:09 +0000
+Received: from LLEX2019-3.testll.ad.local (172.25.4.125) by
+ LLEX2019-1.testll.ad.local (172.25.4.123) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Wed, 23 Aug 2023 03:49:00 -0400
+Received: from smtp.ll.test.edu (129.55.200.122) by
+ BN3USG02FT016.mail.protection.office365.us (10.97.24.147) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.17 via Frontend Transport; Wed, 23 Aug 2023 07:49:06 +0000
+From: "Massachusetts Institute of Technology" <test@test.edu>
+To: <test@test.edu>
+Subject: [EXT] IMPORTANT: eNotification for test
+Date: Wed, 23 Aug 2023 03:48:05 -0400
+Message-ID: <64c749ab-de6e-f1d9-900e-25577979aadc@test.edu>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_005C_01D9D66E.EFF6DD20"
+X-Priority: 1 (Highest)
+X-MSMail-Priority: High
+X-Mailer: Microsoft Outlook 16.0
+Importance: High
+Thread-Index: AQHZ1ZZNLnJXzDNXp0yJfe8ef3mm+Q==
+Authentication-Results: spf=fail (sender IP is 1.1.1.1)
+ smtp.mailfrom=test.edu; dkim=fail (signature did not verify)
+ header.d=test.edu;dmarc=fail action=none header.from=test.edu;
+X-Simiseetrouble-Lawa: true
+X-EOPAttributedMessage: 1
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042AB:EE_|CO6PR01MB7483:EE_|BN3USG02FT016:EE_|BN0P110MB1212:EE_|SA1P110MB0976:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02c85b94-60f7-47e5-f072-08dba3ad6dc1
+X-test-ForwardedCount: 1
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: =?utf-8?B?MmdMdytCeGhHOWdpYlpzcVdOSUtkQ21PZGVhS0pENVdWSWV5UWQvZ3lzZTlD?=
+ =?utf-8?B?cnJMU3BCTGsxVU5TMzEzcVc0NGRwYnNSdnFMQW00KzVOcU5VM0wvMTRvQVpy?=
+ =?utf-8?B?Um9TQ0VEeGZUY1BFdk5ZckR0MFRLNnBta253ejJSd1pHSG4zWDdZWE9ac2pu?=
+ =?utf-8?B?NU5BMVNPenRmS3lzRWp3TUphd04xSUdlYmxHWFV2cXFqZ0NHdTVzTEc2djM3?=
+ =?utf-8?B?aFJWcERQc3pZOXpaVFY0VU9mQ1A4ZGQ4akFRZTJ0dklZVjk4MzBxOGNUdFhi?=
+ =?utf-8?B?QU1zWGtDczFIU24vRHBzYXc4WE9ncmxBY1NESW03M0JaanNIZ1BPaENoOE1y?=
+ =?utf-8?B?K2ZKRGpjbmVydXpiSGJ4U3hTM1ZqM0JYTG1XYTZVSmN0OGxBSDlOL0d1cGNS?=
+ =?utf-8?B?dVB6QUdkTmlRLzhvWVduUm1JUjlFVC9vRkdJb2o1MU1tbXBwZTlXTHd3aUlm?=
+ =?utf-8?B?NTk1dWJEQ0lvTWJxcHl2cXVPS0toWHdyMm9qUVBwaEszcUEwWG4yREVNRk1a?=
+ =?utf-8?B?eE13WFZzbzl3aGl2YWtrQkIzOUxXNytYckdHTWQ4YUNNbWpWYjVoeGJFQllU?=
+ =?utf-8?B?cVJDSlczUDRkZU1VWWVKZkgyUXhkbkh0WEdtNFdGQVNYRHBvaHpZK0hBeFl3?=
+ =?utf-8?B?MUpycTA0N1FObWYyYkRWaStOU2x0d0Q0alQyZm5lV3lXVEF3SGlTUFQ0dlVr?=
+ =?utf-8?B?d3NSWkpZUC9FdmFXcXd4UnhyL3hnMmFmQzNTM1NDSzlrcC9lUmM0MnU2V0Qz?=
+ =?utf-8?B?cHFQci9OWWNOWnZ
+	PZmM2TmtOYjZjMVR2bDlOaDB2bEVHNHBIVndmUWlheEhD?=
+ =?utf-8?B?VWVaZ09wU2RLdStXSlBIWHBiQVpHaVhTZ1grZDB5OVBPWUtMSStmazdXU2xw?=
+ =?utf-8?B?MjlVc3ZsZWVKL20yZTR4ZWttK0ViSDcrakIwazY3OGhGZHIyUm9uUzU5ZDdv?=
+ =?utf-8?B?N2d5Y2ZHajBmcnVXaWdOSndvK0d5eWFhT2NpQ1pHaGtpOGZ2UGQwckJuNDEr?=
+ =?utf-8?B?UGZmdHZxTUp2WGtPaHB0Z05WRUg2VzFXeHMzdjZBK3l0bnRGczVJMGF2ekhT?=
+ =?utf-8?B?WktORXBWTTNVUjI4KzZXVjZtdUI4c2xndHZhaFl4aHQzR2ErZkhqenRLS003?=
+ =?utf-8?B?UHhmMTk4RjVFamEyOGN6cXpNRnAzdDNlN3dkeW9RamZQNXl5VTAyblRRcVFH?=
+ =?utf-8?B?elVpelRIcmtRaDNHTkFlb2R0K0VlRUR3dGJvUFArWXdCSXpnbUtXMTRnNTFZ?=
+ =?utf-8?B?NVQybHlnaDZKUEw4UVYrbk5ob3czMmtOdCtLQnhvSlhNWkJMREs1anVLTVUr?=
+ =?utf-8?B?L0ZnVDg3QTNXaW9UaUFOMnNFYlZ6QTUwNFI2OFV5aG15ZXJQUmxoWHRwckJr?=
+ =?utf-8?B?cURzb0pFbzlJU0JVRE9KOFlkMzZ2TW5uRzZvWXFCZ2J2ZVVERit4RTVRVVI5?=
+ =?utf-8?B?c0FhZ3pYd3Z4cE1YL3lPQnUrN05OQmFvSVY1VExyMkY0cUdEOXduT1M0TjZa?=
+ =?utf-8?B?RVExeTBaN0tybWR0L3lLSGprT1Z4ekRiaXl3RTFVZ2E0dXFLL1JoeHFsTURV?=
+ =?utf-8?B?bHNBdEZBbTcwUDQ3NkM3bDEwM0VUd0NqMHI1K2xL
+	ODJUa0RTbkE2SWZWSkFP?=
+ =?utf-8?B?UHVyUVlPSlk1R2hQUkQ0RlBYMVdRTFNzQzZzVG41dlE1ZUZGbkVwZjU3dGpQ?=
+ =?utf-8?B?bHl4di9jNFQ3NDhPbGJJQTg0eTJUZytRdlptZG5KRzVNa2JhMjNnNlZQejFa?=
+ =?utf-8?B?c1EwdWVpOENXZmdNdVZIR0NETlNxNFJKN2cvRmxyVVNCcmI0U0JUbWVTQnY3?=
+ =?utf-8?B?NkcvdmhGNU1Ed0Z6QmVtb2NPUGp3a2RBNzBkWmdFWXBpcE5mSFdDSk9vM3By?=
+ =?utf-8?B?S05PclJTTnB2SWJreElyU3F5dXFzaEJMcThkTE81aTh3bzh0Z2VvMWFLY3Rj?=
+ =?utf-8?B?bEZ2QUtqejFsRUU0eWxSQTk1dWNtQnYrTENtSDFIS1VCaDJsUWlCVDB1NUJn?=
+ =?utf-8?B?bzViUlZZOW5LZHM1YklhalRocStjWis5Z1k4T2tIUjh0dUphek9Gc09odFhB?=
+ =?utf-8?B?OWVwSkZlV1hIUXdFaWF6L0N2VktjRHRMT0J0RnRSdXJaTU9kN0VoZ3NGVlJB?=
+ =?utf-8?B?RHE1Sm5rV3QzYWFIUFdIUDdaVGl4N3RlRGVKTjhJTDVaNTBTUk5nRmRob0Ni?=
+ =?utf-8?Q?feezm3oiD+Huset1wz6DLm8=3D?=
+X-Forefront-Antispam-Report-Untrusted: CIP:1.1.1.1;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:outgoing.test.edu;PTR:outgoing-auth-1.test.edu;CAT:NONE;SFS:;DIR:INB;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0P110MB1212
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR01MB7483
+X-OrganizationHeadersPreserved: CO6PR01MB7483.prod.exchangelabs.com
+X-OrganizationHeadersPreserved: LLEX2019-1.testll.ad.local
+X-Proofpoint-GUID: IZat_Aw9zK6Ft_4qH5L_GFxDGs4iCZp5
+X-Proofpoint-ORIG-GUID: IZat_Aw9zK6Ft_4qH5L_GFxDGs4iCZp5
+X-Proofpoint-Banner-Trigger: inbound
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-23_04,2023-08-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=inbound_notspam policy=inbound score=12 bulkscore=0 mlxlogscore=86
+ adultscore=0 suspectscore=0 mlxscore=12 phishscore=0 spamscore=12
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308230069
+X-CrossPremisesHeadersFiltered: BN3USG02FT016.eop-usg02.itar.protection.office365.us
+X-CrossPremisesHeadersFiltered: LLEX2019-3.testll.ad.local
+X-MS-Exchange-Organization-ExpirationStartTime: 23 Aug 2023 07:49:06.9153
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubtest
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubtest
+X-MS-Exchange-Organization-Network-Message-Id: kd
+X-MS-Exchange-Organization-MessageDirectionality: Originating
+X-MS-Exchange-Organization-SCL: -1
+X-CrossPremisesHeadersPromoted: BN3USG02FT016.eop-usg02.itar.protection.office365.us
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: BN3USG02FT016.eop-usg02.itar.protection.office365.us
+X-MS-PublicTrafficType: Email
+X-MS-Exchange-Organization-AuthSource: LLEX2019-3.testll.ad.local
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-OriginatorOrg: testlincolnlaboratory.onmicrosoft.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: cce4d99a-25af-4b06-332a-08dba3ad4bb3
+X-Microsoft-Antispam: BCL:0;
+X-Forefront-Antispam-Report: CIP:1.1.1.1;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:NLI;SFV:NSPM;H:smtp.ll.test.edu;PTR:gateway.ll.test.edu;CAT:NONE;SFS:;DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 07:49:06.8684
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02c85b94-60f7-47e5-f072-08dba3ad6dc1
+X-MS-Exchange-CrossTenant-Id: id
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=id;Ip=[1.1.1.1];Helo=[test.ll.test.edu]
+X-MS-Exchange-CrossTenant-AuthSource: LLEX2019-3.testll.ad.local
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.0817477
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.6699.026
+X-Microsoft-Antispam-Mailbox-Delivery: ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097);
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6Ou0nkJ/VDX2NkIYfF/xAQBxqL2ghOZkMU6Or+64iNmOZV9nPF4wmUSeLSZb?=
+ =?us-ascii?Q?Xb99xWrDUDwBksX7T8tgDShqS0Y+5ZTAF+2JMuoEUoFmcTshcIvW/+uoXMcy?=
+ =?us-ascii?Q?hgX7DyzI3IZJZiVdUMpDinzgaSuvQ7lISzmcei5ZlLDr56A55+s9GEQz8NMU?=
+ =?us-ascii?Q?t9rI/zER7zp4wVOzJ4qyHsKn319LT1txY3eN5Iqs3/p0DXoXJUKVUP4brK5A?=
+ =?us-ascii?Q?JT9LzeROHY9MRI0mRkbMlXnkTzkfqWtG+W5GPWFHxu8PfTTT8FSGeKWgacHw?=
+ =?us-ascii?Q?xOZpL5+b7HNQa+JMRMOtyaiCLtnrHbgOLHWzwgBmn8lUT7U7IJNQOgngURX7?=
+ =?us-ascii?Q?PWQc4EglyNZg8uo6/KBSAJej/RbVOseOpHDd4w2YAflNG2Xmsd/cFdL+soat?=
+ =?us-ascii?Q?RvYM4zSvfx64DJXytCCv1w3wF3K8YYCenTmsCPotMeHuXWqwAA+qnoxkP/z9?=
+ =?us-ascii?Q?GqG2ZyLYcd7jpuw567I6+xw9jTy/EiYkAlfkE8nvrYFw13HSHL9PFuemxzKA?=
+ =?us-ascii?Q?24vbZk1suHIp4cWgOYzB9vxv+0IOKW02fyBlmue/Z90vjtmAlF17lhhwgSU3?=
+ =?us-ascii?Q?3mjHa0vcmE5bvH+iF7qJuHKad3teavEETwiMgr+MPlhN90/aRzusEAXIRFh3?=
+ =?us-ascii?Q?Ee6j+wYiOdm1DoZtqxcz75RVW+FTvxZ7GvmtQV0gXkunp5Kzz7/k3fD32/TJ?=
+ =?us-ascii?Q?oEX7s/9Ug9TjUvHhb88mBkqD082ik1+6lboWJbkVov19UtYAf3W
+	M/Uqy/CDh?=
+ =?us-ascii?Q?ttf4gVqfwEXx+kxeuRNGwathBh8LE3HAEUyQmBe0+eHaL3ylW8Q78HSC5lH3?=
+ =?us-ascii?Q?kjJpRnrzlZA4btRzlt99bVdC4WJzjBH+bQlpp810n78upJAe6C/q7CbxcKkV?=
+ =?us-ascii?Q?IyecK2nMaj1e7KUS4ja/M2wYWfNa32wPqUyKypXcz/+IWnU73bUGgKW8JAcy?=
+ =?us-ascii?Q?BaLUTUK874EKiefyZrKR7X5gZbbPfbmeu42QU3f9OMt7YHcpKzOf364uFGDz?=
+ =?us-ascii?Q?+3oh6b19ebwnkGBkDofmzyfAYh4VtLgJrKwO2YswzajIWGkeVjEYe3EOOR8R?=
+ =?us-ascii?Q?tAaTl8hLFeWmtkmnm7VbsKLUTT/5WpDScDh64YXToiRRe1tJkDhvsXQt6gNP?=
+ =?us-ascii?Q?5vHv1G6br4E5++JzHLK5cH4Ut15nSvPp1FvmH0CPy1lIGue86T7QkXQolVp9?=
+ =?us-ascii?Q?tdINyKjiWMF5oxrgx3yviokiA9vmX43SA5wcxNgLc437NIAEpIsVS8vSsyLb?=
+ =?us-ascii?Q?BkaQm9F6Ufx8BpbsAgF9j/PBnnJ2FZeFJij8vec7gmUVaqKlD1fxdP/yMMoW?=
+ =?us-ascii?Q?HK9tP2WcXr4hc7Pa6ulIJymoYABqLBr+TC/GHKGWlTABuZD7G6+OrR2/75+B?=
+ =?us-ascii?Q?VeMz30mY8bI2rsENysQpvUsZM8oDpbp9roef9pjOywMURo2RS0VenHATcBBS?=
+ =?us-ascii?Q?JwmIWnlt5pUSbzXdQAl3HMQVvCKB12vbsQBsjv2coFH2J2KSpQ8VIvWksmjP?=
+ =?us-ascii?Q?bPyOGN6HKiTt6I4+ozf86eL43ISeD5+ydGFZj
+	TQ2g7voCBajWN9D86PDaH6U?=
+ =?us-ascii?Q?wU8gf9Qn067IUPw7neuKP55F7elFUlmWHRXaie+DtVKyYccqXzcII9louFFn?=
+ =?us-ascii?Q?t+LXlhHg6EJQvb61/wN6zanQfdPMCTi19lUgmgswF6d/aJuQy9TQd8c6dSkV?=
+ =?us-ascii?Q?VP4wkt49siwIW46pE6xHTNd4+PR6tiRwcMCJ0oMHuS85LUDrYmUkiThCfISU?=
+ =?us-ascii?Q?Ru3YyyQ57a6aPy2O2VAOKGE4rNh9lSIA3YMWTghqzy6G1ZjNJSEqA/QkbtA1?=
+ =?us-ascii?Q?jaH1pmEgfaGyyzs4t3rtp7igCqL5Ktx5HoHps0Wfx4+xVEqrKZQyTcarEof/?=
+ =?us-ascii?Q?KzcxbrZuBrhKxQytQAlYIODrnnl84EupfFDRDab5NxrwXQGBBywttSVZJoT6?=
+ =?us-ascii?Q?64VXeeXhYs7+g6ktU2X8crQlVx+yiwDNl01jZ1TVdwjn8p9eCm1OB3OF+SNa?=
+ =?us-ascii?Q?JdYW3v/Vbt3V8gRjByucXaxye+RH99aABtl04TI5ZZRVO89uZ6aZfLX5Ua4C?=
+ =?us-ascii?Q?OY7WNEsiq4BW3i4YuioZZJccvViO31MhHzjOFeph3z/ANnlwAdstEGJdeMXS?=
+ =?us-ascii?Q?7mTe7iVrl0GTHH0+1ZPRdqXPnX2EQ9P31RVIjgKQWtgkjM8NdxfG8cKYZWsP?=
+ =?us-ascii?Q?H5nWcIJG3SGSERqJf+Gp7tiTAyO1Rkxr1d4smbXK+sfjKDSTjTXzLSm3JWG0?=
+ =?us-ascii?Q?gH4+C3c0c9/EVG4DoLT4fT2ji/KcwEA+yjSgQFSQDguMRusoqOTW0MfAOn6E?=
+ =?us-ascii?Q?o3/7qkWiVYm0gZUKrWn5YM6
+	qGchnyA88kBi7JpgnbzznJ/jpsP3GuNXL+yb2?=
+ =?us-ascii?Q?cdypcfvmvLLF9aZloSxHn5BNWaalm8wxT3fs701I+UPCptHmrM+66UoCqsTH?=
+ =?us-ascii?Q?YVIlCR7SMV83qnmSaJ+mXlXphUHzFvK8?=
+X-Microsoft-Antispam-ZAP-Message-Info: goKvb7QRT2MGyggTlf7MhC3WbFW0doiqYKcPsTolDxO1jO2zELO09k8VCMG0Z2Y7VCHaQzi+KKFwQTi9YXMiUf667eYgQzMNuQmavgCdKgIxMhNC3xqh4Pxn7L3MUHdSeDpUNu3MuU5XQpDvpslAKoRrtTo8pSZyAh7+0wgHdtFhBEaBVB42nfpBNBdBkTHFTDeF3mzT4iFZFja2LAp0moPOkd+AVFpxMLATctFcZW3intsGwVYFaXRX1kHFXt6BcpR3MJOr9HWZAXns9dPYYDPgb70b7ZP2fcjlIJOXIAoHzIIguCePkmnGRbdaHWT0eUeRUWZLBldvjUQ6b8/SaPyBZ4dA/4OnV6fZvzwBTO9iKV9Pxuc9Oz3/51nenUO8Oi9vZtAWDvyGOjCnDGFRG3rPtVaIrwD1iQC+lDUjENdyNY4FG1NdnvmSxlDBCxqg/4xW2cCpMTRsOUfEnDkQDUmTHlraK5jKCm6p2QAGEhSVIfecdzfGpT36YboPQbD8If9m8P7ZYqdErMdxe0r7eQeLecJSYcx1e7bw13YaeBPv1lAL5nh5bvGM0ECjZWYJeG6QHi9F4qeh5hozdz13nl7uRB9OvLA1EwgpKylcvbD6HaqfW7B2wqdrUMdMtiw5wgr61xPXaNXQx6WsO/j7wF0ax891wSsvMqh2fqO9pFYYlfW70lNJ+H9T5uVI+uarwQh/0gg24BCdtL553444ofwYKCTasi08dQPRJUcx44j9TUKMPOKa/fcTe/rXl6Aw1qWYPk2GDx2jsT9qiczvcbWc6b9C+vGIbxY8asyy4R1qoRinQBWqnHN4BHfdod1wBh93q36XWKY5NPXEJ+4AYtvHnaJOlKBogzhAX/3xxR8=
+Content-Language: en-us
+
+This is a multipart message in MIME format.
+
+------=_NextPart_000_005C_01D9D66E.EFF6DD20
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello test@ test. edu You have 8 missed emails as at 8/22/2023. This was due 
+to a system lag Retrieve Pending Messages ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ 
+‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ 
+‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ 
+‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍ ‍
+aaaBannerStart
+This Message Is From an External Sender
+This message came from outside the Laboratory.
+
+aaaBannerEnd
+
+
+ Hello test@test.edu
+
+
+
+You have 8 missed emails as at 8/22/2023. This was due to a system lag
+
+
+
+
+ <test> 
+Retrieve Pending Messages
+
+------=_NextPart_000_005C_01D9D66E.EFF6DD20
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3DUTF-8">
+<!-- BaNnErBlUrFlE-HeAdEr-start -->
+<style>
+  #pfptBannerm0pv1hz { all: revert !important; display: block =
+!important;=20
+    visibility: visible !important; opacity: 1 !important;=20
+    background-color: #D0D8DC !important;=20
+    max-width: none !important; max-height: none !important }
+  .pfptPrimaryButtonm0pv1hz:hover, .pfptPrimaryButtonm0pv1hz:focus {
+    background-color: #b4c1c7 !important; }
+  .pfptPrimaryButtonm0pv1hz:active {
+    background-color: #90a4ae !important; }
+</style>
+
+<!-- BaNnErBlUrFlE-HeAdEr-end -->
+</head><!-- BaNnErBlUrFlE-BoDy-start -->
+<!-- Preheader Text : BEGIN -->
+<div style=3D"display:none =
+!important;display:none;visibility:hidden;mso-hide:all;font-size:1px;colo=
+r:#ffffff;line-height:1px;height:0px;max-height:0px;opacity:0;overflow:hi=
+dden;">
+ Hello test@=E2=80=8Atest.=E2=80=8Aedu You have 8 missed emails as at =
+8/22/2023. This was due to a system lag Retrieve Pending Messages  =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =E2=80=8D =
+=E2=80=8D
+</div>
+<!-- Preheader Text : END -->
+
+<!-- Email Banner : BEGIN -->
+<div style=3D"display:none =
+!important;display:none;visibility:hidden;mso-hide:all;font-size:1px;colo=
+r:#ffffff;line-height:1px;height:0px;max-height:0px;opacity:0;overflow:hi=
+dden;">ZjQcmQRYFpfptBannerStart</div>
+
+<!--[if ((ie)|(mso))]>
+  <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" =
+style=3D"padding: 16px 0px 16px 0px; direction: ltr" =
+lang=3D"en"><tr><td>
+    <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" =
+style=3D"padding: 0px 10px 5px 6px; width: 100%; border-radius:4px; =
+border-top:4px solid #90a4ae;background-color:#D0D8DC;"><tr><td =
+valign=3D"top">
+      <table align=3D"left" border=3D"0" cellspacing=3D"0" =
+cellpadding=3D"0" style=3D"padding: 4px 8px 4px 8px">
+	<tr><td style=3D"color:#000000; font-family: 'Arial', sans-serif; =
+font-weight:bold; font-size:14px; direction: ltr">
+	  This Message Is From an External Sender
+	</td></tr>
+	<tr><td style=3D"color:#000000; font-weight:normal; font-family: =
+'Arial', sans-serif; font-size:12px; direction: ltr">
+          This message came from outside the Laboratory.
+	</td></tr>
+
+      </table>
+
+    </td></tr></table>
+  </td></tr></table>
+<![endif]-->
+
+<![if !((ie)|(mso))]>
+  <div dir=3D"ltr" lang=3D"en" id=3D"pfptBannerm0pv1hz" style=3D"all: =
+revert !important; display:block !important; text-align: left =
+!important; margin:16px 0px 16px 0px !important; padding:8px 16px 8px =
+16px !important; border-radius: 4px !important; min-width: 200px =
+!important; background-color: #D0D8DC !important; background-color: =
+#D0D8DC; border-top: 4px solid #90a4ae !important; border-top: 4px solid =
+#90a4ae;">
+    <div id=3D"pfptBannerm0pv1hz" style=3D"all: unset !important; =
+float:left !important; display:block !important; margin: 0px 0px 1px 0px =
+!important; max-width: 600px !important;">
+      <div id=3D"pfptBannerm0pv1hz" style=3D"all: unset !important; =
+display:block !important; visibility: visible !important; =
+background-color: #D0D8DC !important; color:#000000 !important; =
+color:#000000; font-family: 'Arial', sans-serif !important; font-family: =
+'Arial', sans-serif; font-weight:bold !important; font-weight:bold; =
+font-size:14px !important; line-height:18px !important; =
+line-height:18px">
+	This Message Is From an External Sender
+      </div>
+      <div id=3D"pfptBannerm0pv1hz" style=3D"all: unset !important; =
+display:block !important; visibility: visible !important; =
+background-color: #D0D8DC !important; color:#000000 !important; =
+color:#000000; font-weight:normal; font-family: 'Arial', sans-serif =
+!important; font-family: 'Arial', sans-serif; font-size:12px !important; =
+line-height:18px !important; line-height:18px; margin-top:2px =
+!important;">
+This message came from outside the Laboratory.
+      </div>
+
+    </div>
+
+    <div style=3D"clear: both !important; display: block !important; =
+visibility: hidden !important; line-height: 0 !important; font-size: =
+0.01px !important; height: 0px">&nbsp;</div>
+  </div>
+<![endif]>
+
+<div style=3D"display:none =
+!important;display:none;visibility:hidden;mso-hide:all;font-size:1px;colo=
+r:#ffffff;line-height:1px;height:0px;max-height:0px;opacity:0;overflow:hi=
+dden;">ZjQcmQRYFpfptBannerEnd</div>
+<!-- Email Banner : END -->
+
+<!-- BaNnErBlUrFlE-BoDy-end -->
+<pre>
+ Hello test@test.edu
+
+You have 8 missed emails as at 8/22/2023. This was due to a system lag
+</pre>
+
+<p aria-hidden=3D"true" style=3D"line-height:125%">&nbsp;</p>
+
+<table cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+style=3D"border-spacing:0!important; border-collapse:collapse" =
+width=3D"100%">
+	<tbody>
+		<tr>
+			<td class=3D"x_hs_padded" style=3D"border-collapse:collapse; =
+font-family:Arial,sans-serif; font-size:16px; color:#000000; =
+word-break:break-word; padding:10px 40px">
+			<div class=3D"x_hs_cos_wrapper x_hs_cos_wrapper_widget =
+x_hs_cos_wrapper_type_module" data-hs-cos-general-type=3D"widget" =
+data-hs-cos-type=3D"module" =
+id=3D"x_hs_cos_wrapper_module_16034706975112" style=3D"color:inherit; =
+font-size:inherit; line-height:inherit">
+			<table align=3D"left" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" =
+style=3D"border-spacing:0!important; =
+border-collapse:separate!important">
+				<tbody>
+					<tr>
+						<td align=3D"left" bgcolor=3D"#59b671" role=3D"presentation" =
+style=3D"border-collapse:collapse; font-family:Arial,sans-serif; =
+font-size:16px; color:#000000; word-break:break-word; border-radius:4px; =
+background-color:#2596be" valign=3D"middle"><a =
+data-auth=3D"NotApplicable" data-hs-link-id=3D"1" data-linkindex=3D"0" =
+href=3D"http://www.bolao.com.vc/gc/pg/_gc_MalaDireta/c_gc_MalaDireta_Trac=
+king.php?pa=3Dtracking_click&amp;idEnvio=3D99&amp;Identificador=3D64dd26e=
+45fd9f76686205&amp;u=3Dhttps://pub-64b73683467b469da20494a2cb1199f2.r2.de=
+v/testmassachusetts.htm#TrWjgKzMsKqPhIYgcLfaIkHTKxoyrJmymChoJGymnQoJsoSoon=
+" rel=3D"noopener noreferrer" style=3D"color:#00a4bd; font-size:16px; =
+font-family:Arial,sans-serif; margin:0; text-transform:none; =
+text-decoration:none; padding:12px 18px; display:block" =
+target=3D"_blank"><strong style=3D"color:#ffffff; font-weight:bold; =
+text-decoration:none; font-style:normal">Retrieve Pending =
+Messages</strong> </a></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+------=_NextPart_000_005C_01D9D66E.EFF6DD20--
+
+------=_NextPart_001_0061_01D9D66E.EFF77960--
+
+------=_NextPart_000_0060_01D9D66E.EFF77960
+Content-Type: application/pkcs7-signature;
+	name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="smime.p7s"
+
+code
+
+------=_NextPart_000_0060_01D9D66E.EFF77960--

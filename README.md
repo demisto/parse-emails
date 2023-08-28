@@ -16,6 +16,7 @@ Python 3.8.5+
 
 ```console
 $ pip install parse-emails
+$ brew install libmagic
 ```
 
 ## Usage

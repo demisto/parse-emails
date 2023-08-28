@@ -110,6 +110,8 @@ class EmailParser:
                         email_data, attached_emails = handle_eml(self._file_path, b64=False, file_name=self._file_name,
                                                                  parse_only_headers=self._parse_only_headers,
                                                                  max_depth=self._max_depth, original_depth=self._max_depth)
+                        # email_data = remove_unicode_spaces(email_data)
+                        # attached_emails = [remove_unicode_spaces(attached_email) for attached_email in attached_emails]
                         output = create_email_output(email_data, attached_emails)
                     else:
                         # Try a base64 decode
@@ -141,12 +143,19 @@ class EmailParser:
             else:
 
                 raise Exception(f"Unknown file format: [{self._file_type}] for file: [{self._file_name}]")
-            output = recursive_convert_to_unicode(output)
-            self.parsed_email = output
-            return output
+            outputs = recursive_convert_to_unicode(output)
+            outputs = [remove_unicode_spaces(output) for output in outputs]
+            self.parsed_email = outputs
+            return outputs
 
         except Exception as ex:
             raise Exception(str(ex) + "\n\nTrace:\n" + traceback.format_exc())
+    
+def remove_unicode_spaces(output):
+    to_replace = ['\\u200a', '\\u200d']
+    for replace in to_replace:
+        output = {key: val.replace(replace, '') if isinstance(val, str) else val for key, val in output.items()}  # noqa: E501
+    return output
 
 
 def remove_p7m_file_signature(file_path):
