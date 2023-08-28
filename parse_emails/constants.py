@@ -1,6 +1,7 @@
 REGEX_EMAIL = r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[\b,]"
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 USER_ENCODING = None
+STRINGS_TO_REMOVE = ['\\u200a', '\\u200d']
 DEFAULT_ENCODING = None
 PROPS_ID_MAP = {
     "0x0001": {

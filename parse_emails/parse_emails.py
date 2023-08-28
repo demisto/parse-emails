@@ -10,6 +10,7 @@ from OpenSSL._util import lib as _lib  # type: ignore
 
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
+from parse_emails.constants import STRINGS_TO_REMOVE
 
 
 class EmailParser:
@@ -151,9 +152,9 @@ class EmailParser:
     
 
 def remove_unicode_spaces(output):
-    to_replace = ['\\u200a', '\\u200d']
-    for replace in to_replace:
-        output = {key: val.replace(replace, '') if isinstance(val, str) else val for key, val in output.items()}
+    for replace in STRINGS_TO_REMOVE:
+        output = {key: val.replace(replace, '') if isinstance(val, str) else val for key,
+                  val in output.items()} if isinstance(output, dict) else output.replace(replace, '')
     return output
 
 
