@@ -144,7 +144,7 @@ class EmailParser:
 
                 raise Exception(f"Unknown file format: [{self._file_type}] for file: [{self._file_name}]")
             outputs = recursive_convert_to_unicode(output)
-            outputs = [remove_unicode_spaces(output) for output in outputs]
+            outputs = [remove_unicode_spaces(output) for output in outputs] if isinstance(outputs, list) else remove_unicode_spaces(outputs)
             self.parsed_email = outputs
             return outputs
 
