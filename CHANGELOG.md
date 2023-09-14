@@ -1,4 +1,7 @@
 # Changelog
+v0.1.18
+* Fixed an issue where inline image did not parse.
+
 v0.1.17
 * Fixed an issue where several unicode spaces weren't parsed as expected.
 
