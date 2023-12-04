@@ -833,4 +833,3 @@ def test_parse_bcc_addresses_in_eml():
     email_parser = EmailParser(file_path=test_path, max_depth=3)
     results = email_parser.parse()
     assert results['BCC'] == 'test1@mail.com, test2@mail.com'
-
