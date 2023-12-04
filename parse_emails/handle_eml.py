@@ -246,6 +246,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             email_data = {
                 'To': extract_address_eml(eml, 'to'),
                 'CC': extract_address_eml(eml, 'cc'),
+                'BCC': extract_address_eml(eml, 'bcc'),
                 'From': extract_address_eml(eml, 'from'),
                 'Subject': convert_to_unicode(unfold(eml['Subject'])),
                 'HTML': convert_to_unicode(html, is_msg_header=False),

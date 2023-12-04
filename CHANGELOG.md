@@ -1,4 +1,8 @@
 # Changelog
+
+v0.1.19
+* Fixed an issue where the Bcc was not parsed.
+
 v0.1.18
 * Fixed an issue where inline image did not parse.
 
