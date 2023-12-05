@@ -817,3 +817,19 @@ def test_parse_p7m_file_with_unicode_spaces(test_file_path):
 
     assert "\u200a" not in results
     assert "\u200d" not in results
+
+
+def test_parse_bcc_addresses_in_eml():
+    """
+    Given:
+     - eml file that contains bcc addresses
+    When:
+     - parsing the file.
+    Then:
+     - Validate that the bcc was returned.
+    """
+    test_path = 'parse_emails/tests/test_data/test bcc.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=3)
+    results = email_parser.parse()
+    assert results['BCC'] == 'test1@mail.com, test2@mail.com'
