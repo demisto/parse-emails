@@ -19,6 +19,7 @@ MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrai
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 
+
 def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, max_depth=3, bom=False, original_depth=3):
     global ENCODINGS_TYPES
 
