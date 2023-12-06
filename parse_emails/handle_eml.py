@@ -275,7 +275,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
 def check_if_file_starts_with_header(file_data: str):
     """
-    This function check if the file data starts with headers, and if not its delete the lines before the headers.
+    This function checks if the file data starts with headers, and if not it deletes the lines before the headers.
     Args:
         file_data (str) : the email data.
     Returns:
