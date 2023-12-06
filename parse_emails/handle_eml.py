@@ -17,6 +17,7 @@ from parse_emails.handle_msg import handle_msg
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
+headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 
 
 def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, max_depth=3, bom=False, original_depth=3):
@@ -36,6 +37,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
         if isinstance(file_data, bytes):
             file_data = file_data.decode('utf-8', 'ignore')
+
+        file_data = check_if_file_starts_with_header(file_data)
 
         parser = HeaderParser()
         headers = parser.parsestr(file_data)
@@ -268,6 +271,21 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'FileName': file_name
             }
         return email_data, attached_emails
+
+
+def check_if_file_starts_with_header(file_data: str):
+    """
+    This function checks if the file data starts with headers, and if not it deletes the lines before the headers.
+    Args:
+        file_data (str) : the email data.
+    Returns:
+        file_data (str) : the email data without text before the headers.
+    """
+    for idx, line in enumerate(file_data.splitlines()):
+        if headerRE.match(line):
+            file_data = file_data.split("\n", idx)[idx]
+            break
+    return file_data
 
 
 def unfold(s):

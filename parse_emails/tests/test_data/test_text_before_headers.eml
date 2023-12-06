@@ -1,0 +1,26 @@
+XCSRV-203.orpea.net () by
+ CPPV-EXCSRV-104.orpea.net () with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ via Mailbox Transport; Tue, 10 Oct 2023 12:36:55 +0200
+MIME-Version: 1.0
+Date: Sun, 3 Dec 2023 12:57:09 +0200
+Bcc: =?UTF-8?B?157XqdeUINeS15zXmdem111XmQ==?= <test1@mail.com>,
+	=?UTF-8?B?157XqdeUINeS15zXmdem11fXmQ==?= <test2@mail.com>
+Message-ID: <CACVXskAdihOUNQYeLaeCOx7xiDnJ2W55Q2GQmX2G_UV115D4Dw@mail.gmail.com>
+Subject: test bcc
+From: =?UTF-8?B?157XqdeUINeS15zXmdem11fXmQ==?= <test1@mail.com>
+To: test test <test1@mail.com>
+Cc: =?UTF-8?B?15fXldeZINeS15zXmdem111fXmQ==?= <test1@mail.com>
+Content-Type: multipart/alternative; boundary="000000000000ee07a1060b98dc7e"
+
+--000000000000ee07a1060b98dc7e
+Content-Type: text/plain; charset="UTF-8"
+
+test bcc
+
+--000000000000ee07a1060b98dc7e
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="rtl"><div dir="ltr">test bcc</div></div>
+
+--000000000000ee07a1060b98dc7e--

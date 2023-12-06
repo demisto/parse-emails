@@ -833,3 +833,19 @@ def test_parse_bcc_addresses_in_eml():
     email_parser = EmailParser(file_path=test_path, max_depth=3)
     results = email_parser.parse()
     assert results['BCC'] == 'test1@mail.com, test2@mail.com'
+
+
+def test_parse_eml_with_text_before_the_headers():
+    """
+    Given:
+     - eml file that starts with text that is not headers.
+    When:
+     - parsing the file.
+    Then:
+     - Validate that the text was removed and th efile is parsed.
+    """
+    test_path = 'parse_emails/tests/test_data/test_text_before_headers.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=3)
+    results = email_parser.parse()
+    assert len(results) == 15
