@@ -7,7 +7,8 @@ import quopri
 import re
 import tempfile
 from base64 import b64decode
-from email import message_from_string
+from email import message_from_string, errors, message
+
 from email.header import decode_header, make_header
 from email.parser import HeaderParser
 from email.utils import getaddresses
@@ -79,6 +80,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 headers_map[item[0]] = value
 
         eml = message_from_string(file_data)
+        if eml.defects:
+            eml = handle_multi_part_error(eml)
+
         if not eml:
             raise Exception("Could not parse eml file!")
 
@@ -271,6 +275,27 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'FileName': file_name
             }
         return email_data, attached_emails
+
+
+def handle_multi_part_error(eml: message):
+    """
+    This function handles a multipart which is missing boundary,
+    and checks if the boundary exists only ons in the file, it removes that.
+    Args:
+        the eml parse obj (Message) : the email data.
+    Returns:
+        the eml parse obj (Message)
+    """
+    for defect in eml.defects:
+        if isinstance(defect, errors.MultipartInvariantViolationDefect):
+            boundary = eml.get_boundary()
+            file_data = eml.as_string()
+            if file_data.count(boundary) == 1:
+                param = eml.get("Content-Type").replace('\r\n', '\n')
+                file_data = eml.as_string().replace(f'Content-Type: {param}\n', '')
+                eml = message_from_string(file_data)
+            break
+    return eml
 
 
 def check_if_file_starts_with_header(file_data: str):

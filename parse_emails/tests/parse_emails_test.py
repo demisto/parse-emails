@@ -849,3 +849,20 @@ def test_parse_eml_with_text_before_the_headers():
     email_parser = EmailParser(file_path=test_path, max_depth=3)
     results = email_parser.parse()
     assert len(results) == 15
+
+
+def test_multipart_defective():
+    """
+    Given:
+     - multipart eml that have defective boundary.
+    When:
+     - parsing the file.
+    Then:
+     - Validate that the eml parsed correctly.
+    """
+    test_path = 'parse_emails/tests/test_data/multipart-defective.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
+    results = email_parser.parse()
+    assert results.get('Text')
+    assert results.get('HTML')
