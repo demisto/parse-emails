@@ -7,8 +7,7 @@ import quopri
 import re
 import tempfile
 from base64 import b64decode
-from email import message_from_string, errors, message
-
+from email import errors, message_from_string
 from email.header import decode_header, make_header
 from email.parser import HeaderParser
 from email.utils import getaddresses
@@ -277,7 +276,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         return email_data, attached_emails
 
 
-def handle_multi_part_error(eml: message):
+def handle_multi_part_error(eml):
     """
     This function handles a multipart which is missing boundary,
     and checks if the boundary exists only ons in the file, it removes that.
