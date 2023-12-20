@@ -275,7 +275,15 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         return email_data, attached_emails
 
 
-def create_message_from_string(file_data):
+def create_message_from_string(file_data: str) -> Message:
+    """
+    Parse a string into a Message object model.
+    and checks if there is a multipart error we try to fix it
+    Args:
+        file_data (str) : the email data as string.
+    Returns:
+        the eml parse obj (Message)
+    """
     eml = message_from_string(file_data)
     if eml.defects:
         eml = handle_multi_part_error(eml)
