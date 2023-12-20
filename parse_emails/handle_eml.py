@@ -9,6 +9,7 @@ import tempfile
 from base64 import b64decode
 from email import errors, message_from_string
 from email.header import decode_header, make_header
+from email.message import Message
 from email.parser import HeaderParser
 from email.utils import getaddresses
 
@@ -78,9 +79,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             else:
                 headers_map[item[0]] = value
 
-        eml = message_from_string(file_data)
-        if eml.defects:
-            eml = handle_multi_part_error(eml)
+        eml = create_message_from_string(file_data)
 
         if not eml:
             raise Exception("Could not parse eml file!")
@@ -276,10 +275,17 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         return email_data, attached_emails
 
 
-def handle_multi_part_error(eml):
+def create_message_from_string(file_data):
+    eml = message_from_string(file_data)
+    if eml.defects:
+        eml = handle_multi_part_error(eml)
+    return eml
+
+
+def handle_multi_part_error(eml: Message):
     """
     This function handles a multipart which is missing boundary,
-    and checks if the boundary exists only ons in the file, it removes that.
+    and checks if the boundary exists only once in the file, if so it removes it.
     Args:
         the eml parse obj (Message) : the email data.
     Returns:
@@ -291,7 +297,7 @@ def handle_multi_part_error(eml):
             file_data = eml.as_string()
             if file_data.count(boundary) == 1:
                 param = eml.get("Content-Type").replace('\r\n', '\n')
-                file_data = eml.as_string().replace(f'Content-Type: {param}\n', '')
+                file_data = file_data.replace(f'Content-Type: {param}\n', '')
                 eml = message_from_string(file_data)
             break
     return eml
