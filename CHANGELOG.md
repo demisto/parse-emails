@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.20
+* fixed an issue in msg when parse only headers.
+
 v0.1.19
 * Fixed an issue where the Bcc was not parsed.
 * Fixed an issue where EML files were not parsed if they contained text at the beginning.

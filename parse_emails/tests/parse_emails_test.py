@@ -51,6 +51,14 @@ def test_msg_with_attachments():
 
 
 def test_msg_parse_only_headers():
+    """
+    Given:
+     - msg file.
+    When:
+     - parsing only the headers.
+    Then:
+     - Validate that the email was parsed.
+    """
     test_path = 'parse_emails/tests/test_data/html_attachment.msg'
 
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=True)
