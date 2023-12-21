@@ -94,7 +94,7 @@ EMBEDDED_MSG_HEADER_SIZE = 24
 
 def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, original_depth=3):
     if max_depth == 0:
-        return None, []
+        return None, [], []
 
     msg = MsOxMessage(file_path)
     if not msg:
@@ -105,7 +105,7 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, orig
     headers, headers_map = create_headers_map(msg_dict.get('Headers'))
 
     if parse_only_headers:
-        return {"HeadersMap": headers_map}, []
+        return {"HeadersMap": headers_map}, [], []
 
     eml_attachments, attachments_data = save_attachments(msg.get_all_attachments(), max_depth - 1)
     # add eml attached emails
