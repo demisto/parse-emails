@@ -1,4 +1,6 @@
 # Changelog
+v0.1.20
+* Fixed an issue where EML multipart files were not parsed if they have a broken boundary.
 
 v0.1.19
 * Fixed an issue where the Bcc was not parsed.
