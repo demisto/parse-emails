@@ -50,6 +50,23 @@ def test_msg_with_attachments():
     assert results.parsed_email['Attachments'] == 'dummy-attachment.txt'
 
 
+def test_msg_parse_only_headers():
+    """
+    Given:
+     - msg file.
+    When:
+     - parsing only the headers.
+    Then:
+     - Validate that the email was parsed.
+    """
+    test_path = 'parse_emails/tests/test_data/html_attachment.msg'
+
+    results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=True)
+    results.parse()
+
+    assert isinstance(results.parsed_email, dict)
+
+
 @pytest.mark.parametrize('file_type', ['application/pkcs7-mime', 'macintosh hfs', 'message/rfc822', 'multipart/alternative',
                                        'multipart/mixed', 'multipart/related', 'multipart/signed', 'rfc 822 mail',
                                        'smtp mail', 'utf-8 (with bom) text'])
