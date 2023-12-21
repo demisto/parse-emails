@@ -1,7 +1,7 @@
 # Changelog
 
 v0.1.20
-* fixed an issue in msg when parse only headers.
+* fixed an issue when parsing msg with headers only.
 
 v0.1.19
 * Fixed an issue where the Bcc was not parsed.
