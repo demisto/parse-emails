@@ -348,7 +348,7 @@ def unfold(s):
     :param string s: a string to unfold
     :rtype: string
     """
-    lgging.debug(f"unfold called with {s=}")
+    logging.debug(f"unfold called with {s=}")
     return re.sub(r'[ \t]*[\r\n][ \t\r\n]*', ' ', s).strip(' ') if s else s
 
 
