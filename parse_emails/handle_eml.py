@@ -22,6 +22,7 @@ headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 
 
 def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, max_depth=3, bom=False, original_depth=3):
+    logging.debug(f"handle_eml called with args: {file_path=} {b64=} {file_name=} {parse_only_headers=} {max_depth=} {bom=} {original_depth=}")
     global ENCODINGS_TYPES
 
     if max_depth == 0:
@@ -30,6 +31,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
     with open(file_path, 'rb') as emlFile:
         handle_SMTP_headers(emlFile)
         file_data = emlFile.read()
+        logging.debug(f"file_data: {file_data=}")
         if b64:
             file_data = b64decode(file_data)
         if bom:
@@ -40,9 +42,12 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             file_data = file_data.decode('utf-8', 'ignore')
 
         file_data = check_if_file_starts_with_header(file_data)
+        logging.debug(f"file_data: {file_data=}")
 
         parser = HeaderParser()
+        logging.debug(f"parser: {parser=}")
         headers = parser.parsestr(file_data)
+        logging.debug(f"headers: {headers=}")
 
         # headers is a Message object implementing magic methods of set/get item and contains.
         # message object 'contains' method transforms its keys to lower-case, hence there is not a difference when
@@ -80,6 +85,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 headers_map[item[0]] = value
 
         eml = create_message_from_string(file_data)
+        logging.debug(f"eml: {eml=}")
 
         if not eml:
             raise Exception("Could not parse eml file!")
@@ -144,6 +150,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
                     elif isinstance(part.get_payload(), str):
                         file_content = part.get_payload(decode=True)
+                        logging.debug(f"file_content: {file_content=}")
                     else:
                         logging.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
 
@@ -272,6 +279,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 'Depth': original_depth - max_depth,
                 'FileName': file_name
             }
+        logging.debug(f"email_data: {email_data=}")
         return email_data, attached_emails
 
 
@@ -284,6 +292,7 @@ def create_message_from_string(file_data: str) -> Message:
     Returns:
         the eml parse obj (Message)
     """
+    logging.debug(f"create_message_from_string with {file_data=}")
     eml = message_from_string(file_data)
     if eml.defects:
         eml = handle_multi_part_error(eml)
@@ -299,6 +308,7 @@ def handle_multi_part_error(eml: Message):
     Returns:
         the eml parse obj (Message)
     """
+    logging.debug(f"handle_multi_part_error with {eml=}")
     for defect in eml.defects:
         if isinstance(defect, errors.MultipartInvariantViolationDefect):
             boundary = eml.get_boundary()
@@ -319,6 +329,7 @@ def check_if_file_starts_with_header(file_data: str):
     Returns:
         file_data (str) : the email data without text before the headers.
     """
+    logging.debug(f"calling check_if_file_starts_with_headers with {file_data=}")
     for idx, line in enumerate(file_data.splitlines()):
         if headerRE.match(line):
             file_data = file_data.split("\n", idx)[idx]
@@ -337,6 +348,7 @@ def unfold(s):
     :param string s: a string to unfold
     :rtype: string
     """
+    lgging.debug(f"unfold called with {s=}")
     return re.sub(r'[ \t]*[\r\n][ \t\r\n]*', ' ', s).strip(' ') if s else s
 
 
@@ -344,6 +356,7 @@ def decode_content(mime):
     """
       Decode content
     """
+    logging.debug(f"decode_content called with {mime=}")
     charset = mime.get_content_charset()
     payload = mime.get_payload(decode=True)
     try:
@@ -378,6 +391,7 @@ def handle_SMTP_headers(emlFile):
     Remove the transfer headers attached to the eml file by the SMTP protocol. The function reads the lines of the input
     eml file until a line which isn't an SMTP header is reached.
     """
+    logging.debug(f"handle_SMTP_headers called with {emlFile.name}")
     SMTP_HEADERS = ['MAIL FROM', 'RCPT TO', 'DATA']
     remove_smtp_header = True
     while remove_smtp_header:
@@ -389,6 +403,7 @@ def handle_SMTP_headers(emlFile):
 
 
 def mime_decode(word_mime_encoded):
+    logging.debug(f"mime_decode called with {word_mime_encoded=}")
     prefix, charset, encoding, encoded_text, suffix = word_mime_encoded.groups()
     if encoding.lower() == 'b':
         byte_string = base64.b64decode(encoded_text)
@@ -406,6 +421,7 @@ def get_email_address(eml, entry):
     Returns:
         res (str) : string of all required email addresses.
     """
+    logging.debug(f"get_email_address called with {eml=}, {entry=}")
     if entry == 'from':
         gel_all_values_from_email_by_entry = [str(current_eml_no_newline).replace('\r\n', '').replace('\n', '')
                                               for current_eml_no_newline in eml.get_all(entry, [])]
@@ -429,6 +445,7 @@ def extract_address_eml(eml, entry):
     Returns:
         res (str) : string of all required email addresses.
     """
+    logging.debug(f"extract_address_eml called with {eml=}, {entry}")
     email_address = get_email_address(eml, entry)
     if email_address:
         return email_address
@@ -437,6 +454,7 @@ def extract_address_eml(eml, entry):
 
 
 def get_attachment_filename(part):
+    logging.debug(f"get_attachment_filename called with {part=}")
     attachment_file_name = None
     if part.get_filename():
         attachment_file_name = str(make_header(decode_header(part.get_filename())))
@@ -462,6 +480,7 @@ def get_attachment_filename(part):
 def decode_attachment_payload(message):
     """Decodes a message from Base64, if fails will outputs its str(message)
     """
+    logging.debug(f"decode_attachment_payload called with {message=}")
     msg = message.get_payload()
     try:
         # In some cases the body content is empty and cannot be decoded.
@@ -473,6 +492,7 @@ def decode_attachment_payload(message):
 
 
 def parse_inner_eml(attachments, original_depth):
+    logging.debug(f"parse_inner_eml called with {attachments=}, {original_depth=}")
     attached_emls = []
     for attachment in attachments:
         tf = tempfile.NamedTemporaryFile(delete=False)
