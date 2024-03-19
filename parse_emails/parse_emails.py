@@ -29,7 +29,6 @@ class EmailParser:
         self._forced_encoding = forced_encoding
         self._default_encoding = default_encoding
         self._is_msg = self.check_if_is_msg()
-        logging.info(f'Parsing {file_path=}, {file_info=}, {self._file_name=}, {self._is_msg=}')
         self._bom = False
         self.parsed_email = None
 
@@ -41,7 +40,6 @@ class EmailParser:
         mime = magic.Magic()
         if not file_type:
             file_type = mime.from_file(self._file_path)
-            logging.info(f'file_type was empty, using {self._file_path=} to decide {file_type=}')
 
         if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
             logging.info(f'Removing signature from file {self._file_path}')
@@ -60,7 +58,6 @@ class EmailParser:
         if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
             file_type = 'application/pkcs7-mime'
 
-        logging.info(f'Returning {file_type=}')
         return file_type
 
     def check_if_is_msg(self):
@@ -80,12 +77,9 @@ class EmailParser:
 
         try:
             file_type_lower = self._file_type.lower()
-            logging.info(f'Parsing {file_type_lower=}')
-
             is_eml_ext = False
             if self._file_name and self._file_name.lower().strip().endswith('.eml'):
                 is_eml_ext = True
-
             if self._is_msg:
                 email_data, attached_emails, attached_eml = handle_msg(self._file_path, self._file_name,
                                                                        self._parse_only_headers,
@@ -146,8 +140,8 @@ class EmailParser:
                     raise Exception("Exception while trying to decode email from within base64: {}\n\nTrace:\n{}"
                                     .format(str(e), traceback.format_exc()))
             else:
-                raise Exception(f"Unknown file format: [{self._file_type}] for file: [{self._file_name}]")
 
+                raise Exception(f"Unknown file format: [{self._file_type}] for file: [{self._file_name}]")
             outputs = recursive_convert_to_unicode(output)
             outputs = [remove_unicode_spaces(output) for output in outputs] if isinstance(outputs, list) else remove_unicode_spaces(outputs)
             self.parsed_email = outputs
