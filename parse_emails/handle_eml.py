@@ -39,7 +39,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         if isinstance(file_data, bytes):
             file_data = file_data.decode('utf-8', 'ignore')
 
+        logging.debug(f'Before check_if_file_starts_with_header, {file_data=}')
         file_data = check_if_file_starts_with_header(file_data)
+        logging.debug(f'After check_if_file_starts_with_header, {file_data=}')
 
         parser = HeaderParser()
         headers = parser.parsestr(file_data)
@@ -79,9 +81,14 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             else:
                 headers_map[item[0]] = value
 
-        eml = create_message_from_string(file_data)
+        eml = None
+        try:
+            eml = create_message_from_string(file_data)
+        except Exception as e:
+            logging.info(f'Exception calling create_message_from_string, {e}, from {file_data=}')
 
         if not eml:
+            logging.info('Empty eml after create_message_from_string')
             raise Exception("Could not parse eml file!")
 
         if parse_only_headers:
@@ -100,6 +107,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
         while parts:
             part = parts.pop()
+            logging.info(f'Iterating over parts. Current part: {part.get_content_type()=}')
             if (part.is_multipart() or part.get_content_type().startswith('multipart')) \
                     and "attachment" not in part.get("Content-Disposition", ""):
                 parts += [part_ for part_ in part.get_payload() if isinstance(part_, email.message.Message)]
@@ -238,6 +246,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
             elif part.get_content_type() == 'text/plain':
                 text = decode_content(part)
+            else:
+                logging.info(f'Not handling part of type {part.get_content_type()=}')
 
         email_data = None
         # if we are parsing a signed attachment there can be one of two options:
@@ -299,6 +309,7 @@ def handle_multi_part_error(eml: Message):
     Returns:
         the eml parse obj (Message)
     """
+    logging.debug('handle_multi_part_error')
     for defect in eml.defects:
         if isinstance(defect, errors.MultipartInvariantViolationDefect):
             boundary = eml.get_boundary()
@@ -365,12 +376,14 @@ def decode_content(mime):
             else:
                 return payload.decode("raw-unicode-escape")
         else:
+            logging.info('decode_content, empty payload, returning an empty string.')
             return ''
 
-    except UnicodeDecodeError:
+    except UnicodeDecodeError as ude:
         payload = mime.get_payload()
         if isinstance(payload, str):
             return payload
+        logging.info(f'Exception trying to decode content: {ude}')
 
 
 def handle_SMTP_headers(emlFile):
