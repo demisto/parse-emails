@@ -107,7 +107,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
         while parts:
             part = parts.pop()
-            logging.info(f'Iterating over parts. Current part: {part.get_content_type()=}')
+            logging.debug(f'Iterating over parts. Current part: {part.get_content_type()=}')
             if (part.is_multipart() or part.get_content_type().startswith('multipart')) \
                     and "attachment" not in part.get("Content-Disposition", ""):
                 parts += [part_ for part_ in part.get_payload() if isinstance(part_, email.message.Message)]
@@ -376,7 +376,7 @@ def decode_content(mime):
             else:
                 return payload.decode("raw-unicode-escape")
         else:
-            logging.info('decode_content, empty payload, returning an empty string.')
+            logging.debug('decode_content, empty payload, returning an empty string.')
             return ''
 
     except UnicodeDecodeError as ude:
