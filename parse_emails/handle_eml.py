@@ -380,10 +380,11 @@ def decode_content(mime):
             return ''
 
     except UnicodeDecodeError as ude:
+        logging.info(f'Exception trying to decode content: {ude}')
         payload = mime.get_payload()
         if isinstance(payload, str):
+            logging.info(f'Exception trying to decode content. payload is str, returning it. {ude}')
             return payload
-        logging.info(f'Exception trying to decode content: {ude}')
 
 
 def handle_SMTP_headers(emlFile):
