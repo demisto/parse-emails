@@ -52,6 +52,8 @@ from parse_emails.common import convert_to_unicode
 from parse_emails.constants import (DEFAULT_ENCODING, PROPS_ID_MAP,
                                     REGEX_EMAIL, USER_ENCODING)
 
+logger = logging.getLogger('parse_emails')
+
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 
 DATA_TYPE_MAP = {
@@ -188,7 +190,7 @@ def get_msg_mail_format(msg_dict):
     try:
         return msg_dict.get('Headers', 'Content-type:').split('Content-type:')[1].split(';')[0]
     except Exception as e:
-        logging.debug(f'Got exception while trying to get msg mail format - {str(e)}')
+        logger.debug(f'Got exception while trying to get msg mail format - {str(e)}')
         return ''
 
 
@@ -342,7 +344,7 @@ class DataModel:
         if data_value:
             try:
                 if USER_ENCODING:
-                    logging.debug(f'Using argument user_encoding: {USER_ENCODING} to decode parsed message.')
+                    logger.debug(f'Using argument user_encoding: {USER_ENCODING} to decode parsed message.')
                     return data_value.decode(USER_ENCODING, errors="ignore")
                 res = chardet.detect(data_value)
                 enc = res['encoding'] or 'ascii'  # in rare cases chardet fails to detect and return None as encoding
@@ -350,13 +352,13 @@ class DataModel:
                     if enc.lower() == 'windows-1252' and res['confidence'] < 0.9:
 
                         enc = DEFAULT_ENCODING if DEFAULT_ENCODING else 'windows-1250'
-                        logging.debug('Encoding detection confidence below threshold {}, '
+                        logger.debug('Encoding detection confidence below threshold {}, '
                                       'switching encoding to "{}"'.format(res, enc))
 
                     temp = data_value
                     data_value = temp.decode(enc, errors='ignore')
                     if '\x00' in data_value:
-                        logging.debug('None bytes found on encoded string, will try use utf-16-le '
+                        logger.debug('None bytes found on encoded string, will try use utf-16-le '
                                       'encoding instead')
                         data_value = temp.decode("utf-16-le", errors="ignore")
 
@@ -719,7 +721,7 @@ class Message:
         property_name = property_details.get("name")
         property_type = property_details.get("data_type")
         if not property_type:
-            logging.debug(f'could not parse property type, skipping property "{property_details}"')
+            logger.debug(f'could not parse property type, skipping property "{property_details}"')
             return None
 
         try:
@@ -727,7 +729,7 @@ class Message:
         except OSError:
             raw_content = ''
         if not raw_content:
-            logging.debug('Could not read raw content from stream "{}", '
+            logger.debug('Could not read raw content from stream "{}", '
                           'skipping property "{}"'.format(stream_name, property_details))
             return None
 

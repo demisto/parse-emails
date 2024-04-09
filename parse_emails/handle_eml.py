@@ -15,6 +15,8 @@ from email.utils import getaddresses
 from parse_emails.common import convert_to_unicode
 from parse_emails.handle_msg import handle_msg
 
+logger = logging.getLogger('parse_emails')
+
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
@@ -143,7 +145,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     elif isinstance(part.get_payload(), str):
                         file_content = part.get_payload(decode=True)
                     else:
-                        logging.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
+                        logger.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
 
                     if file_content:
                         # save the eml to war room as file entry
@@ -429,7 +431,7 @@ def decode_attachment_payload(message):
         # In some cases the body content is empty and cannot be decoded.
         msg_info = base64.b64decode(msg)
     except Exception as e:
-        logging.debug(f'exception while trying to decode_attachment_payload - {str(e)}')
+        logger.debug(f'exception while trying to decode_attachment_payload - {str(e)}')
         msg_info = str(msg)
     return msg_info
 

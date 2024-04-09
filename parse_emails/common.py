@@ -4,6 +4,8 @@ import quopri
 import re
 from email.header import decode_header
 
+logger = logging.getLogger('parse_emails')
+
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 
@@ -22,15 +24,15 @@ def convert_to_unicode(s, is_msg_header=True):
                         return word_mime_decoded
             except Exception as e:
                 # in case we failed to mine-decode, we continue and try to decode
-                logging.debug(f'Failed decoding mime-encoded string: {str(e)}. Will try regular decoding.')
+                logger.debug(f'Failed decoding mime-encoded string: {str(e)}. Will try regular decoding.')
         for decoded_s, encoding in decode_header(s):  # return a list of pairs(decoded, charset)
             if encoding:
                 try:
                     res += decoded_s.decode(encoding)
                 except UnicodeDecodeError:
-                    logging.debug('Failed to decode encoded_string')
+                    logger.debug('Failed to decode encoded_string')
                     replace_decoded = decoded_s.decode(encoding, errors='replace')
-                    logging.debug(f'Decoded string with replace usage {replace_decoded}')
+                    logger.debug(f'Decoded string with replace usage {replace_decoded}')
                     res += replace_decoded
                 ENCODINGS_TYPES.add(encoding)
             else:
