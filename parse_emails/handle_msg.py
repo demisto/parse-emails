@@ -353,13 +353,13 @@ class DataModel:
 
                         enc = DEFAULT_ENCODING if DEFAULT_ENCODING else 'windows-1250'
                         logger.debug('Encoding detection confidence below threshold {}, '
-                                      'switching encoding to "{}"'.format(res, enc))
+                                     'switching encoding to "{}"'.format(res, enc))
 
                     temp = data_value
                     data_value = temp.decode(enc, errors='ignore')
                     if '\x00' in data_value:
                         logger.debug('None bytes found on encoded string, will try use utf-16-le '
-                                      'encoding instead')
+                                     'encoding instead')
                         data_value = temp.decode("utf-16-le", errors="ignore")
 
                 elif b'\x00' not in data_value:
@@ -730,7 +730,7 @@ class Message:
             raw_content = ''
         if not raw_content:
             logger.debug('Could not read raw content from stream "{}", '
-                          'skipping property "{}"'.format(stream_name, property_details))
+                         'skipping property "{}"'.format(stream_name, property_details))
             return None
 
         property_value = self._data_model.get_value(raw_content, data_type=property_type)
