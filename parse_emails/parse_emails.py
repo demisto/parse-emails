@@ -12,6 +12,8 @@ from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
 
+logger = logging.getLogger('parse_emails')
+
 
 class EmailParser:
     """
@@ -29,7 +31,7 @@ class EmailParser:
         self._forced_encoding = forced_encoding
         self._default_encoding = default_encoding
         self._is_msg = self.check_if_is_msg()
-        logging.info(f'Parsing {file_path=}, {file_info=}, {self._file_name=}, {self._is_msg=}')
+        logger.info(f'Parsing {file_path=}, {file_info=}, {self._file_name=}, {self._is_msg=}')
         self._bom = False
         self.parsed_email = None
 
@@ -41,10 +43,10 @@ class EmailParser:
         mime = magic.Magic()
         if not file_type:
             file_type = mime.from_file(self._file_path)
-            logging.info(f'file_type was empty, using {self._file_path=} to decide {file_type=}')
+            logger.info(f'file_type was empty, using {self._file_path=} to decide {file_type=}')
 
         if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
-            logging.info(f'Removing signature from file {self._file_path}')
+            logger.info(f'Removing signature from file {self._file_path}')
             bio = remove_p7m_file_signature(self._file_path)
             if bio:
                 with open(self._file_path, 'w') as fp:  # override the contents of the .p7m file without the signature.
@@ -53,14 +55,14 @@ class EmailParser:
                         fp.write(bio_as_bytes.decode('unicode_escape'))
                         file_type = mime.from_file(self._file_path)
                     except UnicodeDecodeError:
-                        logging.error(f'could not decode bio {bio_as_bytes}')
+                        logger.error(f'could not decode bio {bio_as_bytes}')
             else:
-                logging.error(f'could not remove file {self._file_path} signature.')
+                logger.error(f'could not remove file {self._file_path} signature.')
 
         if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
             file_type = 'application/pkcs7-mime'
 
-        logging.info(f'Returning {file_type=}')
+        logger.info(f'Returning {file_type=}')
         return file_type
 
     def check_if_is_msg(self):
@@ -80,7 +82,7 @@ class EmailParser:
 
         try:
             file_type_lower = self._file_type.lower()
-            logging.info(f'Parsing {file_type_lower=}')
+            logger.info(f'Parsing {file_type_lower=}')
 
             is_eml_ext = False
             if self._file_name and self._file_name.lower().strip().endswith('.eml'):
@@ -137,7 +139,7 @@ class EmailParser:
                                     raise Exception("No email_data found")
                                 output = create_email_output(email_data, attached_emails)
                             except Exception as e:
-                                logging.debug(f"ParseEmailFiles failed with {str(e)}")
+                                logger.debug(f"ParseEmailFiles failed with {str(e)}")
                                 raise Exception("Could not extract email from file. Possible reasons for this error are:\n"
                                                 "- Base64 decode did not include rfc 822 strings.\n"
                                                 "- Email contained no Content-Type and no data.")
@@ -190,7 +192,7 @@ def remove_p7m_file_signature(file_path):
                                     _lib.PKCS7_NOVERIFY | _lib.PKCS7_NOSIGS)
             return bio if res == 1 else None  # if result != 1, it means the verification failed.
         except crypto.Error as e:
-            logging.error(f'Error occurred while removing {file_path} signature: {e}')
+            logger.error(f'Error occurred while removing {file_path} signature: {e}')
             return None
 
 

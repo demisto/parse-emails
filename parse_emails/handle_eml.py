@@ -16,6 +16,8 @@ from email.utils import getaddresses
 from parse_emails.common import convert_to_unicode
 from parse_emails.handle_msg import handle_msg
 
+logger = logging.getLogger('parse_emails')
+
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
@@ -39,9 +41,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         if isinstance(file_data, bytes):
             file_data = file_data.decode('utf-8', 'ignore')
 
-        logging.debug(f'Before check_if_file_starts_with_header, {file_data=}')
+        logger.debug(f'Before check_if_file_starts_with_header, {file_data=}')
         file_data = check_if_file_starts_with_header(file_data)
-        logging.debug(f'After check_if_file_starts_with_header, {file_data=}')
+        logger.debug(f'After check_if_file_starts_with_header, {file_data=}')
 
         parser = HeaderParser()
         headers = parser.parsestr(file_data)
@@ -85,10 +87,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         try:
             eml = create_message_from_string(file_data)
         except Exception as e:
-            logging.info(f'Exception calling create_message_from_string, {e}, from {file_data=}')
+            logger.info(f'Exception calling create_message_from_string, {e}, from {file_data=}')
 
         if not eml:
-            logging.info('Empty eml after create_message_from_string')
+            logger.info('Empty eml after create_message_from_string')
             raise Exception("Could not parse eml file!")
 
         if parse_only_headers:
@@ -107,7 +109,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
         while parts:
             part = parts.pop()
-            logging.debug(f'Iterating over parts. Current part: {part.get_content_type()=}')
+            logger.debug(f'Iterating over parts. Current part: {part.get_content_type()=}')
             if (part.is_multipart() or part.get_content_type().startswith('multipart')) \
                     and "attachment" not in part.get("Content-Disposition", ""):
                 parts += [part_ for part_ in part.get_payload() if isinstance(part_, email.message.Message)]
@@ -153,7 +155,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     elif isinstance(part.get_payload(), str):
                         file_content = part.get_payload(decode=True)
                     else:
-                        logging.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
+                        logger.debug("found eml attachment with Content-Type=message/rfc822 but has no payload")
 
                     if file_content:
                         # save the eml to war room as file entry
@@ -247,7 +249,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             elif part.get_content_type() == 'text/plain':
                 text = decode_content(part)
             else:
-                logging.info(f'Not handling part of type {part.get_content_type()=}')
+                logger.info(f'Not handling part of type {part.get_content_type()=}')
 
         email_data = None
         # if we are parsing a signed attachment there can be one of two options:
@@ -309,7 +311,7 @@ def handle_multi_part_error(eml: Message):
     Returns:
         the eml parse obj (Message)
     """
-    logging.debug('handle_multi_part_error')
+    logger.debug('handle_multi_part_error')
     for defect in eml.defects:
         if isinstance(defect, errors.MultipartInvariantViolationDefect):
             boundary = eml.get_boundary()
@@ -376,14 +378,14 @@ def decode_content(mime):
             else:
                 return payload.decode("raw-unicode-escape")
         else:
-            logging.debug('decode_content, empty payload, returning an empty string.')
+            logger.debug('decode_content, empty payload, returning an empty string.')
             return ''
 
     except UnicodeDecodeError as ude:
-        logging.info(f'Exception trying to decode content: {ude}')
+        logger.info(f'Exception trying to decode content: {ude}')
         payload = mime.get_payload()
         if isinstance(payload, str):
-            logging.info(f'Exception trying to decode content. payload is str, returning it. {ude}')
+            logger.info(f'Exception trying to decode content. payload is str, returning it. {ude}')
             return payload
 
 
@@ -481,7 +483,7 @@ def decode_attachment_payload(message):
         # In some cases the body content is empty and cannot be decoded.
         msg_info = base64.b64decode(msg)
     except Exception as e:
-        logging.debug(f'exception while trying to decode_attachment_payload - {str(e)}')
+        logger.debug(f'exception while trying to decode_attachment_payload - {str(e)}')
         msg_info = str(msg)
     return msg_info
 
