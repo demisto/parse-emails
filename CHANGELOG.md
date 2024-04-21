@@ -1,4 +1,7 @@
 # Changelog
+v0.1.23
+* Fixed an issue where *Apple HFS* file type got "Unknown file format" while parsing.
+
 v0.1.20
 * Fixed an issue where EML multipart files were not parsed if they have a broken boundary.
 
