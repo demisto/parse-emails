@@ -98,7 +98,8 @@ class EmailParser:
                 output = create_email_output(email_data, attached_emails)
 
             elif any(eml_candidate in file_type_lower for eml_candidate in
-                     ['macintosh hfs', 'rfc 822 mail', 'smtp mail', 'multipart/signed', 'multipart/alternative', 'multipart/mixed',
+                     ['apple hfs', 'macintosh hfs', 'rfc 822 mail', 'smtp mail', 'multipart/signed',
+                      'multipart/alternative', 'multipart/mixed',
                       'message/rfc822', 'application/pkcs7-mime', 'multipart/related', 'utf-8 (with bom) text']):
                 if 'unicode (with bom) text' in file_type_lower or 'utf-8 (with bom) text' in file_type_lower:
                     self._bom = True
