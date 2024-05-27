@@ -250,7 +250,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             else:
                 logger.info(f'Not handling part of type {part.get_content_type()=}')
 
-
         email_data = None
         # if we are parsing a signed attachment there can be one of two options:
         # 1. it is 'multipart/signed' so it is probably a wrapper, and we can ignore the outer "email"
@@ -456,7 +455,6 @@ def get_attachment_filename(part):
     attachment_file_name = None
     if part.get_filename():
         attachment_file_name = str(make_header(decode_header(part.get_filename())))
-        logging.info(f'get_attachment_filename, {attachment_file_name=}')
 
     elif attachment_file_name is None and part.get('filename'):
         attachment_file_name = os.path.normpath(part.get('filename'))
@@ -470,7 +468,6 @@ def get_attachment_filename(part):
         else:
             for payload in part.get_payload():
                 if payload.get_filename():
-                    attachment_file_name = 'unknown_file_name'
                     attachment_file_name = payload.get_filename()
                     break
 
