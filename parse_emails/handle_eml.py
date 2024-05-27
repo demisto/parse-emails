@@ -136,6 +136,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 if "message/rfc822" in part.get("Content-Type", "") \
                         or ("application/octet-stream" in part.get("Content-Type", "") and
                             attachment_file_name.endswith(".eml")):
+                    logging.info(f'handle_eml, message/rfc822 or application/octet-stream or endswith(".eml")')
 
                     # .eml files
                     file_content = ""  # type: str
@@ -196,7 +197,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     attachment_content_dispositions.append(attachment_content_disposition)
                 else:
                     # .msg and other files (png, jpeg)
+                    logging.info(f'handle_eml, else, .msg and other files (png, jpeg)')
                     if part.is_multipart() and max_depth - 1 > 0:
+                        logging.info(f'handle_eml, else, part.is_multipart() and max_depth - 1 > 0')
                         # email is DSN/Multipart
                         msgs = part.get_payload()  # human-readable section
                         for i, individual_message in enumerate(msgs):
@@ -213,6 +216,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             attachment_content_ids.append(attachment_content_id)
                             attachment_content_dispositions.append(attachment_content_disposition)
                     else:
+                        logging.info(f'handle_eml, else, else')
                         file_content = part.get_payload(decode=True)
                         if attachment_file_name.endswith('.p7s') or not file_content:
                             attachment_content.append(None)
@@ -248,6 +252,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                         attachment_content_dispositions.append(attachment_content_disposition)
 
             elif part.get_content_type() == 'text/html':
+                logging.info(f"handle_eml, elif part.get_content_type() == 'text/html'")
                 # This line replaces a new line that starts with `..` to a newline that starts with `.`
                 # This is because SMTP duplicate dots for lines that start with `.` and get_payload() doesn't format
                 # this correctly
@@ -257,8 +262,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 html = decode_content(part)
 
             elif part.get_content_type() == 'text/plain':
+                logging.info(f"handle_eml, elif part.get_content_type() == 'text/plain'")
                 text = decode_content(part)
             else:
+                logging.info(f"handle_eml, else, Not handling part of type {part.get_content_type()=}")
                 logger.info(f'Not handling part of type {part.get_content_type()=}')
 
         email_data = None
@@ -266,10 +273,12 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         # 1. it is 'multipart/signed' so it is probably a wrapper, and we can ignore the outer "email"
         #    However, we should save its AttachmentsData.
         # 2. if it is 'multipart/signed' but has 'to'/'from'/'subject' fields, so it is actually a real mail.
+        logging.info(f"handle_eml, before if 'multipart/signed' not in eml.get_content_type(), ")
         if 'multipart/signed' not in eml.get_content_type() \
             or ('multipart/signed' in eml.get_content_type() and
                 ((extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject')) or
                  attachment_names)):
+            logging.info(f"handle_eml, in if 'multipart/signed' not in eml.get_content_type(), ")
             email_data = {
                 'To': extract_address_eml(eml, 'to'),
                 'CC': extract_address_eml(eml, 'cc'),
