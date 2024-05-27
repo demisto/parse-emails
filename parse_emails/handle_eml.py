@@ -122,11 +122,16 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 attachment_content_id = part.get('Content-ID')
                 attachment_content_disposition = part.get('Content-Disposition')
                 attachment_file_name = get_attachment_filename(part)
+                logging.info(f'handle_eml, {attachment_file_name=}')
 
                 if attachment_file_name is None and part.get('filename'):
+                    part_filename = part.get('filename')
+                    logging.info(f'handle_eml, {part_filename=}')
                     attachment_file_name = os.path.normpath(part.get('filename'))
+                    logging.info(f'handle_eml, {attachment_file_name=}')
                     if os.path.isabs(attachment_file_name):
                         attachment_file_name = os.path.basename(attachment_file_name)
+                        logging.info(f'handle_eml, os.path.isabs, {attachment_file_name=}')
 
                 if "message/rfc822" in part.get("Content-Type", "") \
                         or ("application/octet-stream" in part.get("Content-Type", "") and
@@ -142,7 +147,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             # we will try to use mail subject as file name
                             # Subject will be in the email headers
                             attachment_name = part.get_payload()[0].get('Subject', "no_name_mail_attachment")
+                            logging.info(f'handle_eml, message, {attachment_name=}')
                             attachment_file_name = f'{attachment_name}.eml'
+                            logging.info(f'handle_eml, message, {attachment_file_name=}')
 
                         file_content = part.get_payload()[0].as_string().strip()
                         if base64_encoded:
@@ -168,10 +175,12 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 file_content = file_content.encode('utf-8')
                             f.write(file_content)
                             f.close()
+                            logging.info(f'handle_eml, calling handle_eml, {attachment_file_name=}')
                             inner_eml, inner_attached_emails = handle_eml(file_path=f.name,
                                                                           file_name=attachment_file_name,
                                                                           max_depth=max_depth - 1,
                                                                           original_depth=original_depth)
+                            logging.info(f'handle_eml, called handle_eml, {attachment_file_name=}')
                             if inner_eml:
                                 inner_eml['ParentFileName'] = file_name
                             attached_emails.append(inner_eml)
@@ -182,6 +191,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                     if not file_content:
                         attachment_content.append(None)
                     attachment_names.append(attachment_file_name)
+                    logging.info(f'handle_eml, {attachment_names=}')
                     attachment_content_ids.append(attachment_content_id)
                     attachment_content_dispositions.append(attachment_content_disposition)
                 else:
