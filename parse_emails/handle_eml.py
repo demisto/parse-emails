@@ -123,6 +123,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 attachment_content_disposition = part.get('Content-Disposition')
                 attachment_file_name = get_attachment_filename(part)
                 logging.info(f'handle_eml, {attachment_file_name=}')
+                if attachment_file_name:
+                    attachment_names.append(attachment_file_name)
+                    logging.info(f"handle_eml, {attachment_names=}")
 
                 if attachment_file_name is None and part.get('filename'):
                     part_filename = part.get('filename')
@@ -267,9 +270,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             else:
                 logging.info(f"handle_eml, else, Not handling part of type {part.get_content_type()=}")
                 logger.info(f'Not handling part of type {part.get_content_type()=}')
-            if attachment_file_name:
-                attachment_names.append(attachment_file_name)
-            logging.info(f"handle_eml, {attachment_names=}")
 
 
         email_data = None
