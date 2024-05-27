@@ -269,6 +269,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 logger.info(f'Not handling part of type {part.get_content_type()=}')
             if attachment_file_name:
                 attachment_names.append(attachment_file_name)
+            logging.info(f"handle_eml, {attachment_names=}")
 
 
         email_data = None
