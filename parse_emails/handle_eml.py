@@ -191,7 +191,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             os.remove(f.name)
                     if not file_content:
                         attachment_content.append(None)
-                    attachment_names.append(attachment_file_name)
+                    # attachment_names.append(attachment_file_name)
                     logging.info(f'handle_eml, {attachment_names=}')
                     attachment_content_ids.append(attachment_content_id)
                     attachment_content_dispositions.append(attachment_content_disposition)
@@ -212,7 +212,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 attachment_file_name = f"unknown_file_name{i}"
 
                             attachment_content.append(msg_info)
-                            attachment_names.append(attachment_file_name)
+                            # attachment_names.append(attachment_file_name)
                             attachment_content_ids.append(attachment_content_id)
                             attachment_content_dispositions.append(attachment_content_disposition)
                     else:
@@ -247,7 +247,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             finally:
                                 os.remove(f.name)
 
-                        attachment_names.append(attachment_file_name)
+                        # attachment_names.append(attachment_file_name)
                         attachment_content_ids.append(attachment_content_id)
                         attachment_content_dispositions.append(attachment_content_disposition)
 
@@ -267,6 +267,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             else:
                 logging.info(f"handle_eml, else, Not handling part of type {part.get_content_type()=}")
                 logger.info(f'Not handling part of type {part.get_content_type()=}')
+            if attachment_file_name:
+                attachment_names.append(attachment_file_name)
+
 
         email_data = None
         # if we are parsing a signed attachment there can be one of two options:
