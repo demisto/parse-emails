@@ -183,7 +183,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             os.remove(f.name)
                     if not file_content:
                         attachment_content.append(None)
-                    # attachment_names.append(attachment_file_name)
                     attachment_content_ids.append(attachment_content_id)
                     attachment_content_dispositions.append(attachment_content_disposition)
                 else:
@@ -201,7 +200,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 attachment_file_name = f"unknown_file_name{i}"
 
                             attachment_content.append(msg_info)
-                            # attachment_names.append(attachment_file_name)
                             attachment_content_ids.append(attachment_content_id)
                             attachment_content_dispositions.append(attachment_content_disposition)
                     else:
@@ -235,12 +233,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             finally:
                                 os.remove(f.name)
 
-                        # attachment_names.append(attachment_file_name)
                         attachment_content_ids.append(attachment_content_id)
                         attachment_content_dispositions.append(attachment_content_disposition)
 
             elif part.get_content_type() == 'text/html':
-                logging.info(f"handle_eml, elif part.get_content_type() == 'text/html'")
                 # This line replaces a new line that starts with `..` to a newline that starts with `.`
                 # This is because SMTP duplicate dots for lines that start with `.` and get_payload() doesn't format
                 # this correctly
@@ -250,10 +246,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 html = decode_content(part)
 
             elif part.get_content_type() == 'text/plain':
-                logging.info(f"handle_eml, elif part.get_content_type() == 'text/plain'")
                 text = decode_content(part)
             else:
-                logging.info(f"handle_eml, else, Not handling part of type {part.get_content_type()=}")
                 logger.info(f'Not handling part of type {part.get_content_type()=}')
 
 
@@ -262,12 +256,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         # 1. it is 'multipart/signed' so it is probably a wrapper, and we can ignore the outer "email"
         #    However, we should save its AttachmentsData.
         # 2. if it is 'multipart/signed' but has 'to'/'from'/'subject' fields, so it is actually a real mail.
-        logging.info(f"handle_eml, before if 'multipart/signed' not in eml.get_content_type(), ")
         if 'multipart/signed' not in eml.get_content_type() \
             or ('multipart/signed' in eml.get_content_type() and
                 ((extract_address_eml(eml, 'to') or extract_address_eml(eml, 'from') or eml.get('subject')) or
                  attachment_names)):
-            logging.info(f"handle_eml, in if 'multipart/signed' not in eml.get_content_type(), ")
             email_data = {
                 'To': extract_address_eml(eml, 'to'),
                 'CC': extract_address_eml(eml, 'cc'),
@@ -461,37 +453,27 @@ def extract_address_eml(eml, entry):
 
 
 def get_attachment_filename(part):
-    logging.info('get_attachment_filename')
-    logging.info(f'get_attachment_filename, {part=}')
     attachment_file_name = None
     if part.get_filename():
         attachment_file_name = str(make_header(decode_header(part.get_filename())))
         logging.info(f'get_attachment_filename, {attachment_file_name=}')
 
     elif attachment_file_name is None and part.get('filename'):
-        part_filename = part.get('filename')
-        logging.info(f'get_attachment_filename, {part_filename=}')
         attachment_file_name = os.path.normpath(part.get('filename'))
         if os.path.isabs(attachment_file_name):
             attachment_file_name = os.path.basename(attachment_file_name)
     else:
         if attach_id := part.get("X-Attachment-Id"):
-            part_X_Attachment_Id = part.get('X-Attachment-Id')
-            logging.info(f'get_attachment_filename, {part_X_Attachment_Id=}')
             attachment_file_name = attach_id
         elif not isinstance(part.get_payload(), list):
-            logging.info('get_attachment_filename, unknown_file_name')
             attachment_file_name = 'unknown_file_name'
         else:
             for payload in part.get_payload():
                 if payload.get_filename():
-                    payload_get_filename = payload.get_filename()
-                    logging.info(f'get_attachment_filename, {payload_get_filename=}')
                     attachment_file_name = 'unknown_file_name'
                     attachment_file_name = payload.get_filename()
                     break
 
-    logging.info(f'get_attachment_filename, returning {attachment_file_name=}')
     return attachment_file_name
 
 
