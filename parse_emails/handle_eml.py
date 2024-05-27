@@ -453,25 +453,37 @@ def extract_address_eml(eml, entry):
 
 
 def get_attachment_filename(part):
+    logging.info('get_attachment_filename')
+    logging.info(f'get_attachment_filename, {part=}')
     attachment_file_name = None
     if part.get_filename():
         attachment_file_name = str(make_header(decode_header(part.get_filename())))
+        logging.info(f'get_attachment_filename, {attachment_file_name=}')
 
     elif attachment_file_name is None and part.get('filename'):
+        part_filename = part.get('filename')
+        logging.info(f'get_attachment_filename, {part_filename=}')
         attachment_file_name = os.path.normpath(part.get('filename'))
         if os.path.isabs(attachment_file_name):
             attachment_file_name = os.path.basename(attachment_file_name)
     else:
         if attach_id := part.get("X-Attachment-Id"):
+            part_X_Attachment_Id = part.get('X-Attachment-Id')
+            logging.info(f'get_attachment_filename, {part_X_Attachment_Id=}')
             attachment_file_name = attach_id
         elif not isinstance(part.get_payload(), list):
+            logging.info('get_attachment_filename, unknown_file_name')
             attachment_file_name = 'unknown_file_name'
         else:
             for payload in part.get_payload():
                 if payload.get_filename():
+                    payload_get_filename = payload.get_filename()
+                    logging.info(f'get_attachment_filename, {payload_get_filename=}')
+                    attachment_file_name = 'unknown_file_name'
                     attachment_file_name = payload.get_filename()
                     break
 
+    logging.info(f'get_attachment_filename, returning {attachment_file_name=}')
     return attachment_file_name
 
 
