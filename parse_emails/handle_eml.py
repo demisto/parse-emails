@@ -123,13 +123,16 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                 attachment_content_id = part.get('Content-ID')
                 attachment_content_disposition = part.get('Content-Disposition')
                 attachment_file_name = get_attachment_filename(part)
+                attachment_names.append(attachment_file_name)
                 print(f"handle_eml, attachment_file_name = get_attachment_filename(part), {attachment_file_name=}")
 
                 if attachment_file_name is None and part.get('filename'):
                     attachment_file_name = os.path.normpath(part.get('filename'))
+                    attachment_names.append(attachment_file_name)
                     print(f"handle_eml, if attachment_file_name is None and part.get('filename'), {attachment_file_name=}")
                     if os.path.isabs(attachment_file_name):
                         attachment_file_name = os.path.basename(attachment_file_name)
+                        attachment_names.append(attachment_file_name)
                         print(f"handle_eml, if os.path.isabs(attachment_file_name), {attachment_file_name=}")
 
                 if "message/rfc822" in part.get("Content-Type", "") \
@@ -147,6 +150,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             # Subject will be in the email headers
                             attachment_name = part.get_payload()[0].get('Subject', "no_name_mail_attachment")
                             attachment_file_name = f'{attachment_name}.eml'
+                            attachment_names.append(attachment_file_name)
                             print(f"handle_eml, attachment_file_name = f'__attachment_name__.eml', {attachment_file_name=}")
 
                         file_content = part.get_payload()[0].as_string().strip()
@@ -198,11 +202,13 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             msg_info = decode_attachment_payload(individual_message)
 
                             attachment_file_name = individual_message.get_filename()
+                            attachment_names.append(attachment_file_name)
                             print(f"handle_eml, attachment_file_name = individual_message.get_filename(), {attachment_file_name=}")
                             attachment_content_id = individual_message.get('Content-ID')
                             attachment_content_disposition = individual_message.get('Content-Disposition')
                             if attachment_file_name is None:
                                 attachment_file_name = f"unknown_file_name{i}"
+                                attachment_names.append(attachment_file_name)
                                 print(f"handle_eml, attachment_file_name = funknown_file_name__i__, {attachment_file_name=}")
 
                             attachment_content.append(msg_info)
@@ -243,6 +249,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                         attachment_content_dispositions.append(attachment_content_disposition)
                 if attachment_file_name:
                     attachment_names.append(attachment_file_name)
+                print(f'attachment_names before removing duplicates: {attachment_names}')
+                attachment_names = list(dict.fromkeys(attachment_names))
+                print(f'attachment_names after removing duplicates: {attachment_names}')
 
             elif part.get_content_type() == 'text/html':
                 # This line replaces a new line that starts with `..` to a newline that starts with `.`
