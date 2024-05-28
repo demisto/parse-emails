@@ -194,6 +194,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             os.remove(f.name)
                     if not file_content:
                         attachment_content.append(None)
+                    attachment_names.append(attachment_file_name)
                     attachment_content_ids.append(attachment_content_id)
                     attachment_content_dispositions.append(attachment_content_disposition)
                 else:
@@ -216,9 +217,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                                 # if attachment_file_name:
                                 #     attachment_names.append(attachment_file_name)
                                 print(f"handle_eml, attachment_file_name = funknown_file_name__i__, {attachment_file_name=}")
-                            attachment_names.append(attachment_file_name)
 
                             attachment_content.append(msg_info)
+                            attachment_names.append(attachment_file_name)
                             attachment_content_ids.append(attachment_content_id)
                             attachment_content_dispositions.append(attachment_content_disposition)
                     else:
@@ -252,6 +253,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             finally:
                                 os.remove(f.name)
 
+                        attachment_names.append(attachment_file_name)
                         attachment_content_ids.append(attachment_content_id)
                         attachment_content_dispositions.append(attachment_content_disposition)
                 # if attachment_file_name:
