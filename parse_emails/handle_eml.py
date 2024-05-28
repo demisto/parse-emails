@@ -108,6 +108,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
         parts = [eml]
 
         while parts:
+            print("handle_eml, while parts")
             part = parts.pop()
             logger.debug(f'Iterating over parts. Current part: {part.get_content_type()=}')
             if (part.is_multipart() or part.get_content_type().startswith('multipart')) \
