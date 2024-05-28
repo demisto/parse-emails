@@ -194,6 +194,7 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                         # email is DSN/Multipart
                         msgs = part.get_payload()  # human-readable section
                         for i, individual_message in enumerate(msgs):
+                            print('for i, individual_message in enumerate(msgs)')
                             msg_info = decode_attachment_payload(individual_message)
 
                             attachment_file_name = individual_message.get_filename()
