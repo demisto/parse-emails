@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "parse-emails"
-version = "0.1.23"
+version = "0.1.24"
 description = "Parses an email message file and extracts the data from it."
 authors = ["Demisto"]
 license = "MIT"
@@ -23,7 +23,7 @@ chardet = "*"
 pytest = "*"
 python-magic = "*"
 compressed_rtf = "*"
-RTFDE = "*"
+RTFDE = "0.0.2" # see https://github.com/seamustuohy/RTFDE/issues/33 and XSUP-39649
 pip = "*"
 pyopenssl = "*"
 
