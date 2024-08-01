@@ -25,7 +25,7 @@ python-magic = "*"
 compressed_rtf = "*"
 RTFDE = "0.0.2" # see https://github.com/seamustuohy/RTFDE/issues/33 and XSUP-39649
 pip = "*"
-pyopenssl = "*"
+pyopenssl = "<23.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
