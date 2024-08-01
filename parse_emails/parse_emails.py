@@ -3,9 +3,9 @@ import os
 import traceback
 from base64 import b64decode
 
-import magic
 import asn1crypto.cms
 import asn1crypto.pem
+import magic
 
 from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
