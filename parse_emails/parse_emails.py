@@ -4,9 +4,8 @@ import traceback
 from base64 import b64decode
 
 import magic
-from OpenSSL import crypto  # type: ignore
-from OpenSSL._util import ffi as _ffi  # type: ignore
-from OpenSSL._util import lib as _lib  # type: ignore
+from cryptography.hazmat.primitives.serialization import pkcs7
+from cryptography.hazmat.backends import default_backend
 
 from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
@@ -49,13 +48,12 @@ class EmailParser:
             logger.info(f'Removing signature from file {self._file_path}')
             bio = remove_p7m_file_signature(self._file_path)
             if bio:
-                with open(self._file_path, 'w') as fp:  # override the contents of the .p7m file without the signature.
+                with open(self._file_path, 'wb') as fp:  # override the contents of the .p7m file without the signature.
                     try:
-                        bio_as_bytes = crypto._bio_to_string(bio)
-                        fp.write(bio_as_bytes.decode('unicode_escape'))
+                        fp.write(bio)
                         file_type = mime.from_file(self._file_path)
-                    except UnicodeDecodeError:
-                        logger.error(f'could not decode bio {bio_as_bytes}')
+                    except Exception as e:
+                        logger.error(f'Error writing to file {self._file_path}: {e}')
             else:
                 logger.error(f'could not remove file {self._file_path} signature.')
 
@@ -172,29 +170,38 @@ def remove_p7m_file_signature(file_path):
     Removes the signature from a p7m file.
 
     Notes:
-        1. mimic the command openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m
-        2. if the signature verification wasn't successful, will return None, otherwise will return the p7m file content
+        1. Mimic the command openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m
+        2. If the signature verification wasn't successful, will return None, otherwise will return the p7m file content
            without the signature.
 
     Usage Example:
         https://stackoverflow.com/questions/68300185/python-how-to-extract-the-xml-part-from-xml-p7m-file
 
     Returns:
-        an object that contains file data without the signature in case of success, None otherwise
+        An object that contains file data without the signature in case of success, None otherwise
     """
-    with open(file_path, 'rb') as f:
-        try:
-            # mimic the command openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m
-            # for p7m files that have signature.
-            p7 = crypto.load_pkcs7_data(crypto.FILETYPE_ASN1, f.read())
+    try:
+        with open(file_path, 'rb') as f:
+            p7m_data = f.read()
 
-            bio = crypto._new_mem_buf()
-            res = _lib.PKCS7_verify(p7._pkcs7, _ffi.NULL, _ffi.NULL, _ffi.NULL, bio,
-                                    _lib.PKCS7_NOVERIFY | _lib.PKCS7_NOSIGS)
-            return bio if res == 1 else None  # if result != 1, it means the verification failed.
-        except crypto.Error as e:
-            logger.error(f'Error occurred while removing {file_path} signature: {e}')
+        # Load the PKCS7 signature
+        pkcs7_obj = pkcs7.load_der_pkcs7_signed_data(p7m_data)
+
+        # Verify the signature without actually validating the certificate (similar to -noverify)
+        try:
+            data = pkcs7_obj.verify(
+                [x for x in pkcs7_obj.certificates],
+                None,
+                default_backend(),
+                pkcs7.NoSignatureVerification()
+            )
+            return data
+        except Exception as e:
+            logger.error(f'Signature verification failed for {file_path}: {e}')
             return None
+    except Exception as e:
+        logger.error(f'Error occurred while processing {file_path}: {e}')
+        return None
 
 
 def create_email_output(email_data, attached_emails):
