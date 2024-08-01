@@ -3,12 +3,10 @@ import os
 import traceback
 from base64 import b64decode
 
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives.serialization import pkcs7
-from cryptography import x509
 import asn1crypto.pem
 import magic
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.serialization import pkcs7
 
 from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
