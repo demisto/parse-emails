@@ -4,8 +4,8 @@ import traceback
 from base64 import b64decode
 
 import magic
-from cryptography.hazmat.primitives.serialization import pkcs7
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.serialization import pkcs7
 
 from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
@@ -173,9 +173,6 @@ def remove_p7m_file_signature(file_path):
         1. Mimic the command openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m
         2. If the signature verification wasn't successful, will return None, otherwise will return the p7m file content
            without the signature.
-
-    Usage Example:
-        https://stackoverflow.com/questions/68300185/python-how-to-extract-the-xml-part-from-xml-p7m-file
 
     Returns:
         An object that contains file data without the signature in case of success, None otherwise
