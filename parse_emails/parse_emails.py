@@ -4,9 +4,8 @@ import traceback
 from base64 import b64decode
 
 import magic
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.serialization import pkcs7
+import asn1crypto.cms
+import asn1crypto.pem
 
 from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
@@ -180,20 +179,26 @@ def remove_p7m_file_signature(file_path):
     """
     try:
         with open(file_path, 'rb') as f:
-            p7m_data = f.read()
+            signed_data = f.read()
 
-        # Load the PKCS7 object
-        pkcs7_obj = pkcs7.PKCS7SignatureBuilder.from_data(p7m_data).sign(
-            private_key=None,
-            algorithm=hashes.SHA256(),
-            backend=default_backend()
-        )
+        # Check if the data is PEM encoded and decode if necessary
+        if asn1crypto.pem.detect(signed_data):
+            print("PEM encoded")
+            _, _, signed_data = asn1crypto.pem.unarmor(signed_data)
+        print(f"{signed_data=}")
+        # Parse the signed data using asn1crypto
+        content_info = asn1crypto.cms.ContentInfo.load(signed_data)
+        print(f"{content_info=}")
+        # Ensure it's a SignedData structure
+        if content_info['content_type'].native != 'signed_data':
+            raise ValueError('Not a SignedData structure')
 
-        # Extract data without verifying signature
-        content_info = pkcs7_obj['content_info']
-        data = content_info['content'].native
+        signed_data = content_info['content']
+        print(f"{signed_data=}")
+        # Extract the original content (encap_content_info)
+        original_content = signed_data['encap_content_info']['content']
 
-        return data
+        return original_content
     except Exception as e:
         logger.error(f'Error occurred while processing {file_path}: {e}')
         return None
