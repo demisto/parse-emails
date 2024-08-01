@@ -3,7 +3,10 @@ import os
 import traceback
 from base64 import b64decode
 
-import asn1crypto.cms
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.serialization import pkcs7
+from cryptography import x509
 import asn1crypto.pem
 import magic
 
@@ -179,28 +182,34 @@ def remove_p7m_file_signature(file_path):
     """
     try:
         with open(file_path, 'rb') as f:
-            signed_data = f.read()
+            p7m_data = f.read()
 
-        # Check if the data is PEM encoded and decode if necessary
-        if asn1crypto.pem.detect(signed_data):
-            print("PEM encoded")
-            _, _, signed_data = asn1crypto.pem.unarmor(signed_data)
-        print(f"{signed_data=}")
-        # Parse the signed data using asn1crypto
-        content_info = asn1crypto.cms.ContentInfo.load(signed_data)
-        print(f"{content_info=}")
-        # Ensure it's a SignedData structure
-        if content_info['content_type'].native != 'signed_data':
-            raise ValueError('Not a SignedData structure')
+        if asn1crypto.pem.detect(p7m_data):
+            _, _, p7m_data = asn1crypto.pem.unarmor(p7m_data)
 
-        signed_data = content_info['content']
-        print(f"{signed_data=}")
-        # Extract the original content (encap_content_info)
-        original_content = signed_data['encap_content_info']['content']
+        # Load the PKCS7 data
+        pkcs7_certificates = pkcs7.load_der_pkcs7_certificates(p7m_data)
+        print(f"{pkcs7_certificates}")
 
-        return original_content
+        # Verify the certificates
+        verified_data = None
+        for cert in pkcs7_certificates:
+            try:
+                cert.public_key().verify(
+                    cert.signature,
+                    cert.tbs_certificate_bytes,
+                    padding.PKCS1v15(),
+                    cert.signature_hash_algorithm,
+                )
+                verified_data = cert.tbs_certificate_bytes
+                break
+            except Exception as e:
+                print(f"Verification failed: {e}")
+                continue
+
+        return verified_data
     except Exception as e:
-        logger.error(f'Error occurred while processing {file_path}: {e}')
+        logger.error(f'Error occurred while removing {file_path} signature: {e}')
         return None
 
 
