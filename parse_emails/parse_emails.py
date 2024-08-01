@@ -5,6 +5,7 @@ from base64 import b64decode
 
 import magic
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.serialization import pkcs7
 
 from parse_emails.constants import STRINGS_TO_REMOVE
@@ -181,21 +182,18 @@ def remove_p7m_file_signature(file_path):
         with open(file_path, 'rb') as f:
             p7m_data = f.read()
 
-        # Load the PKCS7 signature
-        pkcs7_obj = pkcs7.load_der_pkcs7_signed_data(p7m_data)
+        # Load the PKCS7 object
+        pkcs7_obj = pkcs7.PKCS7SignatureBuilder.from_data(p7m_data).sign(
+            private_key=None,
+            algorithm=hashes.SHA256(),
+            backend=default_backend()
+        )
 
-        # Verify the signature without actually validating the certificate (similar to -noverify)
-        try:
-            data = pkcs7_obj.verify(
-                [x for x in pkcs7_obj.certificates],
-                None,
-                default_backend(),
-                pkcs7.NoSignatureVerification()
-            )
-            return data
-        except Exception as e:
-            logger.error(f'Signature verification failed for {file_path}: {e}')
-            return None
+        # Extract data without verifying signature
+        content_info = pkcs7_obj['content_info']
+        data = content_info['content'].native
+
+        return data
     except Exception as e:
         logger.error(f'Error occurred while processing {file_path}: {e}')
         return None
