@@ -846,6 +846,7 @@ class Message:
                         if html_content:
                             self.html = html_content
                     except Exception as e:
+                        self.html = "could not parse RTF due to known issue with special characters"
                         logger.debug(f'Ignore to get html from rtf using pypandoc lib - {str(e)}')
 
     def _set_recipients(self):

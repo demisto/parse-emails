@@ -24,6 +24,7 @@ pytest = "*"
 python-magic = "*"
 compressed_rtf = "*"
 RTFDE = "*"
+pypandoc = "*"
 pip = "*"
 pyopenssl = "*"
 
