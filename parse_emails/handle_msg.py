@@ -34,6 +34,7 @@ import logging
 import os
 import quopri
 import re
+import tempfile
 from datetime import datetime, timedelta
 # coding=utf-8
 from email import encoders
@@ -43,6 +44,8 @@ from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from rtfparse.parser import Rtf_Parser
+from rtfparse.renderers.html_decapsulator import HTML_Decapsulator
 from struct import unpack
 
 import chardet  # type: ignore
@@ -828,14 +831,13 @@ class Message:
             if compressed_rtf:
                 compressed_rtf_body = property_values['RtfCompressed']
                 rtf_body = compressed_rtf.decompress(compressed_rtf_body)
-                # Need to remove the following row and the _simplify_text_for_rtf_parsing() func when version 0.0.3 of
-                # the RTFDE.deencapsulate package is released.
-                rtf_body = self._simplify_text_for_rtf_parsing(rtf_body)
-                from RTFDE.deencapsulate import DeEncapsulator
-                rtf_obj = DeEncapsulator(rtf_body)
-                rtf_obj.deencapsulate()
-                if rtf_obj.content_type == 'html':
-                    self.html = rtf_obj.html
+                with tempfile.NamedTemporaryFile() as f:
+                    p = Rtf_Parser(rtf_file=rtf_body)
+                    parsed = p.parse_file()
+                    renderer = HTML_Decapsulator()
+                    with open(f.name, mode="w", encoding="utf-8") as html_file:
+                        renderer.render(parsed, html_file)
+                    self.html = f.read()
 
     def _set_recipients(self):
         recipients = self.recipients
