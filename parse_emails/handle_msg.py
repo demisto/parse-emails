@@ -838,9 +838,15 @@ class Message:
                     if rtf_obj.content_type == 'html':
                         self.html = rtf_obj.html
                 except Exception as e:
+                    # in case of decoding issues from DeEncapsulator.deencapsulate please refer to https://github.com/seamustuohy/RTFDE/issues/33
                     logger.debug(f'Got exception while trying to get html from rtf using RTFDE lib - {str(e)}')
                     try:
-                        logger.debug('Trying to deencapsulate using pandoc')
+                        logger.debug('Trying to deencapsulate using pandoc, please see the source code for more details')
+                        
+                        # need to install the pandoc executable
+                        import subprocess
+                        subprocess.run(['apk', 'add', 'pandoc'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        
                         import pypandoc
                         html_content = pypandoc.convert_text(rtf_body, 'html', format='rtf')
                         if html_content:
