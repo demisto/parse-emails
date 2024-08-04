@@ -646,6 +646,8 @@ def test_PtypString():
 def test_parse_body_with_russian_language():
     email_data, _, _ = handle_msg('parse_emails/tests/test_data/Phishing_TEST.msg', 'Phishing_TEST.msg')
     assert str(email_data['Text']).startswith('Уважаемые коллеги')
+    if isinstance(email_data['HTML'], bytes):
+        email_data['HTML'] = email_data['HTML'].decode()
     assert 'Уважаемые' in email_data['HTML']
 
 
@@ -720,6 +722,8 @@ def test_rtf_msg():
     test_path = 'parse_emails/tests/test_data/msg_with_rtf_compressed.msg'
     email_parser = EmailParser(file_path=test_path)
     results = email_parser.parse()
+    if isinstance(results['HTML'], bytes):
+        results['HTML'] = results['HTML'].decode()
     assert '<html xmlns:v="urn:schemas-microsoft-com:vml"' in results['HTML']
 
 
