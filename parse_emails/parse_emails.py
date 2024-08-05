@@ -5,8 +5,7 @@ from base64 import b64decode
 
 import asn1crypto.pem
 import magic
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives.serialization import pkcs7
+import M2Crypto
 
 from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
@@ -182,30 +181,16 @@ def remove_p7m_file_signature(file_path):
         with open(file_path, 'rb') as f:
             p7m_data = f.read()
 
-        if asn1crypto.pem.detect(p7m_data):
-            _, _, p7m_data = asn1crypto.pem.unarmor(p7m_data)
+        # Load the PKCS7 object
+        p7 = M2Crypto.SMIME.PKCS7(m2_pkcs7=M2Crypto.m2.pkcs7_read_bio_der(M2Crypto.BIO.MemoryBuffer(p7m_data)))
+        print(f"{p7=}")
 
-        # Load the PKCS7 data
-        pkcs7_certificates = pkcs7.load_der_pkcs7_certificates(p7m_data)
-        print(f"{pkcs7_certificates}")
+        # Extract the content from the PKCS7 object
+        bio_out = M2Crypto.BIO.MemoryBuffer()
+        p7.get0_data(bio_out)
+        print(f"{bio_out.read()=}")
 
-        # Verify the certificates
-        verified_data = None
-        for cert in pkcs7_certificates:
-            try:
-                cert.public_key().verify(
-                    cert.signature,
-                    cert.tbs_certificate_bytes,
-                    padding.PKCS1v15(),
-                    cert.signature_hash_algorithm,
-                )
-                verified_data = cert.tbs_certificate_bytes
-                break
-            except Exception as e:
-                print(f"Verification failed: {e}")
-                continue
-
-        return verified_data
+        return bio_out.read()
     except Exception as e:
         logger.error(f'Error occurred while removing {file_path} signature: {e}')
         return None
