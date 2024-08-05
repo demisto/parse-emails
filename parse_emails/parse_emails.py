@@ -3,9 +3,8 @@ import os
 import traceback
 from base64 import b64decode
 
-import asn1crypto.pem
 import magic
-import M2Crypto
+import subprocess
 
 from parse_emails.constants import STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
@@ -46,16 +45,17 @@ class EmailParser:
 
         if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
             logger.info(f'Removing signature from file {self._file_path}')
-            bio = remove_p7m_file_signature(self._file_path)
-            if bio:
-                with open(self._file_path, 'wb') as fp:  # override the contents of the .p7m file without the signature.
-                    try:
-                        fp.write(bio)
-                        file_type = mime.from_file(self._file_path)
-                    except Exception as e:
-                        logger.error(f'Error writing to file {self._file_path}: {e}')
-            else:
-                logger.error(f'could not remove file {self._file_path} signature.')
+            remove_p7m_file_signature(self._file_path)
+            file_type = mime.from_file(self._file_path)
+            # if bio:
+            #     with open(self._file_path, 'wb') as fp:  # override the contents of the .p7m file without the signature.
+            #         try:
+            #             fp.write(bio)
+            #             file_type = mime.from_file(self._file_path)
+            #         except Exception as e:
+            #             logger.error(f'Error writing to file {self._file_path}: {e}')
+            # else:
+            #     logger.error(f'could not remove file {self._file_path} signature.')
 
         if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
             file_type = 'application/pkcs7-mime'
@@ -177,23 +177,16 @@ def remove_p7m_file_signature(file_path):
     Returns:
         An object that contains file data without the signature in case of success, None otherwise
     """
+    openssl_command = [
+        'openssl', 'smime', '-verify', '-in', file_path, '-inform', 'DER', '-noverify', '-out', file_path
+    ]
+
     try:
-        with open(file_path, 'rb') as f:
-            p7m_data = f.read()
+        # Execute the OpenSSL command
+        subprocess.run(openssl_command, check=True)
 
-        # Load the PKCS7 object
-        p7 = M2Crypto.SMIME.PKCS7(m2_pkcs7=M2Crypto.m2.pkcs7_read_bio_der(M2Crypto.BIO.MemoryBuffer(p7m_data)))
-        print(f"{p7=}")
-
-        # Extract the content from the PKCS7 object
-        bio_out = M2Crypto.BIO.MemoryBuffer()
-        p7.get0_data(bio_out)
-        print(f"{bio_out.read()=}")
-
-        return bio_out.read()
     except Exception as e:
-        logger.error(f'Error occurred while removing {file_path} signature: {e}')
-        return None
+        raise Exception(f'Error occurred while removing {file_path} signature: {e}')
 
 
 def create_email_output(email_data, attached_emails):
