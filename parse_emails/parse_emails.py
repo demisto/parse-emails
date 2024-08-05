@@ -47,15 +47,7 @@ class EmailParser:
             logger.info(f'Removing signature from file {self._file_path}')
             remove_p7m_file_signature(self._file_path)
             file_type = mime.from_file(self._file_path)
-            # if bio:
-            #     with open(self._file_path, 'wb') as fp:  # override the contents of the .p7m file without the signature.
-            #         try:
-            #             fp.write(bio)
-            #             file_type = mime.from_file(self._file_path)
-            #         except Exception as e:
-            #             logger.error(f'Error writing to file {self._file_path}: {e}')
-            # else:
-            #     logger.error(f'could not remove file {self._file_path} signature.')
+            logger.info(f"Got file type '{file_type}' for file_path={self._file_path}")
 
         if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
             file_type = 'application/pkcs7-mime'
@@ -168,14 +160,7 @@ def remove_unicode_spaces(output):
 def remove_p7m_file_signature(file_path):
     """
     Removes the signature from a p7m file.
-
-    Notes:
-        1. Mimic the command openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m
-        2. If the signature verification wasn't successful, will return None, otherwise will return the p7m file content
-           without the signature.
-
-    Returns:
-        An object that contains file data without the signature in case of success, None otherwise
+    Run the command `openssl smime -verify <file_name.p7m> -noverify -inform DEM -out test.p7m` and creates the new file without the signature.
     """
     openssl_command = [
         'openssl', 'smime', '-verify', '-in', file_path, '-inform', 'DER', '-noverify', '-out', file_path
@@ -183,6 +168,7 @@ def remove_p7m_file_signature(file_path):
 
     try:
         # Execute the OpenSSL command
+        logger.info(f"Run the openssl command: `{' '.join(openssl_command)}`")
         subprocess.run(openssl_command, check=True, capture_output=True)
 
     except Exception as e:
