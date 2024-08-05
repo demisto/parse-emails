@@ -23,7 +23,8 @@ chardet = "*"
 pytest = "*"
 python-magic = "*"
 compressed_rtf = "*"
-RTFDE = "0.0.2" # see https://github.com/seamustuohy/RTFDE/issues/33 and XSUP-39649
+RTFDE = "*"
+pypandoc = "*"
 pip = "*"
 pyopenssl = "*"
 

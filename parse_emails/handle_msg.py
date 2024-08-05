@@ -830,12 +830,30 @@ class Message:
                 rtf_body = compressed_rtf.decompress(compressed_rtf_body)
                 # Need to remove the following row and the _simplify_text_for_rtf_parsing() func when version 0.0.3 of
                 # the RTFDE.deencapsulate package is released.
-                rtf_body = self._simplify_text_for_rtf_parsing(rtf_body)
-                from RTFDE.deencapsulate import DeEncapsulator
-                rtf_obj = DeEncapsulator(rtf_body)
-                rtf_obj.deencapsulate()
-                if rtf_obj.content_type == 'html':
-                    self.html = rtf_obj.html
+                try:
+                    rtf_body = self._simplify_text_for_rtf_parsing(rtf_body)
+                    from RTFDE.deencapsulate import DeEncapsulator
+                    rtf_obj = DeEncapsulator(rtf_body)
+                    rtf_obj.deencapsulate()
+                    if rtf_obj.content_type == 'html':
+                        self.html = rtf_obj.html
+                except Exception as e:
+                    # in case of decoding issues from DeEncapsulator.deencapsulate please refer to https://github.com/seamustuohy/RTFDE/issues/33
+                    logger.debug(f'Got exception while trying to get html from rtf using RTFDE lib - {str(e)}')
+                    try:
+                        logger.debug('Trying to deencapsulate using pandoc, please see the source code for more details')
+
+                        # need to install the pandoc executable
+                        import subprocess
+                        subprocess.run(['apk', 'add', 'pandoc'], check=True, capture_output=True)
+
+                        import pypandoc
+                        html_content = pypandoc.convert_text(rtf_body, 'html', format='rtf')
+                        if html_content:
+                            self.html = html_content
+                    except Exception as e:
+                        self.html = "could not parse RTF due to known issue with special characters"
+                        logger.debug(f'Ignore to get html from rtf using pypandoc lib - {str(e)}')
 
     def _set_recipients(self):
         recipients = self.recipients
