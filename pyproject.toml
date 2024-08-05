@@ -16,7 +16,7 @@ readme = "README.md"
 packages = [{include = "parse_emails"}]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 olefile = "*"
 datetime = "*"
 chardet = "*"
@@ -24,7 +24,7 @@ pytest = "*"
 python-magic = "*"
 compressed_rtf = "*"
 RTFDE = "0.0.2" # see https://github.com/seamustuohy/RTFDE/issues/33 and XSUP-39649
-pip = "*"
+pip = "24.2.0"
 pyopenssl = "*"
 M2Crypto = "*"
 
