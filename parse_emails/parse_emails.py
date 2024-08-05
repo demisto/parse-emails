@@ -183,7 +183,7 @@ def remove_p7m_file_signature(file_path):
 
     try:
         # Execute the OpenSSL command
-        subprocess.run(openssl_command, check=True)
+        subprocess.run(openssl_command, check=True, capture_output=True)
 
     except Exception as e:
         raise Exception(f'Error occurred while removing {file_path} signature: {e}')
