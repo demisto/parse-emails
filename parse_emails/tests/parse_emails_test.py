@@ -887,3 +887,23 @@ def test_multipart_defective():
     results = email_parser.parse()
     assert results.get('Text')
     assert results.get('HTML')
+
+def test_utf_8_8_bit():
+    """
+    Given:
+     - Case A: chinese eml file encoded in utf-8, 8bit
+
+    When:
+     - parsing the file.
+
+    Then:
+     - make sure the chinese characters were decoded successfully.
+    """
+    email_parser = EmailParser(file_path='parse_emails/tests/test_data/chinese_email_test.eml')
+    results = email_parser.parse()
+    expected_chinese_str = ('您好，'
+        '您好，'
+        '这是一个示例邮件，用于演示指定的条件。'
+        '它使用了 UTF-8 编码，可以支持多种语言的字符，包括中文'
+    )
+    assert results['Text'] == expected_chinese_str
