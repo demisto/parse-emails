@@ -910,13 +910,13 @@ def test_utf_8_8_bit():
         '它使用了 UTF-8 编码，可以支持多种语言的字符，包括中文\n'
     )
     text = results.get('Text')
-    lst_txt= text.split("\n")
+    # lst_txt= text.split("\n")
     print(f'{text} {len(text)}')
-    print(text.split("\n"))
-    print("-------------------")
-    print(f'{len(text)=}')
-    assert lst_txt[0] == 'Content-Type: text/plain; charset="utf-8"\r\n'
-    assert lst_txt[1] == 'Content-Transfer-Encoding: 8bit\r\n\r\n'
-    assert lst_txt[2] == '您好，\r'
-    assert lst_txt[3] == '这是一个示例邮件，用于演示指定的条件。\r\n'
+    # print(text.split("\n"))
+    # print("-------------------")
+    # print(f'{len(text)=}')
+    # assert lst_txt[0] == 'Content-Type: text/plain; charset="utf-8"\r\n'
+    # assert lst_txt[1] == 'Content-Transfer-Encoding: 8bit\r\n\r\n'
+    # assert lst_txt[2] == '您好，\r'
+    # assert lst_txt[3] == '这是一个示例邮件，用于演示指定的条件。\r\n'
     assert results['Text'] == expected_chinese_str
