@@ -911,6 +911,8 @@ def test_utf_8_8_bit():
     )
     text = results.get('Text')
     print(f'{text} {len(text)}')
-    print(f'{text.split("\n")}')
+    print(text.split("\n"))
+    print("-------------------"))
+    print(text.split())
     print(f'{len(text)=}')
     assert results['Text'] == expected_chinese_str
