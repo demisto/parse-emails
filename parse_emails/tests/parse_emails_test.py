@@ -911,13 +911,12 @@ def test_utf_8_8_bit():
     )
     text = results.get('Text')
     lst_txt= text.split("\n")
+    print(f'{text} {len(text)}')
+    print(text.split("\n"))
+    print("-------------------")
+    print(f'{len(text)=}')
     assert lst_txt[0] == 'Content-Type: text/plain; charset="utf-8"\r\n'
     assert lst_txt[1] == 'Content-Transfer-Encoding: 8bit\r\n\r\n'
     assert lst_txt[2] == '您好，\r'
     assert lst_txt[3] == '这是一个示例邮件，用于演示指定的条件。\r\n'
-    print(f'{text} {len(text)}')
-    print(text.split("\n"))
-    print("-------------------")
-    print(text.split())
-    print(f'{len(text)=}')
     assert results['Text'] == expected_chinese_str
