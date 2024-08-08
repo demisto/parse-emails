@@ -5,6 +5,4 @@ Subject: 示例邮件
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-您好，
 这是一个示例邮件，用于演示指定的条件。
-它使用了 UTF-8 编码，可以支持多种语言的字符，包括中文

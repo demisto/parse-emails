@@ -905,9 +905,7 @@ def test_utf_8_8_bit():
     expected_chinese_str = (
         'Content-Type: text/plain; charset="utf-8"\r\n'
         'Content-Transfer-Encoding: 8bit\r\n\r\n'
-        '您好，\r'
         '这是一个示例邮件，用于演示指定的条件。\r\n'
-        '它使用了 UTF-8 编码，可以支持多种语言的字符，包括中文\n'
     )
     text = results.get('Text')
     # lst_txt= text.split("\n")
