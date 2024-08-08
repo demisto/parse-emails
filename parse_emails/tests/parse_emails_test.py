@@ -903,7 +903,7 @@ def test_utf_8_8_bit():
     email_parser = EmailParser(file_path='parse_emails/tests/test_data/chinese_email_test.eml')
     results = email_parser.parse()
     expected_chinese_str = (
-        'Content-Type: text/plain; charset="utf-8\n"'
+        'Content-Type: text/plain; charset="utf-8"\n'
         'Content-Transfer-Encoding: 8bit\n\n'
         '您好，\n'
         '这是一个示例邮件，用于演示指定的条件。\n'
