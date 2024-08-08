@@ -909,13 +909,8 @@ def test_utf_8_8_bit():
         '这是一个示例邮件，用于演示指定的条件。\n'
         '它使用了 UTF-8 编码，可以支持多种语言的字符，包括中文\n'
     )
-    text = results.get('Text',[])
-    print(text)
-    print(f'|{text[0]=}| {len(text[0])=}')
-    print(f'|{text[1]=}| {len(text[1])=}')
-    print(f'|{text[2]=}| {len(text[2])=}')
-    print(f'|{text[3]=}| {len(text[3])=}')
-    print(f'|{text[4]=}| {len(text[4])=}')
-    print(f'|{text[5]=}| {len(text[5])=}')
+    text = results.get('Text')
+    print(f'{text} {len(text)}')
+    print(f'{text.split("\n")}')
     print(f'{len(text)=}')
     assert results['Text'] == expected_chinese_str
