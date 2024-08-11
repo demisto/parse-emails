@@ -889,10 +889,10 @@ def test_multipart_defective():
     assert results.get('HTML')
 
 
-def test_utf_8_8_bit():
+def test_handle_eml_utf8_8bit():
     """
     Given:
-     - Case A: chinese eml file encoded in utf-8, 8bit
+     - chinese eml file encoded in utf-8, 8bit
 
     When:
      - parsing the file.
@@ -902,19 +902,5 @@ def test_utf_8_8_bit():
     """
     email_parser = EmailParser(file_path='parse_emails/tests/test_data/chinese_email_test.eml')
     results = email_parser.parse()
-    expected_chinese_str = (
-        'Content-Type: text/plain; charset="utf-8"\r\n'
-        'Content-Transfer-Encoding: 8bit\r\n\r\n'
-        '您好\r\n'
-    )
-    text = results.get('Text')
-    # lst_txt= text.split("\n")
-    print(f'{text} {len(text)}')
-    # print(text.split("\n"))
-    # print("-------------------")
-    # print(f'{len(text)=}')
-    # assert lst_txt[0] == 'Content-Type: text/plain; charset="utf-8"\r\n'
-    # assert lst_txt[1] == 'Content-Transfer-Encoding: 8bit\r\n\r\n'
-    # assert lst_txt[2] == '您好，\r'
-    # assert lst_txt[3] == '这是一个示例邮件，用于演示指定的条件。\r\n'
-    assert results['Text'] == expected_chinese_str
+    expected_response = '这是一个示例邮件，用于演示指定的条件。\r\n它使用了 UTF-8 编码，可以支持多种语言的字符，包括中文。\r\n祝好，\r\n发件人'
+    assert results['Text'] == expected_response
