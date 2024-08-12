@@ -1,4 +1,7 @@
 # Changelog
+v0.1.27
+* Fixed an issue where *eml* files with UTF8 when CTE is 8bit, failed to parse the file.
+
 v0.1.23
 * Fixed an issue where *Apple HFS* file type got "Unknown file format" while parsing.
 
