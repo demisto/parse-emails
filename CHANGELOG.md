@@ -1,4 +1,7 @@
 # Changelog
+v0.1.27
+* Fixed an issue where UTF-8 encoded EML files with 8-bit *Content-Transfer-Encoding* headers could not be parsed correctly.
+
 v0.1.23
 * Fixed an issue where *Apple HFS* file type got "Unknown file format" while parsing.
 
