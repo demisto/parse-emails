@@ -358,7 +358,8 @@ def decode_content(mime):
       Decode content
     """
     charset = mime.get_content_charset()
-    if (charset == 'utf-8' and mime.get('content-transfer-encoding', '') == '8bit'):
+    content_transfer_encoding = mime.get('content-transfer-encoding', '').rstrip(' ')
+    if (charset == 'utf-8' and content_transfer_encoding == '8bit'):
         return mime.get_payload()
     payload = mime.get_payload(decode=True)
     try:
