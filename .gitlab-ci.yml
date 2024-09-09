@@ -7,8 +7,6 @@ variables:
 
 stages:
   - test
-  - lint
-  - build
   - deploy
 
 .default:
@@ -41,7 +39,7 @@ run-unit-tests:
       - PYTHON_VERSION: ["3.8", "3.9", "3.10"]
 
 precommit-checks:
-  stage: lint
+  stage: test
   extends: .default
   script:
     - cp .pre-commit-config.yaml pre-commit-cache-key.txt
@@ -55,7 +53,7 @@ precommit-checks:
       - ~/.cache/pre-commit
 
 build:
-  stage: build
+  stage: test
   extends: .default
   script:
     - poetry build
