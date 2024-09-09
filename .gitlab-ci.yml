@@ -68,7 +68,6 @@ deploy:
     - poetry publish -u __token__ -p ${PYPI_TOKEN}
   rules:
     - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
-    - when: manual
   dependencies:
     - run-unit-tests
     - precommit-checks
