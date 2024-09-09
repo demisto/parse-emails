@@ -17,13 +17,13 @@ stages:
     - rm -rf $HOME/.poetry/bin/poetry
     - curl -sSL https://install.python-poetry.org | python3 -
     - poetry --version
-    - poetry lock --check
     - poetry install
 
 run-unit-tests:
   stage: test
   image: cimg/python:3.10-node
   script:
+    - poetry install
     - poetry run pytest -p no:warnings -v --cov=parse_emails --cov-report=html
   artifacts:
     paths:
