@@ -11,13 +11,13 @@ stages:
   - build
   - deploy
 
-.install_poetry:
+.install_poetry: &install_poetry
   script:
     - rm -rf $HOME/.poetry/bin/poetry
     - curl -sSL https://install.python-poetry.org | python3 -
     - poetry --version
 
-.install_build_dependencies:
+.install_build_dependencies: : &install_build_dependencies
   script:
     - poetry lock --check
     - poetry install
