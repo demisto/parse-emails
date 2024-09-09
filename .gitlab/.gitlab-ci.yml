@@ -1,0 +1,90 @@
+variables:
+  PYTHON_ORB_VERSION: "2.0.3"
+  NODE_ORB_VERSION: "5.0.1"
+  CACHE_VERSION: "v4"
+  GLOBAL_DOCKER_IMAGE: "cimg/python:3.10-node"
+  VERSION_TAG_REGEX: /^v\d+\.\d+\.\d+$/ # version regex vx.x.x (i.e. v1.2.3)
+
+stages:
+  - unit-tests
+  - precommit
+  - build
+  - deploy
+
+.install_poetry:
+  script:
+    - rm -rf $HOME/.poetry/bin/poetry
+    - curl -sSL https://install.python-poetry.org | python3 -
+    - poetry --version
+
+.install_build_dependencies:
+  script:
+    - poetry lock --check
+    - poetry install
+
+run-unit-tests:
+  stage: unit-tests
+  image: cimg/python:3.10-node
+  services:
+    - docker
+  script:
+    - *install_poetry
+    - *install_build_dependencies
+    - poetry run pytest -p no:warnings -v --cov=parse_emails --cov-report=html
+  artifacts:
+    paths:
+      - integration-test-results
+      - coverage_html_report
+  after_script:
+    - if [ -n "$COVERALLS_REPO_TOKEN" ]; then
+        pip install coveralls;
+        coveralls;
+      else
+        echo "Skipping coveralls";
+      fi
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.8", "3.9", "3.10"]
+
+precommit-checks:
+  stage: pre-commit
+  image: $GLOBAL_DOCKER_IMAGE
+  script:
+    - *install_poetry
+    - cp .pre-commit-config.yaml pre-commit-cache-key.txt
+    - poetry run python --version --version >> pre-commit-cache-key.txt
+    - poetry run pre-commit --version
+    - poetry run pre-commit run -a
+    - poetry run pytest --collect-only .
+  cache:
+    key: v1-pc-cache-${CI_COMMIT_SHA}
+    paths:
+      - ~/.cache/pre-commit
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
+
+build:
+  stage: build
+  image: $GLOBAL_DOCKER_IMAGE
+  script:
+    - poetry build
+  artifacts:
+    paths:
+      - dist
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
+
+deploy:
+  stage: deploy
+  image: $GLOBAL_DOCKER_IMAGE
+  script:
+    - poetry publish -u __token__ -p ${PYPI_TOKEN}
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
+    - when: manual
+  dependencies:
+    - run-unit-tests
+    - precommit-checks
+    - build
