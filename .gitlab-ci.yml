@@ -3,33 +3,27 @@ variables:
   NODE_ORB_VERSION: "5.0.1"
   CACHE_VERSION: "v4"
   GLOBAL_DOCKER_IMAGE: "cimg/python:3.10-node"
-  VERSION_TAG_REGEX: /^v\d+\.\d+\.\d+$/ # version regex vx.x.x (i.e. v1.2.3)
+  VERSION_TAG_REGEX: "/^v\\d+\\.\\d+\\.\\d+$/" # version regex vx.x.x (i.e. v1.2.3)
 
 stages:
-  - unit-tests
-  - precommit
+  - test
+  - lint
   - build
   - deploy
 
-.install_poetry: &install_poetry
-  script:
+.default:
+  image: $GLOBAL_DOCKER_IMAGE
+  before_script:
     - rm -rf $HOME/.poetry/bin/poetry
     - curl -sSL https://install.python-poetry.org | python3 -
     - poetry --version
-
-.install_build_dependencies: : &install_build_dependencies
-  script:
     - poetry lock --check
     - poetry install
 
 run-unit-tests:
-  stage: unit-tests
+  stage: test
   image: cimg/python:3.10-node
-  services:
-    - docker
   script:
-    - *install_poetry
-    - *install_build_dependencies
     - poetry run pytest -p no:warnings -v --cov=parse_emails --cov-report=html
   artifacts:
     paths:
@@ -49,10 +43,9 @@ run-unit-tests:
       - PYTHON_VERSION: ["3.8", "3.9", "3.10"]
 
 precommit-checks:
-  stage: pre-commit
-  image: $GLOBAL_DOCKER_IMAGE
+  stage: lint
+  extends: .default
   script:
-    - *install_poetry
     - cp .pre-commit-config.yaml pre-commit-cache-key.txt
     - poetry run python --version --version >> pre-commit-cache-key.txt
     - poetry run pre-commit --version
@@ -67,7 +60,7 @@ precommit-checks:
 
 build:
   stage: build
-  image: $GLOBAL_DOCKER_IMAGE
+  extends: .default
   script:
     - poetry build
   artifacts:
@@ -78,7 +71,7 @@ build:
 
 deploy:
   stage: deploy
-  image: $GLOBAL_DOCKER_IMAGE
+  extends: .default
   script:
     - poetry publish -u __token__ -p ${PYPI_TOKEN}
   rules:
