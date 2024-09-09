@@ -36,8 +36,6 @@ run-unit-tests:
       else
         echo "Skipping coveralls";
       fi
-  rules:
-    - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
   parallel:
     matrix:
       - PYTHON_VERSION: ["3.8", "3.9", "3.10"]
@@ -55,8 +53,6 @@ precommit-checks:
     key: v1-pc-cache-${CI_COMMIT_SHA}
     paths:
       - ~/.cache/pre-commit
-  rules:
-    - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
 
 build:
   stage: build
@@ -66,8 +62,6 @@ build:
   artifacts:
     paths:
       - dist
-  rules:
-    - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
 
 deploy:
   stage: deploy
