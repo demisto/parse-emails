@@ -16,6 +16,7 @@ stages:
     - curl -sSL https://install.python-poetry.org | python3 -
     - poetry --version
     - poetry install
+    - echo "tag- ${CI_COMMIT_TAG}"
 
 run-unit-tests:
   stage: test
@@ -68,6 +69,7 @@ deploy:
     - poetry publish -u __token__ -p ${PYPI_TOKEN}
   rules:
     - if: '$CI_COMMIT_TAG =~ /$VERSION_TAG_REGEX/'
+      when: manual
   dependencies:
     - run-unit-tests
     - precommit-checks
