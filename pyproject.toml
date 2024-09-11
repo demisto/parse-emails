@@ -44,6 +44,6 @@ coveralls = "*"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[[tool.poetry.repositories]]
+[tool.poetry.repositories]
 name = "test-pypi"
 url = "https://test.pypi.org/legacy/"
