@@ -457,8 +457,14 @@ def extract_address_eml(eml, entry):
 
 def get_attachment_filename(part):
     attachment_file_name = None
-    if part.get_filename():
-        attachment_file_name = str(make_header(decode_header(part.get_filename())))
+    filename = part.get_filename()
+    if filename:
+        try:
+            attachment_file_name = str(make_header(decode_header(filename)))
+        except LookupError:
+            if 'windows-874' in filename:
+                filename = filename.replace('windows-874', 'iso-8859-11')
+                attachment_file_name = str(make_header(decode_header(filename)))
 
     elif attachment_file_name is None and part.get('filename'):
         attachment_file_name = os.path.normpath(part.get('filename'))
