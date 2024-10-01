@@ -1,4 +1,7 @@
 # Changelog
+v0.1.28
+* Fixed an issue where attachment file name encoded in windows-874 could not be parsed correctly.
+
 v0.1.27
 * Fixed an issue where UTF-8 encoded EML files with 8-bit *Content-Transfer-Encoding* headers could not be parsed correctly.
 
