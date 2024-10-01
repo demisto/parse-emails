@@ -904,3 +904,21 @@ def test_handle_eml_utf8_8bit():
     results = email_parser.parse()
     expected_response = '这是一个示例邮件，用于演示指定的条件。\r\n它使用了 UTF-8 编码，可以支持多种语言的字符，包括中文。\r\n祝好，\r\n发件人'
     assert results['Text'] == expected_response
+
+
+def test_eml_contains_image_name_with_Thai_characters():
+    """
+    Given:
+     - eml file contains image name with Thai characters
+
+    When:
+     - parsing the file.
+
+    Then:
+     - make sure the Thai character were decoded successfully.
+    """
+    test_path = 'parse_emails/tests/test_data/eml_contains_image_name_with_Thai_characters.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
+    results = email_parser.parse()
+    assert results['Attachments'] == 'ผ้าห่ม06[4].jpg'
