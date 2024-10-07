@@ -463,6 +463,7 @@ def get_attachment_filename(part):
             attachment_file_name = str(make_header(decode_header(filename)))
         except LookupError:
             if 'windows-874' in filename:
+                # If the file is encoded in windows-874 and contains the encoding
                 filename = filename.replace('windows-874', 'iso-8859-11')
                 attachment_file_name = str(make_header(decode_header(filename)))
 
