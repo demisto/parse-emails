@@ -55,6 +55,7 @@ from parse_emails.constants import (DEFAULT_ENCODING, PROPS_ID_MAP,
 logger = logging.getLogger('parse_emails')
 
 MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
+emailRegex = r'''(?i)(?:[a-z0-9!#$%&'*+/=?^_\x60{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_\x60{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])'''  # noqa: E501
 
 DATA_TYPE_MAP = {
     "0x0000": "PtypUnspecified",
@@ -1056,10 +1057,28 @@ def parse_email_headers(header, raw=False):
         "BCC": [],
         "Reply-To": [],
     }
-
+    format_issue = False
     for addr in email_address_headers.keys():
-        for (name, email_address) in email.utils.getaddresses(headers.get_all(addr, [])):
-            email_address_headers[addr].append(f"{name} <{email_address}>")
+        address_header = headers.get_all(addr, [])
+        email_addresses = email.utils.getaddresses(address_header)
+
+        # This workaround addresses an issue with email addresses that have a comma in the display name
+        # but are not enclosed in quotation marks (XSUP-41796). In such cases, the email.utils.getaddresses function
+        # fails to parse the address correctly, as it expects display names with special characters
+        # (like commas) to be wrapped in quotes, according to RFC 5322.
+        if addr == 'From' and len(email_addresses) > 1:
+            for (name, email_address) in email_addresses:
+                # If email.utils.getaddresses returns a list, we check the email addresses returned.
+                # If any of them contain invalid email addresses, we remove them and keep only the valid ones.
+                if not re.findall(emailRegex, email_address):
+                    format_issue = True
+                    email_addresses.remove((name, email_address))
+
+        for (name, email_address) in email_addresses:
+            if format_issue:
+                email_address_headers[addr].append(f"<{email_address}>")
+            else:
+                email_address_headers[addr].append(f"{name} <{email_address}>")
 
     parsed_headers = dict(headers)
     parsed_headers.update(email_address_headers)

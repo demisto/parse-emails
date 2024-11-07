@@ -3,7 +3,7 @@ import pytest
 from parse_emails.handle_eml import handle_eml, unfold
 from parse_emails.handle_msg import (DataModel, MsOxMessage,
                                      create_headers_map, get_msg_mail_format,
-                                     handle_msg)
+                                     handle_msg, parse_email_headers)
 from parse_emails.parse_emails import EmailParser
 
 
@@ -65,6 +65,31 @@ def test_msg_parse_only_headers():
     results.parse()
 
     assert isinstance(results.parsed_email, dict)
+
+
+@pytest.mark.parametrize('headers, email_sender', [
+    ('To: <test@test.com> \nFrom: Services-Request September 06, 2024 <test@sender.com>',
+     ['<test@sender.com>']),
+    ('To: <test@test.com> \nFrom: Services-Request September 06 2024 <test@sender.com>',
+     ['Services-Request September 06 2024 <test@sender.com>']),
+    ('To: <test@test.com> \nFrom: "Services-Request September 06, 2024" <test@sender.com>',
+     ['Services-Request September 06, 2024 <test@sender.com>']),
+])
+def test_parse_email_headers(headers, email_sender):
+    """
+    Given:
+     - From header address with a display names with comma not wrapped in quotes.
+     - From header address with a display names without comma and not wrapped in quotes.
+     - From header address with a display names with comma wrapped in quotes.
+
+    When:
+     - parsing the headers.
+    Then:
+     - Validate that the email was parsed correctly.
+    """
+    parsed_headers = parse_email_headers(headers)
+
+    assert parsed_headers.get('From') == email_sender
 
 
 @pytest.mark.parametrize('file_type', ['application/pkcs7-mime', 'macintosh hfs', 'message/rfc822', 'multipart/alternative',
