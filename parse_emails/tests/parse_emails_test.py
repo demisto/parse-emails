@@ -67,21 +67,29 @@ def test_msg_parse_only_headers():
     assert isinstance(results.parsed_email, dict)
 
 
-def test_parse_email_headers():
+@pytest.mark.parametrize('headers, email_sender', [
+    ('To: <test@test.com> \nFrom: Services-Request September 06, 2024 <test@sender.com>',
+     ['<test@sender.com>']),
+    ('To: <test@test.com> \nFrom: Services-Request September 06 2024 <test@sender.com>',
+     ['Services-Request September 06 2024 <test@sender.com>']),
+    ('To: <test@test.com> \nFrom: "Services-Request September 06, 2024" <test@sender.com>',
+     ['Services-Request September 06, 2024 <test@sender.com>']),
+])
+def test_parse_email_headers(headers, email_sender):
     """
     Given:
-     - From header address
-       with a display names with comma not wrapped in quotes.
+     - From header address with a display names with comma not wrapped in quotes.
+     - From header address with a display names without comma and not wrapped in quotes.
+     - From header address with a display names with comma wrapped in quotes.
+
     When:
      - parsing the headers.
     Then:
      - Validate that the email was parsed correctly.
     """
-    headers = ("To: <test@test.com> \n"
-               "From: Services-Request September 06, 2024 <test@sender.com>")
     parsed_headers = parse_email_headers(headers)
 
-    assert parsed_headers.get('From') == ['<test@sender.com>']
+    assert parsed_headers.get('From') == email_sender
 
 
 @pytest.mark.parametrize('file_type', ['application/pkcs7-mime', 'macintosh hfs', 'message/rfc822', 'multipart/alternative',

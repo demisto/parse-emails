@@ -1,4 +1,8 @@
 # Changelog
+
+v0.1.30
+* Fixed an issue where email addresses with commas in the display name were not parsed correctly.
+
 v0.1.28
 * Fixed an issue where attachment file name encoded in windows-874 could not be parsed correctly.
 

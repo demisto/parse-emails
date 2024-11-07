@@ -1063,7 +1063,7 @@ def parse_email_headers(header, raw=False):
         email_addresses = email.utils.getaddresses(address_header)
 
         # This workaround addresses an issue with email addresses that have a comma in the display name
-        # but are not enclosed in quotation marks. In such cases, the email.utils.getaddresses function
+        # but are not enclosed in quotation marks (XSUP-41796). In such cases, the email.utils.getaddresses function
         # fails to parse the address correctly, as it expects display names with special characters
         # (like commas) to be wrapped in quotes, according to RFC 5322.
         if addr == 'From' and len(email_addresses) > 1:
