@@ -3,7 +3,7 @@ import pytest
 from parse_emails.handle_eml import handle_eml, unfold
 from parse_emails.handle_msg import (DataModel, MsOxMessage,
                                      create_headers_map, get_msg_mail_format,
-                                     handle_msg)
+                                     handle_msg, parse_email_headers)
 from parse_emails.parse_emails import EmailParser
 
 
@@ -41,7 +41,7 @@ def test_msg_utf_encoded_subject():
 
 
 def test_msg_with_attachments():
-    test_path = 'parse_emails/tests/test_data/html_attachment.msg'
+    test_path = 'parse_emails/tests/test_data/Salary.msg'
 
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False)
     results.parse()
@@ -65,6 +65,23 @@ def test_msg_parse_only_headers():
     results.parse()
 
     assert isinstance(results.parsed_email, dict)
+
+
+def test_parse_email_headers():
+    """
+    Given:
+     - From header address
+       with a display names with comma not wrapped in quotes.
+    When:
+     - parsing the headers.
+    Then:
+     - Validate that the email was parsed correctly.
+    """
+    headers = ("To: <test@test.com> \n"
+               "From: Services-Request September 06, 2024 <test@sender.com>")
+    parsed_headers = parse_email_headers(headers)
+
+    assert parsed_headers.get('From') == ['<test@sender.com>']
 
 
 @pytest.mark.parametrize('file_type', ['application/pkcs7-mime', 'macintosh hfs', 'message/rfc822', 'multipart/alternative',
