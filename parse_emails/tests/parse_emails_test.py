@@ -41,7 +41,7 @@ def test_msg_utf_encoded_subject():
 
 
 def test_msg_with_attachments():
-    test_path = 'parse_emails/tests/test_data/Salary.msg'
+    test_path = 'parse_emails/tests/test_data/html_attachment.msg'
 
     results = EmailParser(file_path=test_path, max_depth=3, parse_only_headers=False)
     results.parse()
