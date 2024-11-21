@@ -115,7 +115,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             part_payload = part.get_payload()
 
             if part_payload and isinstance(part_payload, list) and \
-                    isinstance(part_payload[0], email.message.Message):
+                    isinstance(part_payload[0], email.message.Message) and not part.get_filename() \
+                    and "attachment" not in part.get("Content-Disposition", ""):
                 is_message = True
 
             if (part.is_multipart() or part.get_content_type().startswith('multipart')) \
