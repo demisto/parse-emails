@@ -93,6 +93,7 @@ DATA_TYPE_MAP = {
 }
 
 EMBEDDED_MSG_HEADER_SIZE = 24
+UTF_16_ENCODING = True
 
 
 def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, original_depth=3):
@@ -363,7 +364,7 @@ class DataModel:
                                      'encoding instead')
                         data_value = temp.decode("utf-16-le", errors="ignore")
 
-                elif b'\x00' not in data_value:
+                elif b'\x00' not in data_value or not UTF_16_ENCODING:
                     data_value = data_value.decode("ascii", errors="ignore")
                 else:
                     data_value = data_value.decode("utf-16-le", errors="ignore")
@@ -705,6 +706,7 @@ class Message:
         return attachment_entries
 
     def _get_property_data(self, directory_name, directory_entry, is_list=False):
+        global UTF_16_ENCODING
         directory_entry_name = directory_entry.name
         if is_list:
             stream_name = [directory_name, directory_entry_name]
@@ -734,7 +736,11 @@ class Message:
                          'skipping property "{}"'.format(stream_name, property_details))
             return None
 
+        utf_16_encoding = UTF_16_ENCODING
+        if directory_entry_name.endswith('001E'):
+            UTF_16_ENCODING = False
         property_value = self._data_model.get_value(raw_content, data_type=property_type)
+        UTF_16_ENCODING = utf_16_encoding
         if property_value:
             property_detail = {property_name: property_value}
         else:
