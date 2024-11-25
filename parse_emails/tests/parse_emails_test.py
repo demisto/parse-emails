@@ -960,7 +960,7 @@ def test_msg_contains_ascii_characters_with_null():
     Then:
      - make sure the msg was correctly parsed.
     """
-    test_path = 'test_data/msg_with_null_characters_in_ascii_decode.msg'
+    test_path = 'parse_emails/tests/test_data/msg_with_null_characters_in_ascii_decode.msg'
 
     email_parser = EmailParser(file_path=test_path)
     results = email_parser.parse()
