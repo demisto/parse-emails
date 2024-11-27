@@ -736,11 +736,11 @@ class Message:
                          'skipping property "{}"'.format(stream_name, property_details))
             return None
 
-        utf_16_encoding = UTF_16_ENCODING
         if directory_entry_name.endswith('001E'):
+            # UTF_16_ENCODING is used specifically in PtypString().
             UTF_16_ENCODING = False
         property_value = self._data_model.get_value(raw_content, data_type=property_type)
-        UTF_16_ENCODING = utf_16_encoding
+        UTF_16_ENCODING = True
         if property_value:
             property_detail = {property_name: property_value}
         else:

@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.31
+* Fixed an issue that prevented the headers from being parsed correctly for MSG files (ASCII encoding).
+
 v0.1.30
 * Fixed an issue where email addresses with commas in the display name were not parsed correctly.
 
