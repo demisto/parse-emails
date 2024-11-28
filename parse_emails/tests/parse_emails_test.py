@@ -947,3 +947,22 @@ def test_eml_contains_image_name_with_Thai_characters():
     email_parser = EmailParser(file_path=test_path, max_depth=2)
     results = email_parser.parse()
     assert results['Attachments'] == 'ผ้าห่ม06[4].jpg'
+
+
+def test_msg_contains_ascii_characters_with_null():
+    """
+    Given:
+     - msg file ASCII decoded contains null characters (\x00).
+
+    When:
+     - parsing the file.
+
+    Then:
+     - make sure the msg was correctly parsed.
+    """
+    test_path = 'parse_emails/tests/test_data/msg_with_null_characters_in_ascii_decode.msg'
+
+    email_parser = EmailParser(file_path=test_path)
+    results = email_parser.parse()
+    assert results['From'] == 'ZIEMSKI, Michal <michal.ziemski@wipo.int>'
+    assert results['Subject'] == 'RE: Test email for readpst and msg-extractor utility'
