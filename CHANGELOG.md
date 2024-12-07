@@ -1,7 +1,7 @@
 # Changelog
 
 v0.1.32
-* Fixed a problem that prevented malformed email addresses from being parsed correctly.
+* Fixed a problem that prevented malformed email addresses from being parsed.
 
 v0.1.31
 * Fixed an issue that prevented the headers from being parsed correctly for MSG files (ASCII encoding).
