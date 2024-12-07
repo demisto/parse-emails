@@ -5,7 +5,6 @@ import logging
 import os
 import quopri
 import re
-import sys
 import tempfile
 from base64 import b64decode
 from email import errors, message_from_string
