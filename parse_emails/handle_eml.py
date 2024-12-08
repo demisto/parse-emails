@@ -186,9 +186,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             os.remove(f.name)
                     if not file_content:
                         attachment_content.append(None)
-
-
-
                     attachment_names.append(attachment_file_name)
                     attachment_content_ids.append(attachment_content_id)
                     attachment_content_dispositions.append(attachment_content_disposition)
@@ -203,10 +200,6 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             attachment_file_name = individual_message.get_filename()
                             attachment_content_id = individual_message.get('Content-ID')
                             attachment_content_disposition = individual_message.get('Content-Disposition')
-
-                            # if not attachment_file_name and not attachment_content_id and not attachment_content_disposition:
-                            #     raise Exception("Could not parse eml file!")
-
                             if attachment_file_name is None:
                                 attachment_file_name = f"unknown_file_name{i}"
 
