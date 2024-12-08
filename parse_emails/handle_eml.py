@@ -109,18 +109,14 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
         while parts:
             part = parts.pop()
+
+            payload = part.get_payload()
+
             logger.debug(f'Iterating over parts. Current part: {part.get_content_type()=}')
-
-            is_message = False
-            part_payload = part.get_payload()
-
-            if part_payload and isinstance(part_payload, list) and \
-                    isinstance(part_payload[0], email.message.Message) and not part.get_filename() \
-                    and "attachment" not in part.get("Content-Disposition", ""):
-                is_message = True
-
             if (part.is_multipart() or part.get_content_type().startswith('multipart')) \
-                    and ("attachment" not in part.get("Content-Disposition", "") or is_message):
+                    and "attachment" not in part.get("Content-Disposition", "") or \
+                        (payload and isinstance(payload, list) and len(payload) == 1 and
+                         payload[0].get_content_type() == 'text/html'):
                 parts += [part_ for part_ in part.get_payload() if isinstance(part_, email.message.Message)]
 
             elif part.get_filename()\
@@ -190,6 +186,9 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             os.remove(f.name)
                     if not file_content:
                         attachment_content.append(None)
+
+
+
                     attachment_names.append(attachment_file_name)
                     attachment_content_ids.append(attachment_content_id)
                     attachment_content_dispositions.append(attachment_content_disposition)
@@ -204,6 +203,10 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
                             attachment_file_name = individual_message.get_filename()
                             attachment_content_id = individual_message.get('Content-ID')
                             attachment_content_disposition = individual_message.get('Content-Disposition')
+
+                            # if not attachment_file_name and not attachment_content_id and not attachment_content_disposition:
+                            #     raise Exception("Could not parse eml file!")
+
                             if attachment_file_name is None:
                                 attachment_file_name = f"unknown_file_name{i}"
 

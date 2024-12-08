@@ -947,3 +947,12 @@ def test_eml_contains_image_name_with_Thai_characters():
     email_parser = EmailParser(file_path=test_path, max_depth=2)
     results = email_parser.parse()
     assert results['Attachments'] == 'ผ้าห่ม06[4].jpg'
+
+
+def test_eml_contails_html_content_type():
+    test_path = 'parse_emails/tests/test_data/eml_contains_htm_content_type.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
+    results = email_parser.parse()
+    assert len(results) == 15
+    assert results['HTML'] == '<html></html>'
