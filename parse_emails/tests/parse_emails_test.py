@@ -966,3 +966,12 @@ def test_msg_contains_ascii_characters_with_null():
     results = email_parser.parse()
     assert results['From'] == 'ZIEMSKI, Michal <michal.ziemski@wipo.int>'
     assert results['Subject'] == 'RE: Test email for readpst and msg-extractor utility'
+
+
+def test_eml_contails_html_content_type():
+    test_path = 'parse_emails/tests/test_data/eml_contains_htm_content_type.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
+    results = email_parser.parse()
+    assert len(results) == 15
+    assert results['HTML'] == '<html></html>'
