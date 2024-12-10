@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.33
+* Fixed an issue where html parts were not parsed properly in EML files.
+
 v0.1.32
 * Fixed an issue that prevented malformed email addresses from being parsed.
 
