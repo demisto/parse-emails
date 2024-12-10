@@ -435,7 +435,10 @@ def get_email_address(eml, entry):
                                               for current_eml_no_newline in eml.get_all(entry, [])]
     else:
         gel_all_values_from_email_by_entry = eml.get_all(entry, [])
-    addresses = getaddresses(gel_all_values_from_email_by_entry)
+    try:
+        addresses = getaddresses(gel_all_values_from_email_by_entry, strict=False)
+    except TypeError:
+        addresses = getaddresses(gel_all_values_from_email_by_entry)
     if addresses:
         res = [email_address for real_name, email_address in addresses if "@" in email_address]
         res = ', '.join(res)
