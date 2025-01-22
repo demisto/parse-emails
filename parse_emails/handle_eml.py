@@ -113,12 +113,13 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
             payload = part.get_payload()
 
             logger.debug(f'Iterating over parts. Current part: {part.get_content_type()=}')
-            if (part.is_multipart() or part.get_content_type().startswith('multipart')) \
-                    and "attachment" not in part.get("Content-Disposition", "") or \
-                        (payload and isinstance(payload, list) and len(payload) == 1 and
-                         payload[0].get_content_type() == 'text/html'):
-                parts += [part_ for part_ in part.get_payload() if isinstance(part_, email.message.Message)]
 
+            is_multipart = part.is_multipart() or part.get_content_type().startswith('multipart')
+            is_not_attachment = "attachment" not in part.get("Content-Disposition", "")
+            is_message = payload and isinstance(payload, list) and len(payload) == 1 and payload[0].get_content_type() == 'text/html'
+
+            if  is_not_attachment and (is_multipart or is_message):
+                parts += [part_ for part_ in payload if isinstance(part_, email.message.Message)]
             elif part.get_filename()\
                     or "attachment" in part.get("Content-Disposition", "")\
                     or part.get("X-Attachment-Id")\
