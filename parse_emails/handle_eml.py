@@ -436,6 +436,11 @@ def get_email_address(eml, entry):
     else:
         gel_all_values_from_email_by_entry = eml.get_all(entry, [])
     try:
+        for index, address in enumerate(gel_all_values_from_email_by_entry):
+            if 'unknown-8bit' in address:
+                updated_address = email.header.make_header(email.header.decode_header(address))
+                gel_all_values_from_email_by_entry[index] = str(updated_address)
+
         addresses = getaddresses(gel_all_values_from_email_by_entry, strict=False)
     except TypeError:
         addresses = getaddresses(gel_all_values_from_email_by_entry)

@@ -2,7 +2,8 @@ import base64
 import logging
 import quopri
 import re
-from email.header import decode_header
+import email
+from email.header import decode_header, make_header
 
 logger = logging.getLogger('parse_emails')
 
@@ -42,12 +43,15 @@ def convert_to_unicode(s, is_msg_header=True):
                     res += str(decoded_s, 'utf-8')
         return res.strip()
     except Exception:
-        for file_data in ENCODINGS_TYPES:
-            try:
-                s = s.decode(file_data).strip()
-                break
-            except:  # noqa: E722
-                pass
+        if 'unknown-8bit' in s:
+            s = email.header.make_header(email.header.decode_header(s))
+        else:
+            for file_data in ENCODINGS_TYPES:
+                try:
+                    s = s.decode(file_data).strip()
+                    break
+                except:  # noqa: E722
+                    pass
 
     return s
 
