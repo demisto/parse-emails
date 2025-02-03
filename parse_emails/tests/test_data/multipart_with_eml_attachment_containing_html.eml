@@ -1,0 +1,28 @@
+To: recipient@example.com
+From: sender@example.com
+Subject: Your Subject
+Date: 14 Jan 2025 12:00:00 +0000
+Content-Type: multipart/mixed; boundary="000000000000e915c3062bcd115c"
+
+--000000000000e915c3062bcd115c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+Email with attached another email
+
+--000000000000e915c3062bcd115c
+Content-Type: message/rfc822; name="original_message.eml"
+Content-Disposition: attachment; filename="original_message.eml"
+Content-Transfer-Encoding: 8bit
+X-Attachment-Id: f0af9d461a78b41c_0.1
+
+From: attached-email-from@example.com
+To: attached-email-to@example.com
+Date: 16 Jan 2025 05:31:24 +0000
+Subject: =?utf-8?B?QXR0YWNoZWQgZW1haWwgc3ViamVjdA==?=
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
+
+PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0b
+Ww7IGNoYXJzZXQ9dXRmLTgiPg0KPHA+QXR0YWNoZWQgZW1haWwgSFRNTDwvcD4=
+--000000000000e915c3062bcd115c--
