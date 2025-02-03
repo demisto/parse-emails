@@ -975,3 +975,19 @@ def test_eml_contails_html_content_type():
     results = email_parser.parse()
     assert len(results) == 15
     assert results['HTML'] == '<html></html>'
+
+
+def test_handle_eml_unknown8bit():
+    """
+    Given:
+     - eml file header encoded in unknown-8bit
+
+    When:
+     - parsing the file.
+
+    Then:
+     - make sure the header were decoded successfully.
+    """
+    email_parser = EmailParser(file_path='parse_emails/tests/test_data/test-unknown-8bit.eml')
+    results = email_parser.parse()
+    assert results['From'] == 'test@test.com'
