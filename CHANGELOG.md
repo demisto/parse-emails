@@ -2,6 +2,7 @@
 
 v0.1.34
 * Fixed an issue that prevented the headers from being parsed correctly for eml files (unknown-8bit encoding).
+* Fixed an issue that email with attachment was parsed incorrectly for eml files.
 
 v0.1.33
 * Fixed an issue where html parts were not parsed properly in EML files.

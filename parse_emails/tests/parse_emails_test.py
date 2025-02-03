@@ -991,3 +991,24 @@ def test_handle_eml_unknown8bit():
     email_parser = EmailParser(file_path='parse_emails/tests/test_data/test-unknown-8bit.eml')
     results = email_parser.parse()
     assert results['From'] == 'test@test.com'
+
+
+def test_multipart_eml_with_eml_attachment_containing_html_body():
+    """
+    Given:
+     - eml file with attached another eml file with text/html content.
+    When:
+     - parsing the file.
+    Then:
+     - make sure the msg was correctly parsed.
+    """
+    test_path = 'parse_emails/tests/test_data/multipart_with_eml_attachment_containing_html.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
+    results = email_parser.parse()
+
+    assert len(results) == 2
+    assert results[0]["HTML"] == ""
+    assert results[0]["Attachments"] == "original_message.eml"
+    assert len(results[0]["AttachmentsData"]) > 0
+    assert results[1]["ParentFileName"] == "multipart_with_eml_attachment_containing_html.eml"
