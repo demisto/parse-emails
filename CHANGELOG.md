@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.35
+* Fixed an issue where some EML files were incorrectly decoded.
+
 v0.1.34
 * Fixed an issue that prevented the headers from being parsed correctly for eml files (unknown-8bit encoding).
 * Fixed an issue that email with attachment was parsed incorrectly for eml files.
