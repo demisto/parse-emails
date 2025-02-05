@@ -44,7 +44,7 @@ def convert_to_unicode(s, is_msg_header=True):
         return res.strip()
     except Exception:
         if s and 'unknown-8bit' in s:
-            s = email.header.make_header(email.header.decode_header(s))
+            s = str(email.header.make_header(email.header.decode_header(s)))
         else:
             for file_data in ENCODINGS_TYPES:
                 try:

@@ -991,6 +991,7 @@ def test_handle_eml_unknown8bit():
     email_parser = EmailParser(file_path='parse_emails/tests/test_data/test-unknown-8bit.eml')
     results = email_parser.parse()
     assert results['From'] == 'test@test.com'
+    assert results['HeadersMap']['From'] == '"support-test" <test@test.com>'
 
 
 def test_multipart_eml_with_eml_attachment_containing_html_body():
