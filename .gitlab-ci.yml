@@ -4,8 +4,7 @@ variables:
   CACHE_VERSION: "v4"
   GLOBAL_DOCKER_IMAGE: "cimg/python:3.10-node"
   VERSION_TAG_REGEX: "/^v\\d+\\.\\d+\\.\\d+$/" # version regex vx.x.x (i.e. v1.2.3)
-  CURRENT_BRANCH_NAME: $INFRA_BRANCH
-
+  CURRENT_BRANCH_NAME: "added_security_checks_to_parse_emails_repo"
 stages:
   - test
   - deploy
@@ -78,5 +77,5 @@ deploy:
 
 include:
   - file: "/.gitlab/ci/.gitlab-ci.security-scans.yml"
-    ref: $INFRA_BRANCH
+    ref: "added_security_checks_to_parse_emails_repo"
     project: "${CI_PROJECT_NAMESPACE}/infra"
