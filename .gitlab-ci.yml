@@ -8,6 +8,7 @@ variables:
 stages:
   - test
   - deploy
+  - security
 
 .default:
   image: $GLOBAL_DOCKER_IMAGE
@@ -97,5 +98,5 @@ include:
     ref: "added_security_checks_to_parse_emails_repo"
     project: "${CI_PROJECT_NAMESPACE}/infra"
   - file: ".gitlab/ci/slack-notify.yml"
-    ref: "added_security_checks_to_parse_emails_repo"
+    ref: "added_security_checks_to_parse_emails_repo" 
     project: "${CI_PROJECT_NAMESPACE}/infra"
