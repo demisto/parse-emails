@@ -10,6 +10,7 @@ stages:
   - deploy
   - security
   - fan-in
+  - notify
 
 .default:
   image: $GLOBAL_DOCKER_IMAGE
