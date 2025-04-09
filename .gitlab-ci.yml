@@ -9,6 +9,7 @@ stages:
   - test
   - deploy
   - security
+  - fan-in
 
 .default:
   image: $GLOBAL_DOCKER_IMAGE
