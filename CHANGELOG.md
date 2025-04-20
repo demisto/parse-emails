@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.36
+* Fixed an issue where file_type was incorrectly detected as "AMUSIC Adlib Tracker".
+
 v0.1.35
 * Fixed an issue where some EML files were incorrectly decoded.
 
