@@ -89,12 +89,12 @@ deploy:
     - build
 
 include:
-  - file: "/.gitlab/ci/.gitlab-ci.security-scans.yml"
+  - file: ".gitlab/ci/parse-emails/.gitlab-ci.security-scans.yml"
     ref: "added_security_checks_to_parse_emails_repo"
     project: "${CI_PROJECT_NAMESPACE}/infra"
-  - file: "/.gitlab/ci/global.yml"
+  - file: ".gitlab/ci/parse-emails/.gitlab-ci.global.yml"
     ref: "added_security_checks_to_parse_emails_repo"
     project: "${CI_PROJECT_NAMESPACE}/infra"
-  - file: "/.gitlab/ci/variables.yml"
+  - file: ".gitlab/ci/parse-emails/.gitlab-ci.variables.yml"
     ref: "added_security_checks_to_parse_emails_repo"
     project: "${CI_PROJECT_NAMESPACE}/infra"
