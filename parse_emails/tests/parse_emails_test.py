@@ -1026,6 +1026,6 @@ def test_error_file_type():
     """
     test_path = 'parse_emails/tests/test_data/None_Funding..eml'
 
-    email_parser = EmailParser(file_path=test_path, max_depth=2, file_info='AMUSIC Adlib Tracker')
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
     results = email_parser.parse()
     assert results['Subject'] == 'None Funding.'
