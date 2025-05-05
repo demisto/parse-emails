@@ -6,7 +6,7 @@ from base64 import b64decode
 
 import magic
 
-from parse_emails.constants import STRINGS_TO_REMOVE, KNOWN_MIME_TYPE
+from parse_emails.constants import KNOWN_MIME_TYPE, STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
 

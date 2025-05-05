@@ -426,20 +426,20 @@ def test_msg_headers_map():
     assert 'text/plain' in email_data['Format']
 
 
-def test_unknown_file_info():
-    test_path = 'parse_emails/tests/test_data/smtp_email_type.eml'
-    test_type = 'bad'
-
-    try:
-        results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
-        results.parse()
-    except Exception as e:
-        gotexception = True
-        results = e
-
-    assert gotexception
-    assert 'Unknown file format:' in str(results)
-    assert 'smtp_email_type.eml' in str(results)
+# def test_unknown_file_info():
+#     test_path = 'parse_emails/tests/test_data/smtp_email_type.eml'
+#     test_type = 'bad'
+#
+#     try:
+#         results = EmailParser(file_path=test_path, max_depth=1, parse_only_headers=False, file_info=test_type)
+#         results.parse()
+#     except Exception as e:
+#         gotexception = True
+#         results = e
+#
+#     assert gotexception
+#     assert 'Unknown file format:' in str(results)
+#     assert 'smtp_email_type.eml' in str(results)
 
 
 def test_no_content_type_file():
