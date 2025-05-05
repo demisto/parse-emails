@@ -1020,9 +1020,9 @@ def test_error_file_type():
     Given:
      - eml file Sent with file_info='AMUSIC Adlib Tracker'.
     When:
-     - parsing the file.
+     - Trying to check for the file type in order to parse the file
     Then:
-     - make sure the eml was correctly parsed.
+     - Make sure the file type is recalculated and the eml was correctly parsed.
     """
     test_path = 'parse_emails/tests/test_data/None_Funding..eml'
 
