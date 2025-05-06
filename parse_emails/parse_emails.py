@@ -6,7 +6,7 @@ from base64 import b64decode
 
 import magic
 
-from parse_emails.constants import STRINGS_TO_REMOVE
+from parse_emails.constants import KNOWN_MIME_TYPE, STRINGS_TO_REMOVE
 from parse_emails.handle_eml import handle_eml, parse_inner_eml
 from parse_emails.handle_msg import handle_msg
 
@@ -39,7 +39,7 @@ class EmailParser:
     def get_file_type(self, file_type):
 
         mime = magic.Magic()
-        if not file_type:
+        if not file_type or not any(mime_type in file_type.lower() for mime_type in KNOWN_MIME_TYPE):
             file_type = mime.from_file(self._file_path)
             logger.info(f'file_type was empty, using {self._file_path=} to decide {file_type=}')
 

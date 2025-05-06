@@ -2177,3 +2177,8 @@ PROPS_ID_MAP = {
         "name": "AddressBookContainerId"
     }
 }
+
+KNOWN_MIME_TYPE = ['composite document file v2 document', 'cdfv2 microsoft outlook message',
+                   'MIME entity, ISO-8859 text', 'data', 'apple hfs', 'macintosh hfs', 'rfc 822 mail', 'smtp mail',
+                   'multipart/signed', 'multipart/alternative', 'multipart/mixed', 'message/rfc822',
+                   'application/pkcs7-mime', 'multipart/related', '(with bom) text', 'ascii text', 'unicode text']
