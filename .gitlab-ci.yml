@@ -4,10 +4,12 @@ variables:
   CACHE_VERSION: "v4"
   GLOBAL_DOCKER_IMAGE: "cimg/python:3.10-node"
   VERSION_TAG_REGEX: "/^v\\d+\\.\\d+\\.\\d+$/" # version regex vx.x.x (i.e. v1.2.3)
-
+  CURRENT_BRANCH_NAME: "added_security_checks_to_parse_emails_repo"
 stages:
   - test
   - deploy
+  - security
+  - fan-in
 
 .default:
   image: $GLOBAL_DOCKER_IMAGE
@@ -24,6 +26,9 @@ run-unit-tests:
   script:
     - poetry install
     - poetry run pytest -p no:warnings -v --cov=parse_emails --cov-report=html
+  rules:
+    - if: '$SECURITY_SCANS == "true"'
+      when: never
   artifacts:
     paths:
       - integration-test-results
@@ -48,6 +53,9 @@ precommit-checks:
     - poetry run pre-commit --version
     - poetry run pre-commit run -a
     - poetry run pytest --collect-only .
+  rules:
+    - if: '$SECURITY_SCANS == "true"'
+      when: never
   cache:
     key: v1-pc-cache-${CI_COMMIT_SHA}
     paths:
@@ -58,6 +66,9 @@ build:
   extends: .default
   script:
     - poetry build
+  rules:
+    - if: '$SECURITY_SCANS == "true"'
+      when: never
   artifacts:
     paths:
       - dist
@@ -70,7 +81,20 @@ deploy:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
       when: manual
+    - if: '$SECURITY_SCANS == "true"'
+      when: never
   dependencies:
     - run-unit-tests
     - precommit-checks
     - build
+
+include:
+  - file: ".gitlab/ci/parse-emails/.gitlab-ci.security-scans.yml"
+    ref: "added_security_checks_to_parse_emails_repo"
+    project: "${CI_PROJECT_NAMESPACE}/infra"
+  - file: ".gitlab/ci/parse-emails/.gitlab-ci.global.yml"
+    ref: "added_security_checks_to_parse_emails_repo"
+    project: "${CI_PROJECT_NAMESPACE}/infra"
+  - file: ".gitlab/ci/parse-emails/.gitlab-ci.variables.yml"
+    ref: "added_security_checks_to_parse_emails_repo"
+    project: "${CI_PROJECT_NAMESPACE}/infra"
