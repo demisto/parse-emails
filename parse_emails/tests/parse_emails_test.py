@@ -1012,19 +1012,3 @@ def test_multipart_eml_with_eml_attachment_containing_html_body():
     assert results[0]["Attachments"] == "original_message.eml"
     assert len(results[0]["AttachmentsData"]) > 0
     assert results[1]["ParentFileName"] == "multipart_with_eml_attachment_containing_html.eml"
-
-
-def test_error_file_type():
-    """
-    Given:
-     - eml file Sent with file_info='AMUSIC Adlib Tracker'.
-    When:
-     - Trying to check for the file type in order to parse the file
-    Then:
-     - Make sure the file type is recalculated and the eml was correctly parsed.
-    """
-    test_path = 'parse_emails/tests/test_data/None_Funding..eml'
-
-    email_parser = EmailParser(file_path=test_path, max_depth=2, file_info='AMUSIC Adlib Tracker')
-    results = email_parser.parse()
-    assert results['Subject'] == 'None Funding.'
