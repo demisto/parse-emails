@@ -38,7 +38,7 @@ class EmailParser:
 
     def get_file_type(self, file_type):
 
-        mime = magic.Magic(mime=True)
+        mime = magic.Magic(keep_going=True)
         if not file_type or not any(mime_type in file_type.lower() for mime_type in KNOWN_MIME_TYPE):
             file_type = mime.from_file(self._file_path)
             logger.info(f'file_type was empty, using {self._file_path=} to decide {file_type=}')
