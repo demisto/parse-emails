@@ -1,7 +1,7 @@
 # Changelog
 
 v0.1.38
-* Fixed an issue where EML files were not parsed if they had a corrupted eml file attached to them.
+* Fixed an issue where EML files were not parsed if they had a corrupted EML file attached.
 
 v0.1.37
 * Fixed an issue where file_type was incorrectly detected as "AMUSIC Adlib Tracker".
