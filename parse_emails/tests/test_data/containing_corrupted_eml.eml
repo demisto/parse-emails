@@ -1,0 +1,40 @@
+Received: from aaaaaaa.aaaaaaa.prod.outlook.com (8:8:8:8::8)
+ by 000000.aaaa.prod.outlook.com with HTTPS; Fri, 1 May 2000
+ 19:50:33 +0000
+From: "test" <test@test.com.com>
+Reply-To: test@test.com
+To: test@test.com
+Subject: Non-Delivery Report
+Date: Fri, 16 May 2025 19:49:59 -0000
+X-Auto-Response-Suppress: OOF, AutoReply
+Content-Type: multipart/mixed;
+	boundary="===============6649059347395835961=="
+Return-Path: test@test.com
+MIME-Version: 1.0
+
+--===============6649059347395835961==
+Content-Type: multipart/alternative;
+	boundary="===============0074034881403070106=="
+
+--===============0074034881403070106==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+test
+
+--===============0074034881403070106==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+
+--===============0074034881403070106==--
+
+--===============6649059347395835961==
+Content-Type: message/rfc822
+Content-Disposition: attachment; filename="original_message.eml"
+Content-Transfer-Encoding: base64
+
+Content-Type: text/plain
+MIME-Version: 1.0
+
+--===============6649059347395835961==--
