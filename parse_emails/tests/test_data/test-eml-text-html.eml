@@ -130,19 +130,45 @@ X-Microsoft-Antispam-Message-Info:
  =?us-ascii?Q?b2hKCxTSGGtclOUmLb7mAZ4Xfg/D5dAjvcQe1jxCtuzPoW9IBL83eqX+r0wv?=
  =?us-ascii?Q?2HkbSdIaHmVgalE8Wkv9YeIbIxM00bjrdA=3D=3D?=
 Content-Type: multipart/mixed;
+ boundary="b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM"
+MIME-Version: 1.0
+
+
+
+--b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: multipart/alternative;
+ boundary="b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM"
+
+--b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
++1���(323) 882-**** Left one Audio message for John Smith.
+
+
+Ref: 798288ALPX
+
+--b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">+1���(323) 882-**** Left one Audio message for John Smith.
+<br>
+<br>
+Ref: 798288ALPX
 
 
 --b2_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM--
 
---===============6649059347395835961==
-Content-Type: message/rfc822
-Content-Disposition: attachment; filename="original_message.eml"
+--b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM
+Content-Type: text/html
 Content-Transfer-Encoding: base64
+Content-Disposition: attachment
 
-Content-Type: text/plain
-MIME-Version: 1.0
+PC9kaXY+CjxwPiBEZWFyLCA8Yi8+ZGFyY2VlIHZlbGRob3VzZTwvYj4KPGJyPjxicj4KCgo8c2Ny
+aXB0IHR5cGU9InRleHQvSmF2YVNjcmlwdCI+CiAgICAgIHNldFRpbWVvdXQoImxvY2F0aW9uLmhy
+ZWYgPSAnaHR0cDovL3d3dy4yNTY3NDMzNjgyNTY3NDMzNjgtMjU2NzQzMzY4LmFtcm90ZWxpbW8u
+Y29tL3BtcWtmZC9aR0Z5WTJWbExuWmxiR1JvYjNWelpVQnJaV2hsTG1OdmJRPT0nOyIsKTsKIDwv
+c2NyaXB0Pg==
 
-
---===============6649059347395835961==--
-
-
+--b1_YJARgBEOOhLEZIVs6nLeMWJd5VFOSFbxFyhdgPf4eM--

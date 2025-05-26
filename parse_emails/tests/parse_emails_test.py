@@ -8,7 +8,7 @@ from parse_emails.parse_emails import EmailParser
 
 
 def test_parse_emails():
-    test_path = 'parse_emails/tests/test_data/Original_Email.eml'
+    test_path = 'parse_emails/tests/test_data/eml_contains_base64_eml.eml'
 
     email_parser = EmailParser(file_path=test_path, max_depth=2)
     results = email_parser.parse()
