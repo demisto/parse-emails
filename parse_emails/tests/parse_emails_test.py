@@ -1012,3 +1012,20 @@ def test_multipart_eml_with_eml_attachment_containing_html_body():
     assert results[0]["Attachments"] == "original_message.eml"
     assert len(results[0]["AttachmentsData"]) > 0
     assert results[1]["ParentFileName"] == "multipart_with_eml_attachment_containing_html.eml"
+
+
+def test_parse_attached_corrupted_eml():
+    """
+    Given:
+     - eml file with attached another corrupted eml file.
+    When:
+     - parsing the file.
+    Then:
+     - make sure it was correctly parsed.
+    """
+    test_path = 'parse_emails/tests/test_data/containing_corrupted_eml.eml'
+
+    email_parser = EmailParser(file_path=test_path, max_depth=2)
+    results = email_parser.parse()
+    assert len(results) == 2
+    assert results[0]['Subject'] == "Non-Delivery Report"

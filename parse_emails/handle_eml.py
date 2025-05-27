@@ -1,4 +1,5 @@
 import base64
+import binascii
 import email
 import email.utils
 import logging
@@ -152,6 +153,8 @@ def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, m
 
                             except TypeError:
                                 pass  # In case the file is a string, decode=True for get_payload is not working
+                            except binascii.Error:
+                                pass
 
                     elif isinstance(part.get_payload(), str):
                         file_content = part.get_payload(decode=True)
