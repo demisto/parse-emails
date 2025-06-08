@@ -2,6 +2,6 @@ variables:
   CURRENT_BRANCH_NAME: "security-scans-parse-emails"
 
 include:
-  - file: "/.gitlab/ci/parse-emails-ci/.gitlab-ci.yml"
+  - file: "/.gitlab/ci/parse-emails/.gitlab-ci.yml"
     ref: "security-scans-parse-emails"
     project: "${CI_PROJECT_NAMESPACE}/infra"
