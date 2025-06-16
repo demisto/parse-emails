@@ -21,6 +21,7 @@ olefile = "*"
 datetime = "*"
 chardet = "*"
 pytest = "*"
+python-gitlab = "^3.0.0"  # import gitlab
 python-magic = "*"
 compressed_rtf = "*"
 RTFDE = "*"
