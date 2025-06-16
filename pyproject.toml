@@ -24,7 +24,7 @@ pytest = "*"
 python-gitlab = "^3.0.0"  # import gitlab
 junitparser = "^3.1.2"
 # slack_sdk==3.11.2
-slack_sdk = "*"
+slack-sdk = "*"
 python-magic = "*"
 compressed_rtf = "*"
 RTFDE = "*"
