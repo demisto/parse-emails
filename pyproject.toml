@@ -15,18 +15,24 @@ classifiers=[
 readme = "README.md"
 packages = [{include = "parse_emails"}]
 
+
 [tool.poetry.dependencies]
-python = "^3.7"
+python = ">=3.9,<3.13"
 olefile = "*"
 datetime = "*"
 chardet = "*"
 pytest = "*"
+python-gitlab = "^3.0.0"  # import gitlab
+junitparser = "^3.1.2"
 python-magic = "*"
 compressed_rtf = "*"
 RTFDE = "*"
 pypandoc = "*"
 pip = "*"
 pyopenssl = "*"
+slack-sdk = "*"
+demisto-sdk = "1.38.1"
+jira = "^3.8.0"
 
 
 [tool.poetry.group.dev.dependencies]
