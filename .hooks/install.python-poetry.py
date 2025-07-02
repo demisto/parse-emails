@@ -109,9 +109,9 @@ STYLES = {
 def is_decorated():
     if WINDOWS:
         return (
-            os.getenv("ANSICON") is not None
-            or os.getenv("ConEmuANSI") == "ON"  # noqa: SIM112
-            or os.getenv("Term") == "xterm"  # noqa: SIM112
+            os.getenv("ANSICON") is not None or
+            os.getenv("ConEmuANSI") == "ON" or  # noqa: SIM112
+            os.getenv("Term") == "xterm"  # noqa: SIM112
         )
 
     if not hasattr(sys.stdout, "fileno"):
