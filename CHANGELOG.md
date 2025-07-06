@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.39
+* Infrastructure fixes.
+
 v0.1.38
 * Fixed an issue where EML files were not parsed if they had a corrupted EML file attached.
 
