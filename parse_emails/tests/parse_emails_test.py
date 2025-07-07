@@ -979,7 +979,7 @@ def test_eml_contails_html_content_type():
 def test_handle_eml_unknown8bit():
     """
     Given:
-     - eml file header encoded in unknown-8bit
+     - eml file header encoded in unknown-8bit in the name and in the email address
 
     When:
      - parsing the file.
