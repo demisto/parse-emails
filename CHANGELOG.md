@@ -3,6 +3,9 @@
 v0.1.40
 * Fixed an issue where encoded unknown-8bit header in EML files could not be parsed correctly.
 
+v0.1.39
+* Infrastructure fixes.
+
 v0.1.38
 * Fixed an issue where EML files were not parsed if they had a corrupted EML file attached.
 
