@@ -444,10 +444,16 @@ def get_email_address(eml, entry):
                 gel_all_values_from_email_by_entry[index] = str(updated_address)
 
         addresses = getaddresses(gel_all_values_from_email_by_entry, strict=False)
-    except TypeError:
+    except (UnicodeDecodeError, TypeError):
         addresses = getaddresses(gel_all_values_from_email_by_entry)
+
     if addresses:
-        res = [email_address for real_name, email_address in addresses if "@" in email_address]
+        res = []
+        for real_name, email_address in addresses:
+            if "@" in email_address:
+                if 'unknown-8bit' in email_address:
+                    email_address = str(email.header.make_header(email.header.decode_header(email_address)))
+                res.append(email_address)
         res = ', '.join(res)
         return res
     return ''
