@@ -37,27 +37,21 @@ class EmailParser:
             raise Exception('Minimum max_depth is 1, the script will parse just the top email')
 
     def get_file_type(self, file_type):
-        
-        logger.info(f'get_file_type called with {file_type=}')
+
         mime = magic.Magic(keep_going=True)
-
-
-
-        
-        if not file_type or not any(mime_type.lower() in file_type.lower() for mime_type in KNOWN_MIME_TYPE):
-            file_type = mime.from_file(self._file_path) or file_type
+        if not file_type or not any(mime_type in file_type.lower() for mime_type in KNOWN_MIME_TYPE):
+            file_type = mime.from_file(self._file_path)
             logger.info(f'file_type was empty, using {self._file_path=} to decide {file_type=}')
 
         if file_type == 'data' and self._file_name.lower().strip().endswith('.p7m'):
             logger.info(f'Removing signature from file {self._file_path}')
             remove_p7m_file_signature(self._file_path)
-            file_type = mime.from_file(self._file_path) 
+            file_type = mime.from_file(self._file_path)
             logger.info(f"Got file type '{file_type}' for file_path={self._file_path}")
 
-        if file_type and ('MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type):
-            logger.info(f'Converting MIME entity type to application/pkcs7-mime')
-            return 'application/pkcs7-mime'
-        
+        if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
+            file_type = 'application/pkcs7-mime'
+
         logger.info(f'Returning {file_type=}')
         return file_type
 
