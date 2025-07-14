@@ -2188,12 +2188,12 @@ KNOWN_MIME_TYPE = [
     'macintosh hfs',
     'rfc 822 mail',
     'smtp mail',
-    
+
     'multipart/signed',
     'multipart/alternative',
     'multipart/mixed',
     'message/rfc822',
-                
+
     'application/pkcs7-mime',
     'multipart/related',
     '(with bom) text',

@@ -1,7 +1,7 @@
 # Changelog
 
 v0.1.40
-* Added support for "MIME entity, with CRLF line terminators". 
+* Added support for "MIME entity, with CRLF line terminators".
 
 v0.1.39
 * Infrastructure fixes.
