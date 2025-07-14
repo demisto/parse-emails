@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.41
+* Removed redundant *demisto-sdk* dependency.
+
 v0.1.40
 * Added support for "MIME entity, with CRLF line terminators".
 
