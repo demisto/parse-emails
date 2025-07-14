@@ -31,7 +31,6 @@ pypandoc = "*"
 pip = "*"
 pyopenssl = "*"
 slack-sdk = "*"
-demisto-sdk = "1.38.1"
 jira = "^3.8.0"
 
 
