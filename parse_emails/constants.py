@@ -2181,8 +2181,8 @@ PROPS_ID_MAP = {
 KNOWN_MIME_TYPE = [
     'composite document file v2 document',
     'cdfv2 microsoft outlook message',
-    'MIME entity, ISO-8859 text',
-    'MIME entity, ISO-8859 text, with CRLF line terminators',
+    'mime entity, iso-8859 text',
+    'mime entity, iso-8859 text, with crlf line terminators',
     'data',
     'apple hfs',
     'macintosh hfs',

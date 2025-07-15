@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.42
+* Fixed file-type resolution.
+
 v0.1.41
 * Removed redundant *demisto-sdk* dependency.
 

@@ -49,7 +49,11 @@ class EmailParser:
             file_type = mime.from_file(self._file_path)
             logger.info(f"Got file type '{file_type}' for file_path={self._file_path}")
 
-        if 'MIME entity text, ISO-8859 text' in file_type or 'MIME entity, ISO-8859 text' in file_type:
+        if any(indicator in file_type for indicator in [
+            'MIME entity text, ISO-8859 text',
+            'MIME entity, ISO-8859 text',
+            'MIME entity, ISO-8859 text, with CRLF line terminators'
+        ]):
             file_type = 'application/pkcs7-mime'
 
         logger.info(f'Returning {file_type=}')
