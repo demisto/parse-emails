@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.43
+* Added a fallback for UnicodeDecodeErrors when parsing attachments. 
+
 v0.1.42
 * Fixed file-type resolution.
 
