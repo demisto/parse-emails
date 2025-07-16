@@ -488,7 +488,7 @@ def get_attachment_filename(part):
             attachment_file_name = ''.join(
                 part.decode(charset or 'utf-8', errors='ignore')
                 for part, charset in decode_header(filename)
-            )
+            logger.debug(f"Failed to decode attachment {filename} will ignore bad bits")
     elif attachment_file_name is None and part.get('filename'):
         attachment_file_name = os.path.normpath(part.get('filename'))
         if os.path.isabs(attachment_file_name):
