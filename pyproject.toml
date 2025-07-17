@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "parse-emails"
-version = "0.1.40"
+version = "0.1.44"
 description = "Parses an email message file and extracts the data from it."
 authors = ["Demisto"]
 license = "MIT"
@@ -31,12 +31,12 @@ pypandoc = "*"
 pip = "*"
 pyopenssl = "*"
 slack-sdk = "*"
-demisto-sdk = "1.38.1"
 jira = "^3.8.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "*"
+setuptools = ">=78.1.1"
 pytest = "*"
 pytest-cov = "*"
 pytest-datadir-ng = "*"

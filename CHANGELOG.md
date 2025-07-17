@@ -1,7 +1,19 @@
 # Changelog
 
-v0.1.40
+v0.1.44
 * Fixed an issue where encoded unknown-8bit header in EML files could not be parsed correctly.
+
+v0.1.43
+* Added a fallback for UnicodeDecodeErrors when parsing attachments.
+
+v0.1.42
+* Fixed file-type resolution.
+
+v0.1.41
+* Removed redundant *demisto-sdk* dependency.
+
+v0.1.40
+* Added support for "MIME entity, with CRLF line terminators".
 
 v0.1.39
 * Infrastructure fixes.

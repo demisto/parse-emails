@@ -499,13 +499,21 @@ def get_attachment_filename(part):
     filename = part.get_filename()
     if filename:
         try:
-            attachment_file_name = str(make_header(decode_header(filename)))
+            decoded_header = decode_header(filename)
+            logger.debug(f"Decoded header for attachment: {decoded_header}")
+            attachment_file_name = str(make_header(decoded_header))
         except LookupError:
             if 'windows-874' in filename:
                 # If the file is encoded in windows-874 and contains the encoding
                 filename = filename.replace('windows-874', 'iso-8859-11')
                 attachment_file_name = str(make_header(decode_header(filename)))
-
+        except UnicodeDecodeError:
+            # fallback: ignore bad bits so we get the rest of the name
+            attachment_file_name = ''.join(
+                part.decode(charset or 'utf-8', errors='ignore')
+                for part, charset in decode_header(filename)
+            )
+            logger.debug(f"Failed to decode attachment {filename}, will ignore bad bits.")
     elif attachment_file_name is None and part.get('filename'):
         attachment_file_name = os.path.normpath(part.get('filename'))
         if os.path.isabs(attachment_file_name):
