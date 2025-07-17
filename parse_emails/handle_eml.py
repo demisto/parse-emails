@@ -441,7 +441,7 @@ def get_email_address(eml, header_name):
 
     res = []
     addresses = header_value[0].split(',') \
-        if header_value else header_value
+        if header_value else []
     for address in addresses:
         if 'unknown-8bit' in address:
             try:
