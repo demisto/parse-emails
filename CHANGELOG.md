@@ -1,5 +1,8 @@
 # Changelog
 
+v0.1.44
+* Fixed an issue where encoded unknown-8bit header in EML files could not be parsed correctly.
+
 v0.1.43
 * Added a fallback for UnicodeDecodeErrors when parsing attachments.
 

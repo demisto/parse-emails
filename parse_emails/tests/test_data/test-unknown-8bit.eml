@@ -6,6 +6,10 @@ Message-ID: <CACVXskAdihOUNQYeLaeCOx7xiDnJ2W55Q2GQmX2G_UV115D4Dw@mail.gmail.com>
 Subject: test bcc
 From: =?unknown-8bit?q?=22test=22_=3Ctest=40test.com=3E?=
 To: test test <test1@mail.com>
+CC: "test1" <test1@test1.com>,
+	ü<test=?unknown-8bit?q?w=C3=BCrth?=@test.com>,
+	"test3" <test3@test3.com>,
+	=?unknown-8bit?q?=22test=22_=3Ctest=40test.com=3E?=
 Content-Type: multipart/alternative; boundary="000000000000ee07a1060b98dc7e"
 
 --000000000000ee07a1060b98dc7e
