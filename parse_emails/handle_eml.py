@@ -423,7 +423,7 @@ def mime_decode(word_mime_encoded):
     return prefix + byte_string.decode(charset) + suffix
 
 
-ef get_email_address(eml, header_name):
+def get_email_address(eml, header_name):
     """
     This function gets email addresses from an eml object, i.e eml[header_name].
     Args:
