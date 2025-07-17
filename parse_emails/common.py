@@ -47,14 +47,14 @@ def convert_to_unicode(s, is_msg_header=True):
             try:
                 s = str(email.header.make_header(email.header.decode_header(s)))
             except:  # noqa: E722
-                pass
+                logger.debug(f'unknown-8bit decoding failed for value: {s})
         else:
             for file_data in ENCODINGS_TYPES:
                 try:
                     s = s.decode(file_data).strip()
                     break
                 except:  # noqa: E722
-                    pass
+                    logger.debug(f'{file_data} decoding failed for value: {s})
     return s
 
 
