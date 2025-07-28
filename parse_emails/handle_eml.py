@@ -459,23 +459,6 @@ def get_email_address(eml, entry):
    
 
 
-def get_address(email_address):
-    """
-    Extracts valid email addresses from a string using email.utils.getaddresses.
-
-    Args:
-        email_address (str): A string containing one or more email addresses.
-
-    Returns:
-        str: A comma-separated string of valid email addresses.
-    """
-    try:
-        addresses = getaddresses([email_address], strict=False)
-    except TypeError:
-        addresses = getaddresses([email_address])
-    valid_addresses = [addr for _, addr in addresses if "@" in addr]
-    return ', '.join(valid_addresses)
-
 
 def extract_address_eml(eml, entry):
     """
