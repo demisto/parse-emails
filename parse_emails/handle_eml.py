@@ -456,8 +456,6 @@ def get_email_address(eml, entry):
                 res.append(email_address)
         res = ', '.join(res)
         return res
-   
-
 
 
 def extract_address_eml(eml, entry):
