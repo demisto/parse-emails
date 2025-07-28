@@ -423,40 +423,40 @@ def mime_decode(word_mime_encoded):
     return prefix + byte_string.decode(charset) + suffix
 
 
-def get_email_address(eml, header_name):
+def get_email_address(eml, entry):
     """
-    This function gets email addresses from an eml object, i.e eml[header_name].
+    This function gets email addresses from an eml object, i.e eml[entry].
     Args:
-        eml: Email object.
-        header_name (str): header to look for in the email. i.e ('To', 'CC', 'From')
+        eml : Email object.
+        entry (str) : entry to look for in the email. i.e ('To', 'CC', 'From')
     Returns:
-        res (str): string of all required email addresses.
+        res (str) : string of all required email addresses.
     """
-    if header_name in ['from']:
-        header_value = [str(current_eml_no_newline).replace('\r\n', '').
-                        replace('\n', '').replace('\t', '')
-                        for current_eml_no_newline in eml.get_all(header_name, [])]
+    if entry == 'from':
+        gel_all_values_from_email_by_entry = [str(current_eml_no_newline).replace('\r\n', '').replace('\n', '')
+                                              for current_eml_no_newline in eml.get_all(entry, [])]
     else:
-        header_value = eml.get_all(header_name, [])
+        gel_all_values_from_email_by_entry = eml.get_all(entry, [])
+    try:
+        for index, address in enumerate(gel_all_values_from_email_by_entry):
+            if 'unknown-8bit' in address:
+                updated_address = email.header.make_header(email.header.decode_header(address))
+                gel_all_values_from_email_by_entry[index] = str(updated_address)
 
-    res = []
-    addresses = header_value[0].split(',') \
-        if header_value else []
-    for address in addresses:
-        if 'unknown-8bit' in address:
-            try:
-                decoded = str(make_header(decode_header(address)))
-                result = get_address(decoded)
-            except UnicodeDecodeError:
-                email_address = get_address(address)
-                result = str(make_header(decode_header(email_address)))
-        else:
-            result = get_address(address)
+        addresses = getaddresses(gel_all_values_from_email_by_entry, strict=False)
+    except (UnicodeDecodeError, TypeError):
+        addresses = getaddresses(gel_all_values_from_email_by_entry)
 
-        if result:
-            res.append(result)
-
-    return ', '.join(res)
+    if addresses:
+        res = []
+        for _, email_address in addresses:
+            if "@" in email_address:
+                if 'unknown-8bit' in email_address:
+                    email_address = str(email.header.make_header(email.header.decode_header(email_address)))
+                res.append(email_address)
+        res = ', '.join(res)
+        return res
+   
 
 
 def get_address(email_address):
