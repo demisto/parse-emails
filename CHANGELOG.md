@@ -1,6 +1,7 @@
 # Changelog
 
-* Fixed an issue that caused the *From* header to be empty..
+v0.1.45
+* Fixed an issue that caused the *From* header to be empty.
 
 v0.1.44
 * Fixed an issue where encoded unknown-8bit header in EML files could not be parsed correctly.
