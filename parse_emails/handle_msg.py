@@ -116,11 +116,15 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, orig
 
     attached_emails_msg = msg.get_attached_emails_hierarchy(max_depth - 1, original_depth)
 
+    # Prefer the MSG property Subject over the header-derived Subject to avoid decoding artifacts
+    preferred_subject = msg_dict['Subject'] if msg_dict.get('Subject') else headers_map.get('Subject')
+    if isinstance(preferred_subject, str):
+        preferred_subject = preferred_subject.replace('\x00', '').strip()
     email_data = {
         'To': msg_dict['To'],
         'CC': msg_dict['CC'],
         'From': msg_dict['From'],
-        'Subject': headers_map.get('Subject') if headers_map.get('Subject') else msg_dict['Subject'],
+        'Subject': preferred_subject,
         'HTML': msg_dict['HTML'],
         'Text': msg_dict['Text'],
         'Headers': headers,
@@ -343,6 +347,8 @@ class DataModel:
 
     @staticmethod
     def PtypString(data_value):
+        # Preserve original bytes for potential re-decode
+        original_bytes = data_value if isinstance(data_value, (bytes, bytearray)) else None
         if data_value:
             try:
                 if USER_ENCODING:
@@ -351,12 +357,11 @@ class DataModel:
                 res = chardet.detect(data_value)
                 enc = res['encoding'] or 'ascii'  # in rare cases chardet fails to detect and return None as encoding
                 if enc != 'ascii':
-                    if enc.lower() == 'windows-1252' and res['confidence'] < 0.9:
-
-                        enc = DEFAULT_ENCODING if DEFAULT_ENCODING else 'windows-1250'
-                        logger.debug('Encoding detection confidence below threshold {}, '
-                                     'switching encoding to "{}"'.format(res, enc))
-
+                    # Special-case: chardet often guesses windows-1252 for Eastern European text with low confidence.
+                    # Fallback to DEFAULT_ENCODING if provided, else windows-1250 which correctly handles Polish characters.
+                    if enc and enc.lower() == 'windows-1252' and res.get('confidence', 0) < 0.9:
+                        enc = DEFAULT_ENCODING if 'DEFAULT_ENCODING' in globals() and DEFAULT_ENCODING else 'windows-1250'
+                        logger.debug('Encoding detection confidence below threshold %s, switching encoding to "%s"', res, enc)
                     temp = data_value
                     data_value = temp.decode(enc, errors='ignore')
                     if '\x00' in data_value:
@@ -374,6 +379,42 @@ class DataModel:
 
         if isinstance(data_value, (bytes, bytearray)):
             data_value = data_value.decode('utf-8')
+
+        # If the decoded string shows typical mojibake from UTF-8 decoded as cp1252 (e.g., "â€™"),
+        # try decoding the original bytes as UTF-8 and prefer that clean result.
+        if isinstance(data_value, str):
+            try:
+                mojibake_markers = ['â€™', 'â€“', 'â€”', 'â€œ', 'â€�']
+                if any(m in data_value for m in mojibake_markers):
+                    # Re-decode from the original bytes if available
+                    if original_bytes is not None:
+                        try:
+                            try_utf8 = bytes(original_bytes).decode('utf-8')
+                            data_value = try_utf8
+                        except Exception:
+                            pass
+                    # If original bytes path didn't resolve it (or not available), try latin-1 -> utf-8 repair.
+                    if any(m in data_value for m in mojibake_markers):
+                        try:
+                            repaired = data_value.encode('latin-1', errors='strict').decode('utf-8', errors='strict')
+                            if not any(m in repaired for m in mojibake_markers):
+                                data_value = repaired
+                        except Exception:
+                            # Try cp1252 as an alternative to latin-1
+                            try:
+                                repaired = data_value.encode('cp1252', errors='strict').decode('utf-8', errors='strict')
+                                if not any(m in repaired for m in mojibake_markers):
+                                    data_value = repaired
+                            except Exception:
+                                pass
+            except Exception:
+                pass
+
+        if isinstance(data_value, str):
+            # Remove any embedded NULs and trim whitespace artifacts
+            if '\x00' in data_value:
+                data_value = data_value.replace('\x00', '')
+            data_value = data_value.strip()
 
         return data_value
 
