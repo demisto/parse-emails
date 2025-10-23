@@ -2,7 +2,7 @@
 
 v0.1.46
 * Fixed an issue where encoded unknown-8bit characters in MSG files could not be parsed correctly.
-  
+
 v0.1.45
 * Fixed an issue that caused the *From* header to be empty.
 
