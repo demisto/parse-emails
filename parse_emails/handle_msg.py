@@ -359,7 +359,7 @@ class DataModel:
                 if enc != 'ascii':
                     # Special-case: chardet often guesses windows-1252 for Eastern European text with low confidence.
                     # Fallback to DEFAULT_ENCODING if provided, else windows-1250 which correctly handles Polish characters.
-                    if enc and enc.lower() == 'windows-1252' and res.get('confidence', 0) < 0.9:
+                    if enc.lower() == 'windows-1252' and res.get('confidence', 0) < 0.9:
                         enc = DEFAULT_ENCODING if DEFAULT_ENCODING else 'windows-1250'
                         logger.debug('Encoding detection confidence below threshold {}, '
                                      'switching encoding to "{}"'.format(res, enc))
