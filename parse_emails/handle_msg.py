@@ -360,8 +360,9 @@ class DataModel:
                     # Special-case: chardet often guesses windows-1252 for Eastern European text with low confidence.
                     # Fallback to DEFAULT_ENCODING if provided, else windows-1250 which correctly handles Polish characters.
                     if enc and enc.lower() == 'windows-1252' and res.get('confidence', 0) < 0.9:
-                        enc = DEFAULT_ENCODING if 'DEFAULT_ENCODING' in globals() and DEFAULT_ENCODING else 'windows-1250'
-                        logger.debug('Encoding detection confidence below threshold %s, switching encoding to "%s"', res, enc)
+                        enc = DEFAULT_ENCODING if DEFAULT_ENCODING else 'windows-1250'
+                        logger.debug('Encoding detection confidence below threshold {}, '
+                                     'switching encoding to "{}"'.format(res, enc))
                     temp = data_value
                     data_value = temp.decode(enc, errors='ignore')
                     if '\x00' in data_value:
@@ -384,8 +385,7 @@ class DataModel:
         # try decoding the original bytes as UTF-8 and prefer that clean result.
         if isinstance(data_value, str):
             try:
-                mojibake_markers = ['â€™', 'â€“', 'â€”', 'â€œ', 'â€�']
-                if any(m in data_value for m in mojibake_markers):
+                if DataModel.IsMojibake(data_value):
                     # Re-decode from the original bytes if available
                     if original_bytes is not None:
                         try:
@@ -394,16 +394,16 @@ class DataModel:
                         except Exception:
                             pass
                     # If original bytes path didn't resolve it (or not available), try latin-1 -> utf-8 repair.
-                    if any(m in data_value for m in mojibake_markers):
+                    if DataModel.IsMojibake(data_value):
                         try:
                             repaired = data_value.encode('latin-1', errors='strict').decode('utf-8', errors='strict')
-                            if not any(m in repaired for m in mojibake_markers):
+                            if not DataModel.IsMojibake(repaired):
                                 data_value = repaired
                         except Exception:
                             # Try cp1252 as an alternative to latin-1
                             try:
                                 repaired = data_value.encode('cp1252', errors='strict').decode('utf-8', errors='strict')
-                                if not any(m in repaired for m in mojibake_markers):
+                                if not DataModel.IsMojibake(repaired):
                                     data_value = repaired
                             except Exception:
                                 pass
@@ -411,13 +411,24 @@ class DataModel:
                 pass
 
         if isinstance(data_value, str):
-            # Remove any embedded NULs and trim whitespace artifacts
+            # Remove any embedded NULLs and trim whitespace artifacts
             if '\x00' in data_value:
                 data_value = data_value.replace('\x00', '')
             data_value = data_value.strip()
 
         return data_value
 
+    
+    @staticmethod
+    def IsMojibake(data_value):
+        mojibake_markers = [
+            'â€™', 'â€œ', 'â€', 'â€“', 'â€”', 'â€¦',  # common punctuation errors
+            'â€˜', 'â€¢', 'â„¢', 'Â',              # more common misencodings
+            'Ã©', 'Ã¨', 'Ã', 'Ã¡', 'Ã¢', 'Ãª', 'Ã³', 'Ã±',  # accented letters
+            'ðŸ˜', 'ðŸ‘', 'ðŸ’',                  # start of broken emoji
+        ]
+        return any(m in data_value for m in mojibake_markers)
+    
     @staticmethod
     def PtypTime(data_value):
         return get_time(data_value)
