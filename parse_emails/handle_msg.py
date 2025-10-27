@@ -418,7 +418,6 @@ class DataModel:
 
         return data_value
 
-    
     @staticmethod
     def IsMojibake(data_value):
         mojibake_markers = [
@@ -428,7 +427,7 @@ class DataModel:
             'ðŸ˜', 'ðŸ‘', 'ðŸ’',                  # start of broken emoji
         ]
         return any(m in data_value for m in mojibake_markers)
-    
+
     @staticmethod
     def PtypTime(data_value):
         return get_time(data_value)
