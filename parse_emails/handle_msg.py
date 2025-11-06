@@ -120,6 +120,9 @@ def handle_msg(file_path, file_name, parse_only_headers=False, max_depth=3, orig
     preferred_subject = msg_dict['Subject'] if msg_dict.get('Subject') else headers_map.get('Subject')
     if isinstance(preferred_subject, str):
         preferred_subject = preferred_subject.replace('\x00', '').strip()
+    # Keep HeadersMap['Subject'] consistent with the preferred Subject to avoid encoding mismatches
+    if preferred_subject:
+        headers_map['Subject'] = preferred_subject
     email_data = {
         'To': msg_dict['To'],
         'CC': msg_dict['CC'],
