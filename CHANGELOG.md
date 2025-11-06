@@ -1,6 +1,6 @@
 # Changelog
 v0.1.47
-* Fixed an issue where the headers_map['Subject'] not match 'Subject'
+* Fixed an issue where the headers_map['Subject'] not match 'Subject'.
 
 v0.1.46
 * Fixed an issue where encoded unknown-8bit characters in MSG files could not be parsed correctly.
