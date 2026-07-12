@@ -12,7 +12,7 @@ ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 
 
 def convert_to_unicode(s, is_msg_header=True):
-    global ENCODINGS_TYPES
+    global ENCODINGS_TYPES  # noqa: F824
     try:
         res = ''  # utf encoded result
         if is_msg_header:  # Mime encoded words used on message headers only

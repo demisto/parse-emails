@@ -25,20 +25,13 @@ script to alternatives, consider maintaining a local copy as part of your infras
 For full documentation, visit https://python-poetry.org/docs/#installation.
 """
 
-import sys
-
-# Eager version check so we fail nicely before possible syntax errors
-if sys.version_info < (3, 6):  # noqa: UP036
-    sys.stdout.write("Poetry installer requires Python 3.6 or newer to run!\n")
-    sys.exit(1)
-
-
 import argparse
 import json
 import os
 import re
 import shutil
 import subprocess
+import sys
 import sysconfig
 import tempfile
 from contextlib import closing, contextmanager
