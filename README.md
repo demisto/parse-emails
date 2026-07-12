@@ -1,6 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/github/demisto/email-parser/badge.svg?branch=master)](https://coveralls.io/github/demisto/email-parser?branch=master)
 [![CLA assistant](https://cla-assistant.io/readme/badge/demisto/parse-emails)](https://cla-assistant.io/demisto/parse-emails)
-[![CircleCI](https://circleci.com/gh/demisto/parse-emails/tree/master.svg?style=svg)](https://circleci.com/gh/demisto/parse-emails/tree/master)
 # parse-emails
 Parses an email message file and extracts the data from it.
 
@@ -10,7 +9,7 @@ The key features are:
 
 ## Requirements
 
-Python 3.8.5+
+Python 3.10+
 
 ## Installation
 

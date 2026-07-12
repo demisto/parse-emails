@@ -1,4 +1,7 @@
 # Changelog
+v0.2.0
+* Updated the supported Python versions to 3.10 through 3.14.
+
 v0.1.48
 * Fixed an issue where embedded EML attachments with base64 encoding were being double-decoded, causing parsing failures.
 
