@@ -1,7 +1,7 @@
 variables:
-  CURRENT_BRANCH_NAME: "${INFRA_BRANCH}"
+  CURRENT_BRANCH_NAME: sk_prase_emails_python
 
 include:
   - file: "/.gitlab/ci/parse-emails/.gitlab-ci.yml"
-    ref: "${INFRA_BRANCH}"
+    ref: sk_prase_emails_python
     project: "${CI_PROJECT_NAMESPACE}/infra"
