@@ -39,9 +39,9 @@ repos:
       rev: v3.21.2
       hooks:
           - id: pyupgrade
-            args: [--py310-plus]
+            args: [--py311-plus]
     - repo: https://github.com/python-poetry/poetry
-      rev: 1.8.5
+      rev: 1.8.2
       hooks:
       - id: poetry-check
         args:
