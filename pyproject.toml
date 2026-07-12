@@ -4,6 +4,7 @@ version = "0.2.0"
 description = "Parses an email message file and extracts the data from it."
 authors = ["Demisto"]
 license = "MIT"
+homepage = "https://github.com/demisto/parse-emails"
 classifiers=[
     'Intended Audience :: Developers',
     'Natural Language :: English',
