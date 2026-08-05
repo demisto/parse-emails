@@ -25,7 +25,7 @@ headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 
 
 def handle_eml(file_path, b64=False, file_name=None, parse_only_headers=False, max_depth=3, bom=False, original_depth=3):
-    global ENCODINGS_TYPES
+    global ENCODINGS_TYPES  # noqa: F824
 
     if max_depth == 0:
         return None, []
@@ -335,8 +335,8 @@ def handle_multi_part_error(eml: Message):
         if isinstance(defect, errors.MultipartInvariantViolationDefect):
             boundary = eml.get_boundary()
             file_data = eml.as_string()
-            if file_data.count(boundary) == 1:
-                param = eml.get("Content-Type").replace('\r\n', '\n')
+            if file_data.count(boundary) == 1:  # type: ignore[arg-type]
+                param = eml.get("Content-Type", "").replace('\r\n', '\n')
                 file_data = file_data.replace(f'Content-Type: {param}\n', '')
                 eml = message_from_string(file_data)
             break

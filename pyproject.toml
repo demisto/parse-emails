@@ -1,15 +1,18 @@
 [tool.poetry]
 name = "parse-emails"
-version = "0.1.48"
+version = "0.2.0"
 description = "Parses an email message file and extracts the data from it."
 authors = ["Demisto"]
 license = "MIT"
+homepage = "https://github.com/demisto/parse-emails"
 classifiers=[
     'Intended Audience :: Developers',
     'Natural Language :: English',
     'License :: OSI Approved :: MIT License',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
     'Programming Language :: Python :: Implementation :: CPython'
 ]
 readme = "README.md"
@@ -17,7 +20,7 @@ packages = [{include = "parse_emails"}]
 
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.11,<3.15"
 olefile = "*"
 datetime = "*"
 chardet = "*"

@@ -6,7 +6,7 @@
 - [ ] In Hold - (Reason for hold)
 
 ## Related Issues
-fixes: link to the issue
+<!-- To link a Jira ticket use fixes/related: link to the issue, for example fixes: CIAC-XXXX -->
 
 ## Description
 A few sentences describing the overall goals of the pull request's commits.

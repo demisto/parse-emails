@@ -30,7 +30,7 @@ setup(
     name=NAME,
     description="A Python library to parse email files",
     author_email="",
-    url="https://github.com/demisto/email-parser",
+    url="https://github.com/demisto/parse-emails",
     keywords=["Demisto"],
     install_requires=install_requires,
     packages=find_packages(),
@@ -42,10 +42,12 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Programming Language :: Python :: Implementation :: CPython'
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.11",
     author="Demisto"
 )
