@@ -1,10 +1,8 @@
 import base64
 import binascii
 import email
-import email.utils
 import logging
 import os
-import quopri
 import re
 import tempfile
 from base64 import b64decode

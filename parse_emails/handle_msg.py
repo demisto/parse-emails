@@ -25,14 +25,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 """
 
-import base64
 # -*- coding: utf-8 -*-
 import codecs
 import email
 import email.utils
 import logging
 import os
-import quopri
 import re
 from datetime import datetime, timedelta
 # coding=utf-8

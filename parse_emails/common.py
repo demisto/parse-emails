@@ -1,8 +1,5 @@
-import base64
 import email
 import logging
-import quopri
-import re
 from email.header import decode_header
 
 logger = logging.getLogger('parse_emails')
