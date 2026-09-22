@@ -54,7 +54,6 @@ from parse_emails.constants import (DEFAULT_ENCODING, PROPS_ID_MAP,
 
 logger = logging.getLogger('parse_emails')
 
-MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 emailRegex = r'''(?i)(?:[a-z0-9!#$%&'*+/=?^_\x60{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_\x60{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])'''  # noqa: E501
 
 DATA_TYPE_MAP = {
@@ -1208,12 +1207,3 @@ def flatten_list(string_list):
         string = ",".join(string_list)
         return string
     return None
-
-
-def mime_decode(word_mime_encoded):
-    prefix, charset, encoding, encoded_text, suffix = word_mime_encoded.groups()
-    if encoding.lower() == 'b':
-        byte_string = base64.b64decode(encoded_text)
-    elif encoding.lower() == 'q':
-        byte_string = quopri.decodestring(encoded_text)
-    return prefix + byte_string.decode(charset) + suffix
