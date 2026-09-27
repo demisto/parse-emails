@@ -1,10 +1,8 @@
 import base64
 import binascii
 import email
-import email.utils
 import logging
 import os
-import quopri
 import re
 import tempfile
 from base64 import b64decode
@@ -19,7 +17,6 @@ from parse_emails.handle_msg import handle_msg
 
 logger = logging.getLogger('parse_emails')
 
-MIME_ENCODED_WORD = re.compile(r'(.*)=\?(.+)\?([B|Q])\?(.+)\?=(.*)')  # guardrails-disable-line
 ENCODINGS_TYPES = {'utf-8', 'iso8859-1'}
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 
@@ -424,15 +421,6 @@ def handle_SMTP_headers(emlFile):
         if not any(smtp_header in str(line) for smtp_header in SMTP_HEADERS):
             remove_smtp_header = False
             emlFile.seek(pos)
-
-
-def mime_decode(word_mime_encoded):
-    prefix, charset, encoding, encoded_text, suffix = word_mime_encoded.groups()
-    if encoding.lower() == 'b':
-        byte_string = base64.b64decode(encoded_text)
-    elif encoding.lower() == 'q':
-        byte_string = quopri.decodestring(encoded_text, header=True)
-    return prefix + byte_string.decode(charset) + suffix
 
 
 def get_email_address(eml, entry):

@@ -1,4 +1,7 @@
 # Changelog
+v0.2.1
+* Fixed an issue where parsing an email with a very large number of recipients could hang or time out.
+
 v0.2.0
 * Updated the supported Python versions to 3.11 through 3.14.
 * Dropped support for Python 3.10 and earlier.
